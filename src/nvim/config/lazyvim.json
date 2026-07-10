@@ -1,0 +1,7 @@
+{
+  "extras": [
+    "lang.markdown",
+    "lang.python",
+    "lang.typst"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "github.copilot.nextEditSuggestions.enabled": false,
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "python": false
+    },
+    "claudeCode.preferredLocation": "panel",
+    "workbench.colorTheme": "Kanagawa",
+    "github.
+  copilot.nextEditSuggestions.eagerness": "low",
+}
