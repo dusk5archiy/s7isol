@@ -3,6 +3,6 @@
 # ------------------------------------------------------------------------------
 
 code \
-  ${OLD_VSCODE_USER_DATA_DIR:+--user-data-dir "$OLD_VSCODE_USER_DATA_DIR"} \
-  ${OLD_VSCODE_EXTENSIONS_DIR:+--extensions-dir "$OLD_VSCODE_EXTENSIONS_DIR"} \
+  ${YOUR_VSCODE_USER_DATA_DIR:+--user-data-dir "$YOUR_VSCODE_USER_DATA_DIR"} \
+  ${YOUR_VSCODE_EXTENSIONS_DIR:+--extensions-dir "$YOUR_VSCODE_EXTENSIONS_DIR"} \
   "${@:2}"

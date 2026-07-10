@@ -14,17 +14,17 @@ git config --global safe.directory '*'
 git config --global init.defaultbranch main
 git config --global credential.helperselector.selected "<no helper>"
 git config --global --list
+git config --global core.sshCommand "ssh -o IdentitiesOnly=yes -i $YOUR_SSH_DIR/id_ed25519"
 
 # ------------------------------------------------------------------------------
 
-mkdir -p "$HOME/.ssh"
-ssh-keygen -t ed25519 -C "$email_" -f "$HOME/.ssh/id_ed25519"
+ssh-keygen -t ed25519 -C "$email_" -f "$YOUR_SSH_DIR/id_ed25519"
 
 # ------------------------------------------------------------------------------
 
 eval "$(ssh-agent -s)"
-ssh-add "$HOME/.ssh/id_ed25519"
+ssh-add "$YOUR_SSH_DIR/id_ed25519"
 
 # ------------------------------------------------------------------------------
 
-cat "$HOME/.ssh/id_ed25519.pub"
+cat "$YOUR_SSH_DIR/id_ed25519.pub"
