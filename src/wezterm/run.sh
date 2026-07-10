@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/bashrc
 
 # ------------------------------------------------------------------------------
 
-if [[ "$0" == "$BASH_SOURCE" ]]; then
-  exit 1
+if [[ ! -f "/usr/bin/wezterm-gui" ]]; then
+  bash "$S7ISOL/bin/s7isol.sh" install/wezterm
 fi
 
 # ------------------------------------------------------------------------------
 
-export S7ISOL="$(realpath "${BASH_SOURCE[0]}/../..")"
-export OS="$(source /etc/os-release && echo $ID)"
+/usr/bin/wezterm-gui >/dev/null 2>&1 &
+disown

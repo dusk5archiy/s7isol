@@ -8,5 +8,8 @@ fi
 
 # ------------------------------------------------------------------------------
 
-export S7ISOL="$(realpath "${BASH_SOURCE[0]}/../..")"
-export OS="$(source /etc/os-release && echo $ID)"
+if [[ -f "$S7ISOL/.pre.env" ]]; then
+  source "$S7ISOL/.pre.env"
+else
+  source "$S7ISOL/default.pre.env"
+fi

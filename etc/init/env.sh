@@ -2,11 +2,12 @@
 
 # ------------------------------------------------------------------------------
 
-if [[ "$0" != "$BASH_SOURCE" ]]; then
-  return 1
+if [[ -z "$YOUR_SSH_DIR" ]]; then
+  export YOUR_SSH_DIR="$HOME/.ssh"
 fi
 
 # ------------------------------------------------------------------------------
 
-source bin/env.sh
-bash "$S7ISOL/scripts/install/wezterm.sh"
+source "$S7ISOL/src/yazi/env.sh"
+source "$S7ISOL/src/nvim/env.sh"
+source "$S7ISOL/src/wezterm/env.sh"

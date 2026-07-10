@@ -2,9 +2,29 @@
 
 ## Introduction
 
-- This project is for creating isolated Ubuntu profiles.
+Targets:
 
-## Initialization
+- Ubuntu 26.04 LTS
+
+This project is for creating a minimal dev stack with Wezterm, LazyVim, Yazi,
+and more. Deep dive into the `s7isol` repository for more features.
+
+You can apply this system to your current Ubuntu profile, or you can create
+a new profile (with a new `HOME` variable).
+
+Before running the scripts, please investigate this project to understand
+its effects to your system. You are responsible for the changes.
+
+## Applying to your current profile
+
+- `cd` to the project root folder.
+- Note: If Wezterm is not installed,
+  the following script will install Wezterm automatically.
+- Run `bash local.sh`. Enjoy.
+
+## Creating new profiles
+
+### Initialization
 
 - `cd` to the project root folder.
 - Run `bash bin/init.sh` to create `.pre.env` and `.post.env` files
@@ -15,11 +35,10 @@ in the project root folder.
 
 If you want to run in a new Wezterm window:
 
-- If Wezterm is not installed, run `bash bin/install/wezterm.sh` to install Wezterm.
 - Modify `.pre.env`:
 
 ```bash
-S7ISOL_RUN_FN="/usr/bin/bash bin/run/wezterm.sh"
+export S7ISOL_RUN_FN="/usr/bin/bash $S7ISOL/src/wezterm/run.sh"
 ```
 
 ---
@@ -29,7 +48,7 @@ If you want to run in your current terminal:
 - Modify `.pre.env`:
 
 ```bash
-S7ISOL_RUN_FN=/usr/bin/bash
+export S7ISOL_RUN_FN=/usr/bin/bash
 ```
 
 ---
@@ -49,8 +68,7 @@ export YOUR_VSCODE_EXTENSIONS_DIR="$HOME/.vscode/extensions"
 
 And run `s7isol code`, not `code`, to use your current VSCode profile.
 
-## Start
+### Start
 
 - `cd` to the project root folder.
 - Run `bash start.sh`
-- Deep dive into the `s7isol` repository for more features.
