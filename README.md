@@ -19,7 +19,7 @@ If you want to run in a new Wezterm window:
 - Modify `.pre.env`:
 
 ```bash
-S7ISOL_RUN_FN="bash bin/run/wezterm.sh"
+S7ISOL_RUN_FN="/usr/bin/bash bin/run/wezterm.sh"
 ```
 
 ---
@@ -29,7 +29,7 @@ If you want to run in your current terminal:
 - Modify `.pre.env`:
 
 ```bash
-S7ISOL_RUN_FN=bash
+S7ISOL_RUN_FN=/usr/bin/bash
 ```
 
 ---
