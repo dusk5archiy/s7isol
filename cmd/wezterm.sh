@@ -1,13 +1,13 @@
-if [[ "$0" == "$BASH_SOURCE" ]]; then
-  exit 1
+#!/bin/bash
+
+# ------------------------------------------------------------------------------
+
+if [[ ! -f "/usr/bin/wezterm" ]]; then
+  s7isol wezterm/install
 fi
 
 # ------------------------------------------------------------------------------
 
-if [[ -f "$S7ISOL/.post.env" ]]; then
-  source "$S7ISOL/.post.env"
-else
-  source "$S7ISOL/default.post.env"
-fi
-
-# ------------------------------------------------------------------------------
+s7_unset
+/usr/bin/wezterm start --cwd . >/dev/null 2>&1 &
+disown

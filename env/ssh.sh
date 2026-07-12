@@ -1,0 +1,1 @@
+export S7ISOL_SSH_DIR=${S7ISOL_SSH_DIR:-"$HOME/.ssh"}

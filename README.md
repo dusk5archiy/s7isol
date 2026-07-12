@@ -33,37 +33,12 @@ in the project root folder.
 
 ---
 
-If you want to run in a new Wezterm window:
-
-- Modify `.pre.env`:
-
-```bash
-export S7ISOL_RUN_FN="/usr/bin/bash $S7ISOL/src/wezterm/run.sh"
-```
-
----
-
-If you want to run in your current terminal:
-
-- Modify `.pre.env`:
-
-```bash
-export S7ISOL_RUN_FN=/usr/bin/bash
-```
-
----
-
-You can modify or add new functions in `.env` file, and set
-`S7ISOL_RUN_FN` to your command.
-
----
-
 If you want to keep using your VSCode profile, ensure these lines exist
 in `.pre.env` (not `.post.env`):
 
 ```bash
-export YOUR_VSCODE_USER_DATA_DIR="$XDG_CONFIG_HOME/Code"
-export YOUR_VSCODE_EXTENSIONS_DIR="$HOME/.vscode/extensions"
+export S7ISOL_VSCODE_USER_DATA_DIR="$XDG_CONFIG_HOME/Code"
+export S7ISOL_VSCODE_EXTENSIONS_DIR="$HOME/.vscode/extensions"
 ```
 
 And run `s7isol code`, not `code`, to use your current VSCode profile.

@@ -8,14 +8,13 @@ fi
 
 # ------------------------------------------------------------------------------
 
-source "$(dirname "$0")/bin/env.sh"
-
-# ------------------------------------------------------------------------------
-
+source "$(dirname "$0")/bin/init.env.sh"
+source "$S7ISOL/bin/pre.env.sh"
+source "$S7ISOL/etc/init/pre.env.sh"
 source "$S7ISOL/etc/init/home.env.sh"
-source "$S7ISOL/etc/init/s7isol.sh"
-source "$S7ISOL/etc/init/env.sh"
+bash "$S7ISOL/scripts/init.sh"
+s7_unset
 
 # ------------------------------------------------------------------------------
 
-bash "$S7ISOL/src/wezterm/run.sh"
+$HOME/bin/skj wezterm

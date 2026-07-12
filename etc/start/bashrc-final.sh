@@ -1,1 +1,1 @@
-source "$S7ISOL/etc/start/color.sh"
+source "$HOME/bin/skj" init/color

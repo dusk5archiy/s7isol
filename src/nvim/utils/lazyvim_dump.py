@@ -4,7 +4,7 @@ import os
 S7ISOL = os.environ["S7ISOL"]
 NVIM_CONFIG_DIR = os.environ["NVIM_CONFIG_DIR"]
 
-S7ISOL_FILE = f"{S7ISOL}/src/nvim/config/lazyvim.json"
+S7ISOL_FILE = f"{S7ISOL}/config/nvim/lazyvim.json"
 TARGET_FILE = f"{NVIM_CONFIG_DIR}/lazyvim.json"
 
 with open(S7ISOL_FILE) as f:
