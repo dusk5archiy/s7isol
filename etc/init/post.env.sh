@@ -1,4 +1,5 @@
 if [[ "$0" == "$BASH_SOURCE" ]]; then
+  echo "[-- source --]"
   exit 1
 fi
 

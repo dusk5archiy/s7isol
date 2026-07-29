@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DOWNLOAD="/tmp/Miniconda3-latest-Linux-x86_64.sh"
 

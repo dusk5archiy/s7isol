@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in

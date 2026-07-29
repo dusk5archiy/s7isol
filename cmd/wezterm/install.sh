@@ -1,8 +1,4 @@
-#!/bin/bash
-
-# ------------------------------------------------------------------------------
-
-OS="$(source /etc/os-release && echo $ID)"
+#!/usr/bin/env bash
 
 case "$S7ISOL_OS" in
 ubuntu)

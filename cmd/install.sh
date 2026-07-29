@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # ------------------------------------------------------------------------------
 
@@ -10,4 +10,11 @@ fi
 
 # ------------------------------------------------------------------------------
 
-sudo apt install --no-install-recommends --no-install-suggests "${packages[@]}"
+case "$S7ISOL_OS" in
+ubuntu)
+  $S7ISOL_SUDO apt install \
+    --no-install-recommends \
+    --no-install-suggests \
+    "${packages[@]}"
+  ;;
+esac
