@@ -64,7 +64,7 @@ local appearance = {
 -- -----------------------------------------------------------------------------
 
 local text = {
-	font_size = 10,
+	font_size = 9,
 	text_background_opacity = 1.0,
 }
 
