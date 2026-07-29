@@ -1,25 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 # ------------------------------------------------------------------------------
 
-cat <<'EOF' | tee "$NVIM_CONFIG_DIR/init.lua"
-local S7ISOL_NVIM_CONFIG_DIR = os.getenv("S7ISOL_NVIM_CONFIG_DIR")
+if [[ -z "$S7ISOL_NVIM_CONFIG_DIR" || -z "$NVIM_CONFIG_DIR" ]]; then
+  exit 1
+fi
 
-if S7ISOL_NVIM_CONFIG_DIR == nil then
-	return
-end
-
-dofile(string.format("%s/init.lua", S7ISOL_NVIM_CONFIG_DIR))
+modules=(
+  "init"
+  "lua/config/autocmd"
+  "lua/config/keymaps"
+  "lua/config/options"
+  "lua/plugins/plugins"
+)
+for module in "${modules[@]}"; do
+  cat <<EOF >"$NVIM_CONFIG_DIR/$module.lua"
+return dofile("$S7ISOL_NVIM_CONFIG_DIR/$module.lua")
 EOF
-
-echo 'return dofile(string.format("%s/lua/config/autocmd.lua", os.getenv("S7ISOL_NVIM_CONFIG_DIR")))' >$NVIM_CONFIG_DIR/lua/config/autocmd.lua
-echo 'return dofile(string.format("%s/lua/config/keymaps.lua", os.getenv("S7ISOL_NVIM_CONFIG_DIR")))' >$NVIM_CONFIG_DIR/lua/config/keymaps.lua
-echo 'return dofile(string.format("%s/lua/config/options.lua", os.getenv("S7ISOL_NVIM_CONFIG_DIR")))' >$NVIM_CONFIG_DIR/lua/config/options.lua
-echo 'return dofile(string.format("%s/lua/plugins/plugins.lua", os.getenv("S7ISOL_NVIM_CONFIG_DIR")))' >$NVIM_CONFIG_DIR/lua/plugins/plugins.lua
+done
 
 # ------------------------------------------------------------------------------
 
-python "$S7ISOL/src/nvim/utils/lazyvim_dump.py"
+skj nvim/dump
 
 # ------------------------------------------------------------------------------
 

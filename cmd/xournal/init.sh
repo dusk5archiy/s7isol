@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # ------------------------------------------------------------------------------
 
 CONFIG_DIR="$XDG_CONFIG_HOME/xournalpp"
@@ -32,14 +34,18 @@ msys2)
   EDITOR_COMMAND="'$(cygpath -w "$(which nvim-qt)" | sed 's/\\/\\\\/g')'"
   ;;
 *)
-  EDITOR_COMMAND="'$(which nvim-qt)'"
+  EDITOR_COMMAND="'skj nvim-qt'"
   ;;
 esac
 
 # ------------------------------------------------------------------------------
 
-cp "$SETTINGS_FILE" "$CONFIG_DIR/settings.xml"
+cat "$SETTINGS_FILE" >"$CONFIG_DIR/settings.xml"
 
 sed -i "s@<|DEFAULT_TEMPLATE_HERE|>@$TEMPLATE_FILE@g" "$CONFIG_DIR/settings.xml"
 sed -i "s@<|COLOR_PALETTE_HERE|>@$COLOR_PALETTE_FILE@g" "$CONFIG_DIR/settings.xml"
 sed -i "s@<|EDITOR_COMMAND_HERE|>@$EDITOR_COMMAND@g" "$CONFIG_DIR/settings.xml"
+
+# ------------------------------------------------------------------------------
+
+echo "[-- S7ISOL --] Done."

@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# ------------------------------------------------------------------------------
+set -e
 
-OS="$(source /etc/os-release && echo $ID)"
+# ------------------------------------------------------------------------------
 
 case "$S7ISOL_OS" in
 ubuntu)
-  sudo apt install python lazygit \
-    fd-find fzf gcc g++ git ripgrep unzip npm wl-clipboard
+  sudo apt install python3 python-is-python3 lazygit \
+    fd-find fzf gcc g++ git ripgrep unzip npm wl-clipboard neovim-qt
   sudo add-apt-repository ppa:neovim-ppa/unstable -y
   sudo apt update
   sudo apt install neovim

@@ -12,7 +12,12 @@ fi
 # ------------------------------------------------------------------------------
 
 export HOME="$S7ISOL_ROOT/home"
-source $S7ISOL/etc/init/home.env.sh
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_STATE_HOME="$HOME/.local/state"
+export TMP="$HOME/tmp"
+export TEMP="$TMP"
 
 # ------------------------------------------------------------------------------
 

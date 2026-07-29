@@ -2,6 +2,13 @@
 
 # ------------------------------------------------------------------------------
 
+target="${1:-}"
+shift # Remove $1 so "$@" holds only the remaining arguments
+base="<|S7ISOL|>"
+dirs=("scripts" "cmd" "apps" "env" "proj")
+
+# ------------------------------------------------------------------------------
+
 source "<|S7ISOL|>/bin/init.env.sh"
 
 # ------------------------------------------------------------------------------
@@ -14,28 +21,34 @@ source "<|S7ISOL|>/bin/post.env.sh"
 # ------------------------------------------------------------------------------
 
 if [[ "$0" != "$BASH_SOURCE" ]]; then
-  ENV_FILE="<|S7ISOL|>/env/$1.sh"
-
-  if [[ -f "$ENV_FILE" ]]; then
-    source "$ENV_FILE" ${@:2}
-  fi
-  return 0
+  for dir in "${dirs[@]}"; do
+    file="$base/$dir/$target.sh"
+    file_init="$base/$dir/$target/__init__.sh"
+    if [[ -f "$file" ]]; then
+      source "$file" "$@"
+      return $?
+    elif [[ -f "$file_init" ]]; then
+      source "$file_init" "$@"
+      return $?
+    fi
+  done
+else
+  for dir in "${dirs[@]}"; do
+    file="$base/$dir/$target.sh"
+    file_init="$base/$dir/$target/__init__.sh"
+    if [[ -f "$file" ]]; then
+      bash "$file" "$@"
+      exit 0
+    elif [[ -f "$file_init" ]]; then
+      bash "$file_init" "$@"
+      exit 0
+    fi
+  done
 fi
 
 # ------------------------------------------------------------------------------
 
-if [[ -z "$1" ]]; then
+if [[ -z "$target" ]]; then
   echo "$S7ISOL"
-  exit
-fi
-
-# ------------------------------------------------------------------------------
-
-CMD_FILE="<|S7ISOL|>/cmd/$1.sh"
-SCRIPTS_FILE="<|S7ISOL|>/scripts/$1.sh"
-
-if [[ -f "$SCRIPTS_FILE" ]]; then
-  bash "$SCRIPTS_FILE" ${@:2}
-elif [[ -f "$CMD_FILE" ]]; then
-  bash "$CMD_FILE" ${@:2}
+  exit 0
 fi

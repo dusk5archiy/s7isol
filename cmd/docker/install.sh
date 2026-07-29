@@ -4,6 +4,8 @@
 
 case "$S7ISOL_OS" in
 ubuntu)
-  sudo snap install --classic code
+  sudo apt install docker.io
+  sudo systemctl start docker
+  sudo systemctl enable docker
   ;;
 esac
