@@ -5,8 +5,13 @@ local wezterm = require("wezterm")
 wezterm.on("update-right-status", function(window, _)
 	local date = wezterm.strftime("%Y-%m-%d %H:%M:%S")
 
+	local bat = ""
+	for _, b in ipairs(wezterm.battery_info()) do
+		bat = "🔋" .. string.format("%.0f%%", b.state_of_charge * 100) .. "  "
+	end
+
 	window:set_right_status(wezterm.format({
-		{ Text = date },
+		{ Text = bat .. date },
 	}))
 end)
 
