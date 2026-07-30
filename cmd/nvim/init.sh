@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-# ------------------------------------------------------------------------------
-
-if [[ -z "$S7ISOL_NVIM_CONFIG_DIR" || -z "$NVIM_CONFIG_DIR" ]]; then
+if [[ ! -d "${S7ISOL_NVIM_CONFIG_DIR:-}" || ! -d "${NVIM_CONFIG_DIR:-}" ]]; then
   exit 1
 fi
 
@@ -20,11 +18,3 @@ for module in "${modules[@]}"; do
 return dofile("$S7ISOL_NVIM_CONFIG_DIR/$module.lua")
 EOF
 done
-
-# ------------------------------------------------------------------------------
-
-skj nvim/dump
-
-# ------------------------------------------------------------------------------
-
-echo "[-- S7ISOL --] Done"
