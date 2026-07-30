@@ -1,33 +1,27 @@
-FROM ubuntu:26.04
+#!/usr/bin/env bash
 
-ENV DEBIAN_FRONTEND=noninteractive
+case "$(source /etc/os-release && echo $ID)" in
+ubuntu)
+  # Add Docker's official GPG key:
+  sudo apt update
+  sudo apt install ca-certificates curl
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-# Install dependencies including SSH
-RUN apt-get update && apt-get install -y \
-  curl \
-  ca-certificates \
-  gnupg \
-  openssh-server &&
-  rm -rf /var/lib/apt/lists/*
+  # Add the repository to Apt sources:
+  sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
 
-# Install WezTerm
-RUN curl -fsSL https://apt.fury.io/wez/gpg.key | gpg --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
-RUN echo "deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *" | tee /etc/apt/sources.list.d/wezterm.list
-RUN apt-get update && apt-get install -y wezterm
-
-# Create user with NO password
-RUN useradd -m -s /bin/bash developer
-
-# Configure SSH to allow empty passwords
-RUN mkdir -p /var/run/sshd &&
-  echo 'PermitEmptyPasswords yes' >>/etc/ssh/sshd_config &&
-  echo 'PasswordAuthentication yes' >>/etc/ssh/sshd_config &&
-  echo 'UsePAM no' >>/etc/ssh/sshd_config
-
-USER developer
-WORKDIR /home/developer
-
-EXPOSE 22
-
-# Start both services
-CMD ["sh", "-c", "wezterm-mux-server --daemonize=false & exec /usr/sbin/sshd -D"]
+  sudo apt update
+  sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  sudo systemctl start docker
+  sudo systemctl enable docker
+  ;;
+esac
