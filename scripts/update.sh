@@ -2,7 +2,7 @@
 
 case "$(source /etc/os-release && echo $ID)" in
 ubuntu)
-  sudo apt update
-  sudo apt upgrade
+  sudo apt-get update
+  sudo apt-get upgrade
   ;;
 esac

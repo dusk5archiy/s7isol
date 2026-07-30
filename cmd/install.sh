@@ -12,9 +12,8 @@ fi
 
 case "$(source /etc/os-release && echo $ID)" in
 ubuntu)
-  sudo apt install \
+  sudo apt-get install -y \
     --no-install-recommends \
-    --no-install-suggests \
     "${packages[@]}"
   ;;
 esac
