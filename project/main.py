@@ -14,7 +14,7 @@ class CliArgs(BaseModel):
     def parse(cls, argv: list[str]):
         components = get_component_names()
         parser = argparse.ArgumentParser()
-        parser.add_argument("component", choices=components)
+        parser.add_argument("component", choices=components, default=components[0])
         parsed, argv = parser.parse_known_args()
         return CliArgs(**vars(parsed)), argv
 

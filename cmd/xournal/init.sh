@@ -14,7 +14,9 @@ COLOR_PALETTE_FILE="$S7ISOL/config/xournal/palette.gpl"
 
 TOOLBAR_INI_FILE="$S7ISOL/config/xournal/toolbar.ini"
 
-case "$S7ISOL_OS" in
+RELEASE_ID="$(source /etc/os-release && echo $ID)"
+
+case "$RELEASE_ID" in
 msys2)
   TOOLBAR_DESTINATION="/ucrt64/share/xournalpp/ui/toolbar.ini"
   ;;
@@ -23,11 +25,11 @@ msys2)
   ;;
 esac
 
-$S7ISOL_SUDO cp "$TOOLBAR_INI_FILE" "$TOOLBAR_DESTINATION"
+sudo cp "$TOOLBAR_INI_FILE" "$TOOLBAR_DESTINATION"
 
 # ------------------------------------------------------------------------------
 
-case "$S7ISOL_OS" in
+case "$RELEASE_ID" in
 msys2)
   TEMPLATE_FILE="$(cygpath -w "$TEMPLATE_FILE" | sed 's/\\/\\\\/g')"
   COLOR_PALETTE_FILE="$(cygpath -w "$COLOR_PALETTE_FILE" | sed 's/\\/\\\\/g')"

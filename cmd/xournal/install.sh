@@ -2,7 +2,7 @@
 
 # ------------------------------------------------------------------------------
 
-case "$S7ISOL_OS" in
+case "$(source /etc/os-release && echo $ID)" in
 ubuntu)
   sudo apt install xournalpp
   ;;

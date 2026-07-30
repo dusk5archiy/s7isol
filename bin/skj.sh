@@ -5,7 +5,7 @@
 target="${1:-}"
 shift # Remove $1 so "$@" holds only the remaining arguments
 base="<|S7ISOL|>"
-dirs=("scripts" "cmd" "apps" "env" "proj")
+dirs=("scripts" "cmd" "apps" "proj")
 
 # ------------------------------------------------------------------------------
 
@@ -20,35 +20,54 @@ source "<|S7ISOL|>/bin/post.env.sh"
 
 # ------------------------------------------------------------------------------
 
-if [[ "$0" != "$BASH_SOURCE" ]]; then
+run_target() {
   for dir in "${dirs[@]}"; do
-    file="$base/$dir/$target.sh"
-    file_init="$base/$dir/$target/__init__.sh"
+    local file="$base/$dir/$target.sh"
+    local file_init="$base/$dir/$target/__init__.sh"
+    local exec_file=""
+
     if [[ -f "$file" ]]; then
-      source "$file" "$@"
-      return $?
+      exec_file="$file"
     elif [[ -f "$file_init" ]]; then
-      source "$file_init" "$@"
+      exec_file="$file_init"
+    fi
+
+    if [[ -n "$exec_file" ]]; then
+      if [[ "$0" != "$BASH_SOURCE" ]]; then
+        source "$exec_file" "$@"
+      else
+        bash "$exec_file" "$@"
+      fi
       return $?
     fi
   done
-else
-  for dir in "${dirs[@]}"; do
-    file="$base/$dir/$target.sh"
-    file_init="$base/$dir/$target/__init__.sh"
-    if [[ -f "$file" ]]; then
-      bash "$file" "$@"
-      exit 0
-    elif [[ -f "$file_init" ]]; then
-      bash "$file_init" "$@"
-      exit 0
-    fi
-  done
-fi
+
+  return 127 # Target script not found
+}
 
 # ------------------------------------------------------------------------------
 
+# 1. Handle empty target
 if [[ -z "$target" ]]; then
   echo "$S7ISOL"
-  exit 0
+  s7_unset
+  if [[ "$0" != "$BASH_SOURCE" ]]; then
+    return 0
+  else
+    exit 0
+  fi
+fi
+
+# 2. Execute target dispatch
+run_target "$@"
+status=$?
+
+# 3. Clean up
+s7_unset
+
+# 4. Exit/Return based on invocation mode using the captured exit status
+if [[ "$0" != "$BASH_SOURCE" ]]; then
+  return $status
+else
+  exit $status
 fi

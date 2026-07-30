@@ -15,10 +15,10 @@ cat <<EOF >"$CONFIG_MEGRAS_DIR/config.json"
 }
 EOF
 
-$S7ISOL_SUDO docker stop megras
-$S7ISOL_SUDO docker rm megras
+sudo docker stop megras
+sudo docker rm megras
 
-$S7ISOL_SUDO docker run -d -it \
+sudo docker run -d -it \
   --name megras \
   -p 8080:8080 \
   -v "$CONFIG_MEGRAS_DIR/config.json":/config.json \

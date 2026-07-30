@@ -4,7 +4,7 @@ set -e
 
 # ------------------------------------------------------------------------------
 
-case "$S7ISOL_OS" in
+case "$(source /etc/os-release && echo $ID)" in
 ubuntu)
   sudo apt install python3 python-is-python3 lazygit \
     fd-find fzf gcc g++ git ripgrep unzip npm wl-clipboard neovim-qt

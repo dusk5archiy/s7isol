@@ -10,9 +10,9 @@ fi
 
 # ------------------------------------------------------------------------------
 
-case "$S7ISOL_OS" in
+case "$(source /etc/os-release && echo $ID)" in
 ubuntu)
-  $S7ISOL_SUDO apt install \
+  sudo apt install \
     --no-install-recommends \
     --no-install-suggests \
     "${packages[@]}"

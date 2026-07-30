@@ -21,7 +21,7 @@ if [ -n "$force_color_prompt" ]; then
   fi
 fi
 
-if [[ "$S7ISOL_OS" != "msys2" ]]; then
+if [[ "$(source /etc/os-release && echo $ID)" != "msys2" ]]; then
   if [[ "$HOME" == "/root" ]]; then
     _ps1_symbol="#"
   else
@@ -48,7 +48,8 @@ xterm* | rxvt*)
 *) ;;
 esac
 
-case "$S7ISOL_OS" in
+RELEASE_ID="$(source /etc/os-release && echo $ID)"
+case "$RELEASE_ID" in
 msys2)
   ICON="  "
   ;;
@@ -62,7 +63,7 @@ arch)
   ICON="  "
   ;;
 esac
-OS_PART="\[\033[01;33m\]${S7ISOL_OS^^}\[\033[00m\]"
+OS_PART="\[\033[01;33m\]${RELEASE_ID^^}\[\033[00m\]"
 ERR_PART="\$(exit_code=\$?; if [ ! \$exit_code -eq 0 ]; then echo \" \[\033[00;31m\](\$exit_code)\[\033[00m\]\"; else echo \" \[\033[00;36m\](\$exit_code)\[\033[00m\]\"; fi)"
 TIME_PART=" \$(date +%Y-%m-%d) \t"
 PREFIX="${ICON}${OS_PART}${ERR_PART}${TIME_PART}"

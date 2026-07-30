@@ -1,1 +1,1 @@
-source "$HOME/bin/skj" init/color
+source "$HOME/bin/skj" color

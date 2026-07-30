@@ -1,13 +1,24 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+set -euo pipefail
 
 # ------------------------------------------------------------------------------
 
-S7ISOL_EXECUTABLE="$HOME/bin/skj"
+CONFIG_HOME="${1:-"$HOME"}"
+
+if [[ ! -d "$CONFIG_HOME" ]]; then
+  echo "[-- invalid argument --]"
+  return 1
+fi
 
 # ------------------------------------------------------------------------------
 
-/usr/bin/mkdir -p "$HOME/bin"
-/usr/bin/cat "$S7ISOL/bin/skj.sh" >"$S7ISOL_EXECUTABLE"
+S7ISOL_EXECUTABLE="$CONFIG_HOME/bin/skj"
+
+# ------------------------------------------------------------------------------
+
+mkdir -p "$CONFIG_HOME/bin"
+cat "$S7ISOL/bin/skj.sh" >"$S7ISOL_EXECUTABLE"
 sed -i "s@<|S7ISOL|>@$S7ISOL@g" "$S7ISOL_EXECUTABLE"
 
 # ------------------------------------------------------------------------------
@@ -22,4 +33,4 @@ sed -i -e "/S7ISOL_PRE_ENV/r /tmp/replacement.txt" -e "s@S7ISOL_PRE_ENV@@g" "$S7
 
 # ------------------------------------------------------------------------------
 
-/usr/bin/chmod +x "$S7ISOL_EXECUTABLE"
+chmod +x "$S7ISOL_EXECUTABLE"

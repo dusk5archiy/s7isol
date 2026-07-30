@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-case "$S7ISOL_OS" in
+case "$(source /etc/os-release && echo $ID)" in
 ubuntu)
-  $S7ISOL_SUDO apt update
-  $S7ISOL_SUDO apt upgrade
+  sudo apt update
+  sudo apt upgrade
   ;;
 esac

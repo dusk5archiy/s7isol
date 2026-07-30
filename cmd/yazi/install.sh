@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-case "$S7ISOL_OS" in
+case "$(source /etc/os-release && echo $ID)" in
 ubuntu)
   sudo snap install --classic yazi
   ;;

@@ -4,4 +4,7 @@ if [[ "$0" == "$BASH_SOURCE" ]]; then
 fi
 
 ENV_NAME="$(basename "$(dirname "${BASH_SOURCE[0]}")")"
-source ".venv/$ENV_NAME/bin/activate"
+ENV_FILE=".venv/$ENV_NAME/bin/activate"
+if [[ -f "$ENV_FILE" ]]; then
+  source "$ENV_FILE"
+fi
