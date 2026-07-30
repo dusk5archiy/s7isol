@@ -1,0 +1,12 @@
+services:
+  dev-environment:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: s7isol-dev
+    ports:
+      - "127.0.0.1:2222:22"
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    restart: unless-stopped
