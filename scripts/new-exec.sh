@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -euo pipefail
-set +x
 
 # ------------------------------------------------------------------------------
 
@@ -24,12 +23,7 @@ sed -i "s@<|S7ISOL|>@$S7ISOL@g" "$S7ISOL_EXECUTABLE"
 
 # ------------------------------------------------------------------------------
 
-{
-  env | grep '^S7ISOL_' | while IFS='=' read -r name value; do
-    echo "export $name=\"$value\""
-  done
-} >/tmp/replacement.txt
-
+env | awk -F= '/^S7ISOL_/ {print "export " $1 "=\"" $2 "\""}' >/tmp/replacement.txt
 sed -i -e "/S7ISOL_PRE_ENV/r /tmp/replacement.txt" -e "s@S7ISOL_PRE_ENV@@g" "$S7ISOL_EXECUTABLE"
 
 # ------------------------------------------------------------------------------
