@@ -41,5 +41,4 @@ sudo apt-get upgrade -y
 sudo apt-get install -y --no-install-recommends \
   ros-${ROS_DISTRO}-desktop \
   ros-${ROS_DISTRO}-ros-gz \
-  ros-${ROS_DISTRO}-desktop \
   ros-${ROS_DISTRO}-ros-gz-bridge
