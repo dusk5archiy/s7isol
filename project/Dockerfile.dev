@@ -2,18 +2,16 @@ FROM ubuntu:26.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Create workspace directory
 RUN mkdir -p /workspace
 WORKDIR /workspace
 COPY . .
 
-# Install development tools
-RUN bash ./scripts/docker-root/__init__.sh
+RUN bash ./scripts/docker/root/__init__.sh
 
 USER adevuser
 
-RUN bash ./scripts/docker-user/__init__.sh
+RUN bash ./scripts/docker/user.sh
 
 EXPOSE 22
 
-ENTRYPOINT ["bash", "./scripts/docker-start/__init__.sh"]
+ENTRYPOINT ["bash", "./scripts/docker/start.sh"]

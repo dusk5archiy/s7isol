@@ -57,12 +57,6 @@ if [ -d "/workspace" ]; then
   chown -R adevuser:"$DEV_GROUP" /workspace 2>/dev/null || true
 fi
 
-# Fix ownership of app directory if it exists
-if [ -d "/app" ]; then
-  echo "📝 Fixing ownership of /app"
-  chown -R adevuser:"$DEV_GROUP" /app 2>/dev/null || true
-fi
-
 # Fix ownership of any mounted volumes
 # This is a common pattern for dev containers
 if [ -d "/home/adevuser/.config" ]; then
