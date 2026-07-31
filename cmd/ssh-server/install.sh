@@ -8,7 +8,7 @@ ubuntu)
   sudo apt-get install -y --no-install-recommends openssh-server
 
   sudo mkdir -p /var/run/sshd
-  sudo cat <<EOF >>/etc/ssh/sshd_config
+  sudo tee -a /etc/ssh/sshd_config <<EOF
 PasswordAuthentication yes
 PermitEmptyPasswords no
 ChallengeResponseAuthentication no
