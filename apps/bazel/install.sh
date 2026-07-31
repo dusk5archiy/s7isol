@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+if command -v bazel &>/dev/null; then
+  exit 0
+fi
+
 sudo apt-get install -y --no-install-recommends apt-transport-https curl gnupg wget
 curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor >bazel-archive-keyring.gpg
 sudo mv bazel-archive-keyring.gpg /usr/share/keyrings
