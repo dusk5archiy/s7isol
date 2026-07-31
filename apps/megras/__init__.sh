@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 CONFIG_MEGRAS_DIR="$HOME/.data.megras-config"
 DATA_MEGRAS_DIR="$HOME/.data.megras-data"

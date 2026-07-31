@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # This mechanism must be implemented in a function.
 function y() {

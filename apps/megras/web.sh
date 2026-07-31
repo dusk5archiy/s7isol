@@ -1,3 +1,3 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 open http://localhost:8080/

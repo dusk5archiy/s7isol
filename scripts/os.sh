@@ -1,3 +1,3 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 echo "$(source /etc/os-release && echo $ID)"

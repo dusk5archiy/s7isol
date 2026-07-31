@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 sudo npm -g install @anthropic-ai/claude-code
 claude install

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 if [[ -f "$S7ISOL/.claude.env" ]]; then
   source "$S7ISOL/.claude.env"

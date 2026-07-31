@@ -1,3 +1,3 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 bash "$S7ISOL/start.sh"

@@ -13,5 +13,5 @@ dconn:
 run:
 	bash cmd/run.sh
 
-install:
-	bash cmd/install.sh
+setup:
+	bash cmd/setup.sh

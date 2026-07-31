@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 case "$(source /etc/os-release && echo $ID)" in
 ubuntu)

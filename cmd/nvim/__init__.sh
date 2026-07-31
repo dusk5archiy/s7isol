@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 if [[ -f "cmd/env.sh" ]]; then
   source "cmd/env.sh"
