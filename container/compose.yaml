@@ -2,11 +2,12 @@ services:
   dev-environment:
     build:
       context: .
-      dockerfile: Dockerfile.dev
-    container_name: s7isol-dev
+      dockerfile: Dockerfile
+    container_name: s7container
     ports:
       - "127.0.0.1:2222:22"
     volumes:
       - .:/workspace
+      - ${WEZTERM_UNIX_SOCKET}:/tmp/wezterm.sock
     working_dir: /workspace
     restart: unless-stopped
