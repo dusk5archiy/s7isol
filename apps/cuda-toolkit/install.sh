@@ -6,4 +6,5 @@ cd /tmp
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2604/x86_64/cuda-keyring_1.1-1_all.deb
 sudo dpkg -i cuda-keyring_1.1-1_all.deb
 sudo apt-get update
-sudo apt-get install -y --no-install-recommends cuda-toolkit-13-3
+sudo apt-get install -y --no-install-recommends cuda-toolkit-13-3 libcudnn9-dev-cuda-13
+sudo ln -snf /usr/include/cudnn*.h /usr/local/cuda/include/
