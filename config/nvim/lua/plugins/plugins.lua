@@ -31,6 +31,13 @@ return {
 	{
 		"snacks.nvim",
 		opts = {
+			picker = {
+				sources = {
+					explorer = {
+						hidden = true,
+					},
+				},
+			},
 			dashboard = {
 				formats = {
 					footer = { "%s", align = "center" },
