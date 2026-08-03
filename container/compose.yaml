@@ -1,13 +1,19 @@
+# compose.yaml
 services:
-  dev-environment:
+  container-final:
     build:
       context: .
       dockerfile: Dockerfile
+      target: final
+    image: saoyui/s7container:latest
     container_name: s7container
     ports:
       - "127.0.0.1:2222:22"
     volumes:
       - .:/workspace
-      - ${WEZTERM_UNIX_SOCKET}:/tmp/wezterm.sock
+      - ${WEZTERM_UNIX_SOCKET:-dummy_volume}:/tmp/wezterm.sock
     working_dir: /workspace
     restart: unless-stopped
+
+volumes:
+  dummy_volume:

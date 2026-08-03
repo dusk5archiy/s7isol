@@ -9,3 +9,6 @@ stop:
 
 conn:
 	bash cmd/conn.sh
+
+push:
+	bash cmd/push.sh

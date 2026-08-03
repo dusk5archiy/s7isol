@@ -4,20 +4,11 @@ set -euo pipefail
 
 # ------------------------------------------------------------------------------
 
-CONFIG_HOME="${1:-"$HOME"}"
-
-if [[ ! -d "$CONFIG_HOME" ]]; then
-  echo "[-- invalid argument --]"
-  return 1
-fi
+S7ISOL_EXECUTABLE="$HOME/bin/skj"
 
 # ------------------------------------------------------------------------------
 
-S7ISOL_EXECUTABLE="$CONFIG_HOME/bin/skj"
-
-# ------------------------------------------------------------------------------
-
-mkdir -p "$CONFIG_HOME/bin"
+mkdir -p "$HOME/bin"
 cat "$S7ISOL/bin/skj.sh" >"$S7ISOL_EXECUTABLE"
 sed -i "s@<|S7ISOL|>@$S7ISOL@g" "$S7ISOL_EXECUTABLE"
 

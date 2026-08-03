@@ -1,52 +1,62 @@
 #!/bin/bash
 set -euo pipefail
 
-# Default UID/GID if not provided
+# Guard: Must be run as root
+if [ "$(id -u)" -ne 0 ]; then
+  echo "⚠️ Script is not running as root. Skipping system user creation."
+  exit 0
+fi
+
 PUID="${PUID:-1000}"
 PGID="${PGID:-1000}"
 
 echo "🔧 Setting up user with UID: $PUID, GID: $PGID"
 
-# 1. Remove existing default 'ubuntu' user/group if present
-if id "ubuntu" &>/dev/null; then
-  echo "📝 Removing existing 'ubuntu' user..."
-  userdel -r ubuntu 2>/dev/null || true
+# Check if the user or group already exists with correct IDs
+if id -u adevuser &>/dev/null && [ "$(id -u adevuser)" -eq "$PUID" ] && [ "$(id -g adevuser)" -eq "$PGID" ]; then
+  echo "✅ User 'adevuser' already exists with correct UID:GID ($PUID:$PGID)"
+  exit 0
 fi
 
-if getent group ubuntu &>/dev/null; then
-  echo "📝 Removing existing 'ubuntu' group..."
-  groupdel ubuntu 2>/dev/null || true
+# Only remove if the user exists and is NOT the current user running the script
+CURRENT_USER=$(whoami)
+EXISTING_USER=$(id -nu "$PUID" 2>/dev/null || true)
+if [ -n "$EXISTING_USER" ] && [ "$EXISTING_USER" != "adevuser" ] && [ "$EXISTING_USER" != "$CURRENT_USER" ]; then
+  echo "📝 Removing conflicting user '$EXISTING_USER' (UID: $PUID)..."
+  # Kill processes before removal
+  pkill -u "$EXISTING_USER" 2>/dev/null || true
+  userdel -r "$EXISTING_USER" 2>/dev/null || true
 fi
 
-# 2. Create group with $PGID if no group currently uses it
+# Create group if needed
 if ! getent group "$PGID" &>/dev/null; then
-  echo "📝 Creating group with GID: $PGID"
-  groupadd -g "$PGID" adevuser
+  groupadd -g "$PGID" adevuser 2>/dev/null || groupadd adevuser
 fi
 
-# 3. Create or update user directly with numeric GID ($PGID)
+# Create user without password
 if ! id -u adevuser &>/dev/null; then
-  echo "📝 Creating user adevuser with UID: $PUID"
-  useradd -m -s /bin/bash -u "$PUID" -g "$PGID" adevuser
-  echo "adevuser:adevuser" | chpasswd
+  useradd -m -s /bin/bash -u "$PUID" -g "$PGID" adevuser --disabled-password
 else
-  echo "📝 User 'adevuser' already exists"
   usermod -u "$PUID" -g "$PGID" adevuser 2>/dev/null || true
 fi
 
-# 4. Set up sudo access
-mkdir -p /etc/sudoers.d
-echo "adevuser ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/adevuser
-chmod 0440 /etc/sudoers.d/adevuser
+# Set up home directory only if it's new
+if [ ! -f "/home/adevuser/.bashrc" ]; then
+  cp /etc/skel/.bashrc /home/adevuser/ 2>/dev/null || true
+  echo "export PS1='\u@\h:\w\$ '" >>/home/adevuser/.bashrc
+fi
 
-# 5. Fix ownership using trailing colon (adevuser: automatically uses primary group)
-for dir in "/home/adevuser" "/workspace" "/home/adevuser/.config"; do
-  if [ -d "$dir" ]; then
-    echo "📝 Fixing ownership of $dir"
-    chown -R adevuser: "$dir" 2>/dev/null || true
+# Fix home directory ownership (non-recursive unless needed)
+chown adevuser:adevuser /home/adevuser 2>/dev/null || true
+
+# Fix /workspace if it exists and is empty
+if [ -d "/workspace" ]; then
+  # Check if directory is mounted and contains files
+  if [ -z "$(ls -A /workspace 2>/dev/null)" ]; then
+    chown adevuser:adevuser /workspace 2>/dev/null || true
   fi
-done
+fi
 
 echo "✅ User setup complete!"
-echo "   User: adevuser (UID: $PUID, GID: $PGID)"
+echo "   User: adevuser (UID: $(id -u adevuser), GID: $(id -g adevuser))"
 echo "   Home: /home/adevuser"

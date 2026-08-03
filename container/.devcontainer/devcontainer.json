@@ -1,0 +1,9 @@
+{
+  "name": "Env s7container-base",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "target": "base"
+  },
+  "workspaceFolder": "/workspace",
+  "remoteUser": "adevuser" 
+}
