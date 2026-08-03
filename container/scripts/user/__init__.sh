@@ -13,4 +13,5 @@ bash "$HOME/s7isol/install.sh" "$HOME"
 PATH="$HOME/bin:$PATH"
 
 skj wezterm/install
+skj nvim/install
 skj ssh-server/install

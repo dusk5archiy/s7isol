@@ -1,4 +1,5 @@
 export S7ISOL="$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")"
+export SHELL="${SHELL:-"/bin/bash"}"
 
 if ! command -v sudo &>/dev/null; then
   sudo() { "$@"; }
