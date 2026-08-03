@@ -2,9 +2,6 @@ FROM ubuntu:26.04 AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN mkdir -p /workspace
-WORKDIR /workspace
-
 # ------------------------------------------------------------------------------
 
 COPY ./scripts /tmp/scripts

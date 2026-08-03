@@ -4,6 +4,9 @@
     "dockerfile": "../Dockerfile",
     "target": "base"
   },
-  "workspaceFolder": "/workspace",
-  "remoteUser": "adevuser" 
+  "workspaceFolder": "/home/adevuser/workspace",
+  "remoteUser": "adevuser",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/home/adevuser/workspace,type=bind,consistency=cached"
+  ]
 }

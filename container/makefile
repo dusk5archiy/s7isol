@@ -12,3 +12,9 @@ conn:
 
 push:
 	bash cmd/push.sh
+
+base-build:
+	bash cmd/base/build.sh
+
+base-stop:
+	bash cmd/base/stop.sh
