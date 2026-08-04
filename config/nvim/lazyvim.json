@@ -1,11 +1,12 @@
 {
   "extras": [
-    "editor.snacks_explorer",
     "ai.claudecode",
+    "editor.snacks_explorer",
+    "lang.docker",
+    "lang.json",
     "lang.markdown",
     "lang.python",
     "lang.typst",
-    "lang.yaml",
-    "lang.json"
+    "lang.yaml"
   ]
 }

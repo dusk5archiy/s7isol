@@ -1,12 +1,6 @@
 {
   "name": "Env s7container-base",
-  "build": {
-    "dockerfile": "../Dockerfile",
-    "target": "base"
-  },
+  "dockerComposeFile": "compose.yaml",
   "workspaceFolder": "/home/adevuser/workspace",
-  "remoteUser": "adevuser",
-  "mounts": [
-    "source=${localWorkspaceFolder},target=/home/adevuser/workspace,type=bind,consistency=cached"
-  ]
+  "service": "app"
 }

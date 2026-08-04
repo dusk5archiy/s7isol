@@ -1,0 +1,28 @@
+name: ${CONFIG_PROJECT_NAME}
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      target: base
+    # image: saoyui/s7container-base:latest
+    user: adevuser
+    tty: true
+    stdin_open: true
+    environment:
+      - XDG_RUNTIME_DIR=/tmp
+      - WAYLAND_DISPLAY=${CONFIG_WAYLAND_DISPLAY}
+    volumes:
+      - ..:/home/adevuser/workspace:cached
+      - ${CONFIG_WAYLAND_SOCKET}:/tmp/${CONFIG_WAYLAND_DISPLAY}
+      - ${CONFIG_WEZTERM_SOCKET}:/tmp/wezterm.sock
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+volumes:
+  dummy_volume:
