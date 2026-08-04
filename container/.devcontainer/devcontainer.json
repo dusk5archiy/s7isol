@@ -1,5 +1,4 @@
 {
-  "name": "Env s7container-base",
   "dockerComposeFile": "compose.yaml",
   "workspaceFolder": "/home/adevuser/workspace",
   "service": "app"

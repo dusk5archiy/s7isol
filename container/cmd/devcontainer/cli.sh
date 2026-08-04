@@ -4,31 +4,36 @@ set -euo pipefail
 
 CONFIG_PROJECT_NAME="s7dev"
 
-# 1. Safely evaluate variables with fallback defaults to satisfy 'set -u'
-HOST_XDG_RUNTIME="${XDG_RUNTIME_DIR:-}"
-CONFIG_WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-"wayland-0"}"
+# Wayland ----------------------------------------------------------------------
 
-# 2. Build the Wayland socket path using the evaluated display name
-CONFIG_WAYLAND_SOCKET="${HOST_XDG_RUNTIME}/${CONFIG_WAYLAND_DISPLAY}"
+CONFIG_HOST_XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-"/run/user/$(id -u)"}"
+CONFIG_ENV_XDG_RUNTIME_DIR="/home/adevuser/sockets"
+CONFIG_ENV_WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-}"
 
-# 3. Check if host paths are valid socket files; fallback to dummy_volume if not
-if [[ ! -S "$CONFIG_WEZTERM_SOCKET" ]]; then
-  CONFIG_WEZTERM_SOCKET="dummy_volume"
+CONFIG_FROM_WAYLAND_SOCKET="$CONFIG_HOST_XDG_RUNTIME_DIR/$CONFIG_ENV_WAYLAND_DISPLAY"
+CONFIG_TO_WAYLAND_SOCKET="$CONFIG_ENV_XDG_RUNTIME_DIR/${CONFIG_ENV_WAYLAND_DISPLAY:-"wayland-0"}"
+
+if [[ ! -S "$CONFIG_FROM_WAYLAND_SOCKET" ]]; then
+  CONFIG_FROM_WAYLAND_SOCKET="dummy_volume"
 fi
 
-# Wezterm (
+# Wezterm ----------------------------------------------------------------------
 
-CONFIG_WEZTERM_SOCKET="${WEZTERM_UNIX_SOCKET:-}"
+CONFIG_FROM_WEZTERM_SOCKET="${WEZTERM_UNIX_SOCKET:-}"
+CONFIG_TO_WEZTERM_SOCKET="$CONFIG_ENV_XDG_RUNTIME_DIR/wezterm.sock"
 
-if [[ ! -S "$CONFIG_WAYLAND_SOCKET" ]]; then
-  CONFIG_WAYLAND_SOCKET="dummy_volume"
+if [[ ! -S "$CONFIG_FROM_WEZTERM_SOCKET" ]]; then
+  CONFIG_FROM_WEZTERM_SOCKET="dummy_volume"
 fi
 
-# Wezterm )
+# ------------------------------------------------------------------------------
 
 sudo \
   CONFIG_PROJECT_NAME="$CONFIG_PROJECT_NAME" \
-  CONFIG_WAYLAND_DISPLAY="$CONFIG_WAYLAND_DISPLAY" \
-  CONFIG_WEZTERM_SOCKET="$CONFIG_WEZTERM_SOCKET" \
-  CONFIG_WAYLAND_SOCKET="$CONFIG_WAYLAND_SOCKET" \
+  CONFIG_ENV_XDG_RUNTIME_DIR="$CONFIG_ENV_XDG_RUNTIME_DIR" \
+  CONFIG_ENV_WAYLAND_DISPLAY="$CONFIG_ENV_WAYLAND_DISPLAY" \
+  CONFIG_FROM_WAYLAND_SOCKET="$CONFIG_FROM_WAYLAND_SOCKET" \
+  CONFIG_TO_WAYLAND_SOCKET="$CONFIG_TO_WAYLAND_SOCKET" \
+  CONFIG_FROM_WEZTERM_SOCKET="$CONFIG_FROM_WEZTERM_SOCKET" \
+  CONFIG_TO_WEZTERM_SOCKET="$CONFIG_TO_WEZTERM_SOCKET" \
   "$@"
