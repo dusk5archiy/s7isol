@@ -74,7 +74,7 @@ local text = {
 }
 
 local backend = {
-	enable_wayland = false,
+	enable_wayland = true,
 	force_reverse_video_cursor = true,
 	freetype_load_target = "Normal",
 	front_end = "Software",
