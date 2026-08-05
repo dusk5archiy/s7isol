@@ -6,6 +6,7 @@
     "lang.json",
     "lang.markdown",
     "lang.python",
+    "lang.toml",
     "lang.typst",
     "lang.yaml"
   ]

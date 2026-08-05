@@ -15,3 +15,6 @@ push:
 
 devcontainer:
 	bash cmd/devcontainer/__init__.sh
+
+devcontainer/down:
+	bash cmd/devcontainer/down.sh

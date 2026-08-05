@@ -2,5 +2,5 @@
 
 set -euo pipefail
 
-bash cmd/devcontainer/cli.sh npx @devcontainers/cli up --workspace-folder .
-bash cmd/devcontainer/cli.sh npx @devcontainers/cli exec --workspace-folder . /bin/bash
+bash cmd/docker/cli.sh npx @devcontainers/cli up --workspace-folder .
+bash cmd/docker/cli.sh npx @devcontainers/cli exec --workspace-folder . /bin/bash

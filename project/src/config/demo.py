@@ -1,13 +1,12 @@
-from pathlib import Path
 from pydantic import BaseModel
-from src.utils.config import get_config
-from . import get_filename
+
+from src.utils.config import get_config_from_module
 
 
 class _Config(BaseModel, frozen=True):
     message: str
 
 
-c = get_config(get_filename(Path(__file__).stem), _Config)
+c = get_config_from_module(__file__, _Config)
 
 __all__ = ["c"]

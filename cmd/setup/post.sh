@@ -17,3 +17,5 @@ source "$S7ISOL/bin/post.env.sh"
   "$XDG_CACHE_HOME" \
   "$XDG_STATE_HOME" \
   "$TMP"
+
+/usr/bin/mkdir -p "$HOME/.local/bin"

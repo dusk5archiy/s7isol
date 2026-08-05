@@ -1,0 +1,7 @@
+[mgr]
+prepend_keymap = [
+  { on = [
+    "g",
+    "s",
+  ], run = 'shell "du -sh \"$0\"; printf \"Press Enter to close...\"; read _" --block', desc = "Show real disk usage for hovered item" },
+]
