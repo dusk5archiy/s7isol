@@ -8,10 +8,12 @@ apt-get update
 
 # ca-certificates: required for git clone
 apt-get install -y --no-install-recommends \
-  sudo \
-  git \
   ca-certificates \
-  tzdata
+  curl \
+  git \
+  sudo \
+  tzdata \
+  vim
 
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
 echo $TZ >/etc/timezone
