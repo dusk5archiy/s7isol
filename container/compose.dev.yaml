@@ -1,8 +1,8 @@
-name: s7base
+name: s7dev
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
-      target: base
-    image: saoyui/s7container-base:latest
+      target: dev
+    image: saoyui/s7container-dev:latest

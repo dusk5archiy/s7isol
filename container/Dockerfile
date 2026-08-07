@@ -4,21 +4,30 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # ------------------------------------------------------------------------------
 
-COPY ./scripts /tmp/scripts
-
-RUN bash /tmp/scripts/root/__init__.sh
-
-USER adevuser
-RUN bash /tmp/scripts/user/__init__.sh
-
-USER root
-RUN rm -rf /tmp/scripts
+RUN --mount=type=bind,source=./scripts,target=/tmp/scripts \
+  cd /tmp && \
+  bash scripts/packages.sh && \
+  bash scripts/user.sh
 
 USER adevuser
-EXPOSE 22
+
+RUN --mount=type=bind,source=./scripts,target=/tmp/scripts \
+  cd /tmp && \
+  bash scripts/s7isol.sh
+
+RUN mkdir -p "/home/adevuser/workspace"
+WORKDIR "/home/adevuser/workspace"
 
 # ------------------------------------------------------------------------------
 
-FROM base AS final
+FROM base AS dev
+
+RUN --mount=type=bind,source=./scripts,target=/tmp/scripts \
+  cd /tmp && \
+  bash scripts/extra.sh
+
+# ------------------------------------------------------------------------------
+
+FROM dev AS final
 
 ENTRYPOINT ["/home/adevuser/bin/skj", "ssh-server"]

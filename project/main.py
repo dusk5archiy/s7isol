@@ -9,15 +9,15 @@ from pydantic import BaseModel
 
 
 class CliArgs(BaseModel):
-    component: str
+    task: str
 
     @classmethod
     def parse(cls, argv: list[str]):
-        components = get_component_names()
+        tasks = get_task_names()
         parser = argparse.ArgumentParser()
         parser.add_argument(
-            "component",
-            choices=components,
+            "task",
+            choices=tasks,
             type=str,
         )
         parsed, argv = parser.parse_known_args()
@@ -26,7 +26,7 @@ class CliArgs(BaseModel):
 
 def main(argv: list[str]) -> None:
     args, argv = CliArgs.parse(argv)
-    target_module = f"src.components.{args.component}"
+    target_module = f"src.tasks.{args.task}"
     node_mod = importlib.import_module(target_module)
     node_mod.run(argv)
 
@@ -34,12 +34,12 @@ def main(argv: list[str]) -> None:
 # ------------------------------------------------------------------------------
 
 
-def get_component_names() -> list[str]:
-    import src.components
+def get_task_names() -> list[str]:
+    import src.tasks
 
     return [
         m.name
-        for m in pkgutil.iter_modules(src.components.__path__)
+        for m in pkgutil.iter_modules(src.tasks.__path__)
         if not m.name.startswith("_")
     ]
 

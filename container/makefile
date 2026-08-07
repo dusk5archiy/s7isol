@@ -13,6 +13,9 @@ conn:
 push:
 	bash cmd/push.sh
 
+base/build-again.sh:
+	bash cmd/base/build-again.sh
+
 devcontainer:
 	bash cmd/devcontainer/__init__.sh
 

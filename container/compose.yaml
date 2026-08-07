@@ -5,8 +5,9 @@ services:
       context: .
       dockerfile: Dockerfile
       target: final
+    tty: true
+    stdin_open: true
     image: saoyui/s7container:latest
-    container_name: s7container
     ports:
       - "127.0.0.1:2222:22"
     volumes:
