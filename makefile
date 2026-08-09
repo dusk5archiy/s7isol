@@ -1,17 +1,20 @@
 build:
 	bash docker/cli/build.sh
 
-start:
-	bash docker/cli/start.sh
+up:
+	bash docker/cli/up.sh
 
 start-again:
 	bash docker/cli/start-again.sh
 
-stop:
-	bash docker/cli/stop.sh
+down:
+	bash docker/cli/down.sh
 
-conn:
-	bash docker/cli/conn.sh
+enter:
+	bash docker/cli/enter.sh
+
+clean:
+	bash docker/cli/clean.sh
 
 # ------------------------------------------------------------------------------
 

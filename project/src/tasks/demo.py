@@ -3,16 +3,18 @@ from __future__ import annotations
 import argparse
 
 from pydantic import BaseModel
-from src.config.demo import c
+
+from src.plugins.base import BasePlugin
 
 
-class CliArgs(BaseModel):
+class Cli(BaseModel):
     @classmethod
     def parse(cls, argv: list[str]):
         parser = argparse.ArgumentParser()
         parsed, argv = parser.parse_known_args(argv)
-        return CliArgs(**vars(parsed)), argv
+        return Cli.model_validate(parsed), argv
 
 
 def run(argv: list[str]) -> None:
-    print(c.message)
+    plugin = BasePlugin.Config().build()
+    plugin()

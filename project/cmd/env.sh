@@ -1,1 +1,1 @@
-source scripts/venv/demo/env.sh
+source setup/venv/main/env.sh
