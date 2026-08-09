@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-bash environments/main/setup.sh
+bash scripts/venv/main/setup.sh

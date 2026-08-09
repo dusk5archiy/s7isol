@@ -1,0 +1,28 @@
+name: ${CONFIG_PROJECT_NAME}
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      target: dev
+    user: adevuser
+    tty: true
+    stdin_open: true
+    environment:
+      - XDG_RUNTIME_DIR=${CONFIG_ENV_XDG_RUNTIME_DIR}
+      - WAYLAND_DISPLAY=${CONFIG_ENV_WAYLAND_DISPLAY}
+      - WEZTERM_UNIX_SOCKET=${CONFIG_TO_WEZTERM_SOCKET}
+    volumes:
+      - ..:/home/adevuser/workspace:cached
+      - ${CONFIG_FROM_WAYLAND_SOCKET}:${CONFIG_TO_WAYLAND_SOCKET}
+      - ${CONFIG_FROM_WEZTERM_SOCKET}:${CONFIG_TO_WEZTERM_SOCKET}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+volumes:
+  dummy_volume:

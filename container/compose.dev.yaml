@@ -3,6 +3,8 @@ services:
   app:
     build:
       context: .
+      additional_contexts:
+        scripts: ./scripts
       dockerfile: Dockerfile
       target: dev
     image: saoyui/s7container-dev:latest

@@ -1,4 +1,4 @@
-export CONFIG_PROJECT_NAME="s7dev"
+export CONFIG_PROJECT_NAME="s7isol"
 
 # Wayland ----------------------------------------------------------------------
 

@@ -1,0 +1,14 @@
+name: tensorflow_build
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      additional_contexts:
+        scripts: ./scripts
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/home/adevuser/workspace
+    command: bash scripts/build.sh
+    restart: no

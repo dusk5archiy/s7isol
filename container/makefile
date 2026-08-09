@@ -10,11 +10,23 @@ stop:
 conn:
 	bash cmd/conn.sh
 
-push:
-	bash cmd/push.sh
+# Base -------------------------------------------------------------------------
 
-base/build-again.sh:
-	bash cmd/base/build-again.sh
+base/push:
+	bash cmd/push.sh base
+
+base/build-again:
+	bash cmd/build-again.sh base
+
+# Dev --------------------------------------------------------------------------
+
+dev/push:
+	bash cmd/push.sh dev
+
+dev/build-again:
+	bash cmd/build-again.sh dev
+
+# Devcontainer -----------------------------------------------------------------
 
 devcontainer:
 	bash cmd/devcontainer/__init__.sh

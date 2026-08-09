@@ -2,5 +2,5 @@
 
 set -euo pipefail
 
-source environments/main/env.sh
+source scripts/venv/main/env.sh
 python main.py demo

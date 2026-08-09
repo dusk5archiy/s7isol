@@ -4,14 +4,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # ------------------------------------------------------------------------------
 
-RUN --mount=type=bind,source=./scripts,target=/tmp/scripts \
+RUN --mount=from=scripts,target=/tmp/scripts \
   cd /tmp && \
   bash scripts/packages.sh && \
   bash scripts/user.sh
 
 USER adevuser
 
-RUN --mount=type=bind,source=./scripts,target=/tmp/scripts \
+RUN --mount=from=scripts,target=/tmp/scripts \
   cd /tmp && \
   bash scripts/s7isol.sh
 
@@ -22,12 +22,16 @@ WORKDIR "/home/adevuser/workspace"
 
 FROM base AS dev
 
-RUN --mount=type=bind,source=./scripts,target=/tmp/scripts \
+RUN --mount=from=scripts,target=/tmp/scripts \
   cd /tmp && \
-  bash scripts/extra.sh
+  bash scripts/dev.sh
 
 # ------------------------------------------------------------------------------
 
 FROM dev AS final
+
+RUN --mount=from=scripts,target=/tmp/scripts \
+  cd /tmp && \
+  bash scripts/final.sh
 
 ENTRYPOINT ["/home/adevuser/bin/skj", "ssh-server"]

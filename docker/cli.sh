@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source cmd/docker/env.sh
+source docker/env.sh
 
 sudo \
   CONFIG_PROJECT_NAME="$CONFIG_PROJECT_NAME" \

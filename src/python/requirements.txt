@@ -9,3 +9,4 @@ tqdm
 # Networking
 fastapi
 uvicorn
+python-multipart

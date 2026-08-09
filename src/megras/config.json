@@ -1,0 +1,9 @@
+{
+  "objectStoreBase": "/assets",
+  "httpPort": 8080,
+  "backend": "FILE",
+  "fileStore": {
+    "filename": "/data/quads.tsv",
+    "compression": false
+  }
+}

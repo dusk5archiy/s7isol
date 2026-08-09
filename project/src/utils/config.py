@@ -16,7 +16,7 @@ def config_path_from_module(module_file: str) -> str:
     return str(yaml_path)
 
 
-def get_config[T: BaseModel](filename: str, config_cls: type[T]) -> T:
+def from_yaml[T: BaseModel](filename: str, config_cls: type[T]) -> T:
     with open(filename, encoding="utf-8") as f:
         data = yaml.safe_load(f)
         c = config_cls.model_validate(data)
@@ -26,4 +26,4 @@ def get_config[T: BaseModel](filename: str, config_cls: type[T]) -> T:
 
 def get_config_from_module[T: BaseModel](module_file: str, config_cls: type[T]) -> T:
     filename = config_path_from_module(module_file)
-    return get_config(filename, config_cls)
+    return from_yaml(filename, config_cls)

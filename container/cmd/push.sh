@@ -2,4 +2,6 @@
 
 set -euo pipefail
 
-sudo docker compose -f compose.base.yaml push
+tag="${1:-}"
+
+sudo docker compose -f compose.$tag.yaml push

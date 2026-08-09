@@ -1,0 +1,11 @@
+services:
+  megras:
+    image: floruosch/megras:latest
+    tty: true
+    stdin_open: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config.json:/config.json
+      - ./megras-data:/data
+      - ./megras-assets:/assets
