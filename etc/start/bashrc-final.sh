@@ -1,1 +1,5 @@
-source "$HOME/bin/skj" color
+. "$HOME/bin/skj" color
+
+if [[ -f "$HOME/.env" ]]; then
+  . "$HOME/.env"
+fi

@@ -5,7 +5,7 @@ up:
 	bash docker/cli/up.sh
 
 start-again:
-	bash docker/cli/start-again.sh
+	bash docker/cli/up.sh --remove-orphans --force-recreate --build
 
 down:
 	bash docker/cli/down.sh
