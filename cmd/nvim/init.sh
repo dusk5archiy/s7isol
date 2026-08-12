@@ -1,10 +1,7 @@
 #!/bin/bash
-
 set -euo pipefail
 
-if [[ ! -d "${S7ISOL_NVIM_CONFIG_DIR:-}" || ! -d "${NVIM_CONFIG_DIR:-}" ]]; then
-  exit 1
-fi
+. "$S7ISOL/cmd/nvim/env.sh"
 
 modules=(
   "init"

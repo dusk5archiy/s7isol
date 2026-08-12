@@ -1,3 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
-bash docker/cli.sh docker compose down -v --rmi all
+. docker/env.sh
+docker compose down -v --rmi all

@@ -1,4 +1,5 @@
 #!/bin/bash
 set -euo pipefail
 
-bash docker/cli.sh docker compose build
+. docker/env.sh
+docker compose build

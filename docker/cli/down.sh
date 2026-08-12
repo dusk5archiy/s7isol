@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
-source docker/env.sh
-sudo docker compose -p "${CONFIG_PROJECT_NAME}" down -v
+. docker/env.sh
+docker compose -p "${CONFIG_PROJECT_NAME}" down -v

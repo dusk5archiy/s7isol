@@ -1,6 +1,7 @@
 #!/bin/bash
-
 set -euo pipefail
+
+. "$S7ISOL/cmd/nvim/env.sh"
 
 if [[ -z "${NVIM_CONFIG_DIR:-}" ]]; then
   exit 1

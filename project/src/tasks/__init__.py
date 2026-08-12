@@ -17,7 +17,7 @@ class Cli(BaseModel):
         parser.add_argument("component", choices=components)
 
         parsed, argv = parser.parse_known_args(argv)
-        return Cli(**vars(parsed)), argv
+        return cls.model_validate(vars(parsed)), argv
 
 
 def run(argv: list[str]) -> None:
