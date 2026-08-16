@@ -4,6 +4,7 @@ export CONFIG_PROJECT_NAME="s7isol"
 
 export CONFIG_USERNAME="skjuser"
 export CONFIG_WORKSPACE="/home/$CONFIG_USERNAME/workspace"
+export CONFIG_HOST_XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-"/run/user/$(id -u)"}"
 
 # X11 --------------------------------------------------------------------------
 
@@ -11,7 +12,6 @@ export CONFIG_ENV_DISPLAY="${DISPLAY:-":0"}"
 
 # Wayland ----------------------------------------------------------------------
 
-export CONFIG_HOST_XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-"/run/user/$(id -u)"}"
 export CONFIG_ENV_XDG_RUNTIME_DIR="/home/$CONFIG_USERNAME/sockets"
 export CONFIG_ENV_WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-}"
 

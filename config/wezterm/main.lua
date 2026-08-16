@@ -36,7 +36,7 @@ end
 -- -----------------------------------------------------------------------------
 
 local appearance = {
-	color_scheme = "Kanagawa (Gogh)",
+	color_scheme = os.getenv("CONFIG_WEZTERM_THEME") or "Kanagawa (Gogh)",
 	window_background_opacity = 1.0,
 	colors = {
 		tab_bar = {

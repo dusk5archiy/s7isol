@@ -2,4 +2,6 @@
 set -euo pipefail
 
 . docker/env.sh
+
+xhost +local:
 docker exec -it "${CONFIG_PROJECT_NAME}-app-1" /bin/bash -l

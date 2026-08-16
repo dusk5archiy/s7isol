@@ -6,3 +6,6 @@ PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 skj python/install
 skj uv/install
 skj install make
+
+# Wayland
+skj wayland/install

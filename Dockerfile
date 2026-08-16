@@ -1,11 +1,14 @@
 FROM ubuntu:26.04 AS base
 
+ARG CONFIG_USERNAME
+ARG CONFIG_WORKSPACE
+ARG CONFIG_ENV_XDG_RUNTIME_DIR
+
 ENV DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-c"]
 
 # ==============================================================================
 
-ARG CONFIG_USERNAME
-ARG CONFIG_WORKSPACE
 WORKDIR /tmp
 
 # base/root.sh

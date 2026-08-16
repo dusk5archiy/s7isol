@@ -8,6 +8,7 @@ services:
       args:
         CONFIG_USERNAME: ${CONFIG_USERNAME}
         CONFIG_WORKSPACE: ${CONFIG_WORKSPACE}
+        CONFIG_ENV_XDG_RUNTIME_DIR: ${CONFIG_ENV_XDG_RUNTIME_DIR}
     user: ${CONFIG_USERNAME}
     tty: true
     stdin_open: true

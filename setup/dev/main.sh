@@ -7,5 +7,3 @@ PATH="$HOME/bin:$PATH"
 
 skj wezterm/install
 skj nvim/install
-
-mkdir -p "$HOME/sockets"

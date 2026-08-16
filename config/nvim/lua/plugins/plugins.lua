@@ -24,7 +24,7 @@ return {
 	{
 		"LazyVim/LazyVim",
 		opts = {
-			colorscheme = "kanagawa",
+			colorscheme = os.getenv("CONFIG_NVIM_THEME") or "kanagawa",
 		},
 	},
 	-- dashboard

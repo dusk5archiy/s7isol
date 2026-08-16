@@ -1,1 +1,1 @@
-. setup/venv/main/env.sh
+. setup/venv/main/env.sh || true

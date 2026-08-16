@@ -14,3 +14,4 @@ sudo apt-get install -y --no-install-recommends \
 # ------------------------------------------------------------------------------
 
 mkdir -p "$CONFIG_WORKSPACE"
+mkdir -p "$CONFIG_ENV_XDG_RUNTIME_DIR"

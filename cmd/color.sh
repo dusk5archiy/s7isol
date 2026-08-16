@@ -31,7 +31,7 @@ else
   _ps1_symbol='\$'
 fi
 
-if [ "$color_prompt" = yes ]; then
+if [ "${color_prompt:-}" = yes ]; then
   PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n$_ps1_symbol "
 else
   PS1="\u@\h:\w $_ps1_symbol "
