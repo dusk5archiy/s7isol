@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -euo pipefail
 
 # ------------------------------------------------------------------------------
@@ -11,7 +10,7 @@ fi
 
 # ------------------------------------------------------------------------------
 
-source "$(dirname "$0")/bin/init.env.sh"
+. "$(dirname "$0")/bin/init.env.sh"
 bash "$S7ISOL/scripts/new-exec.sh"
 "$HOME/bin/skj" setup/post
 "$HOME/bin/skj" setup/profile

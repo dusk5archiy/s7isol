@@ -1,1 +1,1 @@
-source "$HOME/.data.miniconda3/bin/activate"
+. "$HOME/.data.miniconda3/bin/activate"

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 get_country_code() {
   exec 3<>/dev/tcp/ipapi.co/80

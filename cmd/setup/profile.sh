@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -euo pipefail
 
 if [[ "$0" != "$BASH_SOURCE" ]]; then

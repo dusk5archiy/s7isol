@@ -1,7 +1,8 @@
 #!/bin/bash
+set -euo pipefail
 
 if ! command -v docker &>/dev/null; then
-  case "$(source /etc/os-release && echo $ID)" in
+  case "$(. /etc/os-release && echo "$ID")" in
   ubuntu)
     # Add Docker's official GPG key:
     sudo apt-get install -y --no-install-recommends ca-certificates curl

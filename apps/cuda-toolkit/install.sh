@@ -1,8 +1,7 @@
 #!/bin/bash
-
 set -euo pipefail
 
-case "$(source /etc/os-release && echo $ID)" in
+case "$(. /etc/os-release && echo "$ID")" in
 ubuntu)
   cd /tmp
   wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2604/x86_64/cuda-keyring_1.1-1_all.deb

@@ -1,11 +1,12 @@
 #!/bin/bash
+set -euo pipefail
 
 if [[ -f "cmd/env.sh" ]]; then
-  source "cmd/env.sh"
+  . "cmd/env.sh"
 fi
 
 if [[ -f "$S7ISOL/.claude.env" ]]; then
-  source "$S7ISOL/.claude.env"
+  . "$S7ISOL/.claude.env"
 fi
 
 . "$S7ISOL/cmd/nvim/env.sh"

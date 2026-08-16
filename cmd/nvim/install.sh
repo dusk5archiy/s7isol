@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 skj nvim/install-core
 skj nvim/lazy

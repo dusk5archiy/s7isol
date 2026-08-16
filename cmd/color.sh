@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
 xterm-color | *-256color) color_prompt=yes ;;
@@ -10,7 +8,7 @@ esac
 # should be on the output of commands, not on the prompt
 #force_color_prompt=yes
 
-if [ -n "$force_color_prompt" ]; then
+if [ -n "${force_color_prompt:-}" ]; then
   if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
     # We have color support; assume it's compliant with Ecma-48
     # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
@@ -21,7 +19,7 @@ if [ -n "$force_color_prompt" ]; then
   fi
 fi
 
-if [[ "$(source /etc/os-release && echo $ID)" != "msys2" ]]; then
+if [[ "$(. /etc/os-release && echo "$ID")" != "msys2" ]]; then
   if [[ "$HOME" == "/root" ]]; then
     _ps1_symbol="#"
   else
@@ -48,7 +46,7 @@ xterm* | rxvt*)
 *) ;;
 esac
 
-RELEASE_ID="$(source /etc/os-release && echo $ID)"
+RELEASE_ID="$(. /etc/os-release && echo "$ID")"
 case "$RELEASE_ID" in
 msys2)
   ICON="  "

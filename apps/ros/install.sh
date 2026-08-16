@@ -1,9 +1,8 @@
 #!/bin/bash
+set -euo pipefail
 
 # Prerequisites: Ubuntu 26.04 LTS
 # Target: ROS 2 Lyrical (LTS)
-
-set -euo pipefail
 
 # ------------------------------------------------------------------------------
 

@@ -1,12 +1,11 @@
 #!/bin/bash
-
 set -euo pipefail
 
 if command -v wezterm &>/dev/null; then
   exit 0
 fi
 
-case "$(source /etc/os-release && echo $ID)" in
+case "$(. /etc/os-release && echo "$ID")" in
 ubuntu)
   sudo apt-get install -y --no-install-recommends \
     curl ca-certificates gnupg

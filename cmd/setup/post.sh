@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -euo pipefail
 
 if [[ "$0" != "$BASH_SOURCE" ]]; then
@@ -9,7 +8,7 @@ fi
 
 # ------------------------------------------------------------------------------
 
-source "$S7ISOL/bin/post.env.sh"
+. "$S7ISOL/bin/post.env.sh"
 
 /usr/bin/mkdir -p $HOME \
   "$XDG_CONFIG_HOME" \

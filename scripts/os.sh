@@ -1,3 +1,4 @@
 #!/bin/bash
+set -euo pipefail
 
-echo "$(source /etc/os-release && echo $ID)"
+echo "$(. /etc/os-release && echo "$ID")"

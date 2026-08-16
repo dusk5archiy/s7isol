@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # If you want to change directory while moving
 # Please source this code

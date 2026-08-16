@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Install NVIDIA Container Toolkit
 sudo apt-get install -y --no-install-recommends nvidia-container-toolkit

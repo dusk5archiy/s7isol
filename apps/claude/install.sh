@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 sudo npm -g install @anthropic-ai/claude-code
 claude install

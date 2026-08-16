@@ -3,7 +3,7 @@ set -euo pipefail
 
 skj python/install
 
-case "$(. /etc/os-release && echo $ID)" in
+case "$(. /etc/os-release && echo "$ID")" in
 ubuntu)
   sudo apt-get install -y --no-install-recommends \
     fd-find fzf ripgrep \

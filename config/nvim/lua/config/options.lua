@@ -7,7 +7,7 @@ if vim.fn.has("win32") == 1 then
 end
 vim.opt.colorcolumn = "80"
 vim.opt.columns = 80
-vim.opt.conceallevel = 2
+vim.opt.conceallevel = 0
 vim.opt.cursorline = false
 vim.opt.fileformats = "unix,dos"
 vim.opt.linebreak = false

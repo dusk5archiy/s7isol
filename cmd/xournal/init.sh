@@ -1,6 +1,5 @@
 #!/bin/bash
-
-set -e
+set -euo pipefail
 
 # ------------------------------------------------------------------------------
 
@@ -14,7 +13,7 @@ COLOR_PALETTE_FILE="$S7ISOL/config/xournal/palette.gpl"
 
 TOOLBAR_INI_FILE="$S7ISOL/config/xournal/toolbar.ini"
 
-RELEASE_ID="$(source /etc/os-release && echo $ID)"
+RELEASE_ID="$(. /etc/os-release && echo "$ID")"
 
 case "$RELEASE_ID" in
 msys2)
