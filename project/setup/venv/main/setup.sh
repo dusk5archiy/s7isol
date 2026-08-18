@@ -6,9 +6,6 @@ ENV_NAME="$(basename "$DIR")"
 
 PATH="$HOME/.local/bin:$PATH"
 
-uv venv "$HOME/venv/$ENV_NAME"
-uv pip compile "$DIR/requirements.txt" -o /tmp/requirements.txt
-uv pip sync \
-  --python "$HOME/venv/$ENV_NAME/bin/python" /tmp/requirements.txt
-
-rm -f /tmp/requirements.txt
+ENV_DIR="$HOME/venv/$ENV_NAME"
+uv venv "$ENV_DIR"
+uv pip install --python "$ENV_DIR/bin/python" -r "$DIR/requirements.txt"

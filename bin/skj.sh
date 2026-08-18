@@ -10,7 +10,7 @@ dirs=("scripts" "cmd" "apps" "proj")
 
 # ------------------------------------------------------------------------------
 
-. "<|S7ISOL|>/bin/init.env.sh"
+. "<|S7ISOL|>/bin/init.sh"
 
 # ------------------------------------------------------------------------------
 S7ISOL_PRE_ENV
@@ -39,7 +39,7 @@ run_target() {
       else
         bash "$exec_file" "$@"
       fi
-      return $?
+      return "$?"
     fi
   done
 
@@ -61,14 +61,14 @@ fi
 
 # 2. Execute target dispatch
 run_target "$@"
-status=$?
+status="$?"
 
 # 3. Clean up
 s7_unset
 
 # 4. Exit/Return based on invocation mode using the captured exit status
 if [[ "$0" != "$BASH_SOURCE" ]]; then
-  return $status
+  return "$status"
 else
-  exit $status
+  exit "$status"
 fi

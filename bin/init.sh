@@ -1,8 +1,11 @@
-#!/bin/bash
-set -euo pipefail
+export S7ISOL="$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")"
+export SHELL="${SHELL:-"/bin/bash"}"
 
-# ------------------------------------------------------------------------------
+function s7_unset() {
+  unset $(printenv | awk -F= '/^S7ISOL/ {print $1}')
+  unset -f s7_unset
+  set +euo pipefail
+  return 0
+}
 
-if [[ ! -f ".pre.env" ]]; then
-  cp example.pre.env .pre.env
-fi
+export -f s7_unset

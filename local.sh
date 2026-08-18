@@ -9,7 +9,7 @@ fi
 
 # ------------------------------------------------------------------------------
 
-. "$(dirname "$0")/bin/init.env.sh"
+. "$(dirname "$0")/bin/init.sh"
 . "$S7ISOL/etc/init/pre.env.sh"
 bash "$S7ISOL/scripts/new-exec.sh"
 

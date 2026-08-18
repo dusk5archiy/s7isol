@@ -1,3 +1,4 @@
+SHELL:=/bin/bash
 build:
 	bash docker/cli/build.sh
 
@@ -33,3 +34,6 @@ base/push:
 	bash docker/base/push.sh
 
 # ------------------------------------------------------------------------------
+
+init:
+	[[ ! -f ".pre.env" ]] && cp example.pre.env .pre.env

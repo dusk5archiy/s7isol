@@ -12,7 +12,7 @@ fi
 
 # ------------------------------------------------------------------------------
 
-. "$(dirname "$0")/bin/init.env.sh"
+. "$(dirname "$0")/bin/init.sh"
 . "$S7ISOL/etc/init/pre.env.sh"
 
 if [[ -z "$S7ISOL_ROOT" ]]; then

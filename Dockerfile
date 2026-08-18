@@ -31,10 +31,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 FROM base AS dev
 
-COPY . "/home/$CONFIG_USERNAME/s7isol"
-
 # dev/main.sh
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+  --mount=type=bind,source=.,target=/home/$CONFIG_USERNAME/s7isol \
   --mount=type=bind,source=./setup/dev/main.sh,target=script.sh \
   bash script.sh

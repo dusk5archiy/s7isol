@@ -21,3 +21,9 @@ export CONFIG_TO_WAYLAND_SOCKET="$CONFIG_ENV_XDG_RUNTIME_DIR/${CONFIG_ENV_WAYLAN
 if [[ ! -S "$CONFIG_FROM_WAYLAND_SOCKET" ]]; then
   export CONFIG_FROM_WAYLAND_SOCKET="dummy_volume"
 fi
+
+# AI ---------------------------------------------------------------------------
+
+export CONFIG_ENV_ANTHROPIC_BASE_URL="${ANTHROPIC_BASE_URL:-}"
+export CONFIG_ENV_ANTHROPIC_AUTH_TOKEN="${ANTHROPIC_AUTH_TOKEN:-}"
+export CONFIG_ENV_ANTHROPIC_MODEL="${ANTHROPIC_MODEL:-}"
