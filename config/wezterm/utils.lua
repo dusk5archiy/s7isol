@@ -14,6 +14,19 @@ local function merge_all(...)
 	return result
 end
 
+local function next_of(table, item)
+	local current_index = #table
+	for index, value in ipairs(table) do
+		if value == item then
+			current_index = index
+			break
+		end
+	end
+	local next_index = current_index % #table + 1
+	return table[next_index]
+end
+
 return {
 	merge_all = merge_all,
+	next_of = next_of,
 }

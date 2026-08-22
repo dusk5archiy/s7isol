@@ -1,3 +1,3 @@
-if [[ -d "$HOME/venv" ]]; then
+if [[ -f "$HOME/venv/bin/activate" ]]; then
   . setup/venv/env.sh
 fi
