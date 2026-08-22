@@ -6,7 +6,7 @@ set -euo pipefail
 target="${1:-}"
 shift # Remove $1 so "$@" holds only the remaining arguments
 base="<|S7ISOL|>"
-dirs=("scripts" "cmd" "apps" "proj")
+dirs=("scripts" "commands" "apps" "proj")
 
 # ------------------------------------------------------------------------------
 
@@ -64,7 +64,9 @@ run_target "$@"
 status="$?"
 
 # 3. Clean up
-s7_unset
+if declare -f s7_unset &>/dev/null; then
+  s7_unset
+fi
 
 # 4. Exit/Return based on invocation mode using the captured exit status
 if [[ "$0" != "$BASH_SOURCE" ]]; then

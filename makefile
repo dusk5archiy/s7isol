@@ -1,39 +1,52 @@
 SHELL:=/bin/bash
+MAKEFLAGS += --silent
+
+# [HOST] VS Code ===============================================================
+
+.PHONY: code
+
+code:
+	set -euo pipefail && . docker/env.sh && code .
+
+# [HOST] Docker ================================================================
+
+.PHONY: build up start-again down enter clean logs
+
 build:
-	bash docker/cli/build.sh
-
+	set -euo pipefail && . docker/env.sh && docker compose build
 up:
-	bash docker/cli/up.sh
-
+	set -euo pipefail && . docker/env.sh && docker compose up -d
 start-again:
-	bash docker/cli/up.sh --remove-orphans --force-recreate --build
-
+	set -euo pipefail && . docker/env.sh && docker compose up -d --remove-orphans --force-recreate --build
 down:
-	bash docker/cli/down.sh
-
+	set -euo pipefail && . docker/env.sh && docker compose down
 enter:
-	bash docker/cli/enter.sh
-
+	set -euo pipefail && . docker/env.sh && xhost +local: && docker exec -i "$${CONFIG_PROJECT_NAME}-app-1" /bin/bash -lc "make wezterm"
 clean:
-	bash docker/cli/clean.sh
-
+	set -euo pipefail && . docker/env.sh && docker compose down -v --rmi all
 logs:
-	bash docker/cli/logs.sh
+	set -euo pipefail && . docker/env.sh && docker logs "$${CONFIG_PROJECT_NAME}-app-1" | less
 
-# ------------------------------------------------------------------------------
+# ==============================================================================
 
 wezterm:
 	bash bin/wezterm.sh
 
 # ------------------------------------------------------------------------------
 
-base/build:
-	bash docker/base/build.sh
-
-base/push:
-	bash docker/base/push.sh
+deploy/build:
+	set -euo pipefail && . docker/env.sh adevuser && docker compose -f docker/compose.deploy.yaml build
+deploy/push:
+	set -euo pipefail && . docker/env.sh adevuser && docker compose -f docker/compose.deploy.yaml push
 
 # ------------------------------------------------------------------------------
 
 init:
 	[[ ! -f ".pre.env" ]] && cp example.pre.env .pre.env
+
+# ------------------------------------------------------------------------------
+
+demo:
+	. setup/venv/env.sh && python -B main.py demo
+ui:
+	. setup/venv/env.sh && python -B main.py ui
