@@ -13,7 +13,7 @@ COLOR_PALETTE_FILE="$S7ISOL/config/xournal/palette.gpl"
 
 TOOLBAR_INI_FILE="$S7ISOL/config/xournal/toolbar.ini"
 
-RELEASE_ID="$(. /etc/os-release && echo "$ID")"
+RELEASE_ID=$(. /etc/os-release && echo "$ID")
 
 case "$RELEASE_ID" in
 msys2)
@@ -30,8 +30,8 @@ sudo cp "$TOOLBAR_INI_FILE" "$TOOLBAR_DESTINATION"
 
 case "$RELEASE_ID" in
 msys2)
-  TEMPLATE_FILE="$(cygpath -w "$TEMPLATE_FILE" | sed 's/\\/\\\\/g')"
-  COLOR_PALETTE_FILE="$(cygpath -w "$COLOR_PALETTE_FILE" | sed 's/\\/\\\\/g')"
+  TEMPLATE_FILE=$(cygpath -w "$TEMPLATE_FILE" | sed 's/\\/\\\\/g')
+  COLOR_PALETTE_FILE=$(cygpath -w "$COLOR_PALETTE_FILE" | sed 's/\\/\\\\/g')
   EDITOR_COMMAND="'$(cygpath -w "$(which nvim-qt)" | sed 's/\\/\\\\/g')'"
   ;;
 *)

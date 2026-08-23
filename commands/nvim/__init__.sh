@@ -12,4 +12,5 @@ fi
 . "$S7ISOL/commands/nvim/env.sh"
 s7_unset
 
-nvim ${@}
+export CONFIG_NVIM_TRANSPARENT=1
+nvim "$@"

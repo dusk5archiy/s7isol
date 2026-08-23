@@ -1,5 +1,6 @@
 local function show_date(wezterm)
-	return wezterm.strftime("%Y-%m-%d %H:%M:%S")
+	-- %Y-%m-%d %H:%M:%S
+	return wezterm.strftime("%H:%M:%S")
 end
 
 local function show_battery(wezterm)
@@ -10,9 +11,14 @@ local function show_battery(wezterm)
 	return bat
 end
 
+local function show_theme(window)
+	return window:effective_config().color_scheme
+end
+
 local function run(wezterm)
 	local function callback(window, _)
 		local text_list = {
+			show_theme(window),
 			show_battery(wezterm),
 			show_date(wezterm),
 		}

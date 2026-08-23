@@ -21,6 +21,7 @@ local function generate_config(wezterm, config)
 	local overrides = {
 		{
 			key = "F9",
+			mods = "CTRL",
 			action = wezterm.action_callback(callback),
 		},
 	}

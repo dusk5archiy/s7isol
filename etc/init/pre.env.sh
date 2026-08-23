@@ -1,4 +1,4 @@
-if [[ "$0" == "$BASH_SOURCE" ]]; then
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
   echo "[-- source --]"
   exit 1
 fi

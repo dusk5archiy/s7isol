@@ -5,5 +5,10 @@ bash "$HOME/s7isol/install.sh" "$HOME"
 
 PATH="$HOME/bin:$PATH"
 
-skj wezterm/install
+case $(. /etc/os-release && echo "$OS") in
+ubuntu)
+  sudo apt-get update
+  ;;
+esac
+
 skj nvim/install

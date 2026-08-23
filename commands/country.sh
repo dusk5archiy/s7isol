@@ -30,4 +30,4 @@ get_country_code_2() {
   exec 3>&-
 }
 
-echo "$(get_country_code_1 2>/dev/null || true)"
+get_country_code_1 2>/dev/null || true

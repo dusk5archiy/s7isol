@@ -10,6 +10,3 @@ sudo apt-get update
 skj python/install
 skj uv/install
 skj install make
-
-# Wayland
-skj wayland/install

@@ -1,31 +1,13 @@
 local appearance = {
 	color_scheme = os.getenv("CONFIG_WEZTERM_THEME") or "Kanagawa (Gogh)",
 	window_background_opacity = 1.0,
+	audible_bell = "Disabled",
+	visual_bell = {
+		fade_in_duration_ms = 75,
+		fade_out_duration_ms = 75,
+	},
 	colors = {
-		tab_bar = {
-			background = "none",
-
-			active_tab = {
-				bg_color = "none",
-				fg_color = "white",
-				intensity = "Bold",
-				underline = "None",
-				italic = false,
-				strikethrough = false,
-			},
-			inactive_tab = {
-				fg_color = "#aaa",
-				bg_color = "none",
-				italic = false,
-			},
-			inactive_tab_hover = {
-				fg_color = "#ddd",
-				bg_color = "none",
-				italic = true,
-			},
-			new_tab = { fg_color = "#ddd", bg_color = "none" },
-			new_tab_hover = { fg_color = "white", bg_color = "none" },
-		},
+		visual_bell = "#330000",
 	},
 }
 

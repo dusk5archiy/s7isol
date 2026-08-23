@@ -10,6 +10,7 @@ dirs=("scripts" "commands" "apps" "proj")
 
 # ------------------------------------------------------------------------------
 
+# shellcheck disable=SC1091
 . "<|S7ISOL|>/bin/init.sh"
 
 # ------------------------------------------------------------------------------
@@ -17,6 +18,7 @@ S7ISOL_PRE_ENV
 
 # ------------------------------------------------------------------------------
 
+# shellcheck disable=SC1091
 . "<|S7ISOL|>/bin/post.env.sh"
 
 # ------------------------------------------------------------------------------
@@ -34,7 +36,8 @@ run_target() {
     fi
 
     if [[ -n "$exec_file" ]]; then
-      if [[ "$0" != "$BASH_SOURCE" ]]; then
+      if [[ "$0" != "${BASH_SOURCE[0]}" ]]; then
+        # shellcheck disable=SC1090
         . "$exec_file" "$@"
       else
         bash "$exec_file" "$@"
@@ -52,7 +55,7 @@ run_target() {
 if [[ -z "$target" ]]; then
   echo "$S7ISOL"
   s7_unset
-  if [[ "$0" != "$BASH_SOURCE" ]]; then
+  if [[ "$0" != "${BASH_SOURCE[0]}" ]]; then
     return 0
   else
     exit 0
@@ -69,7 +72,7 @@ if declare -f s7_unset &>/dev/null; then
 fi
 
 # 4. Exit/Return based on invocation mode using the captured exit status
-if [[ "$0" != "$BASH_SOURCE" ]]; then
+if [[ "$0" != "${BASH_SOURCE[0]}" ]]; then
   return "$status"
 else
   exit "$status"

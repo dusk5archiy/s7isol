@@ -3,10 +3,11 @@ set -euo pipefail
 
 case $(. /etc/os-release && echo "$ID") in
 ubuntu)
-  # adwaita-icon-theme: helps Wezterm recognize mouse cursors
   sudo apt-get install -y --no-install-recommends \
-    qt6-wayland \
-    libqt6gui6 \
-    libqt6opengl6
+    vlc dbus-x11 libpulse0 xdg-utils
+  ;;
+*)
+  echo "[-- unsupported platform --]" >&2
+  exit 1
   ;;
 esac

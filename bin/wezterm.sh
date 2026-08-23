@@ -7,9 +7,5 @@ export WEZTERM_CONFIG_FILE="$PWD/config/wezterm/main.lua"
 export CONFIG_WEZTERM_THEME="Catppuccin Mocha"
 export CONFIG_WEZTERM_DISPLAY="wayland"
 export CONFIG_NVIM_THEME="catppuccin"
-
-export CONFIG_WEZTERM_AI_BASE_URL="${ANTHROPIC_BASE_URL:-}"
-export CONFIG_WEZTERM_AI_AUTH_TOKEN="${ANTHROPIC_AUTH_TOKEN:-}"
-export CONFIG_WEZTERM_AI_MODEL="${ANTHROPIC_MODEL:-}"
 wezterm start --cwd . >/dev/null 2>&1 &
 disown

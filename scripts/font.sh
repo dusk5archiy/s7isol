@@ -5,14 +5,6 @@ FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/JetBr
 FONT_DIR="$HOME/.fonts"
 TEMP_DIR=$(mktemp -d)
 
-# Ensure required utilities are installed
-for cmd in curl unzip fc-cache; do
-  if ! command -v "$cmd" &>/dev/null; then
-    echo "Error: '$cmd' is required but not installed." >&2
-    exit 1
-  fi
-done
-
 echo "Creating font directory at $FONT_DIR..."
 mkdir -p "$FONT_DIR"
 

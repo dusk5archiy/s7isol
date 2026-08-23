@@ -3,5 +3,5 @@ set -euo pipefail
 
 # ------------------------------------------------------------------------------
 
-xournalpp ${@} >/dev/null 2>&1 &
+xournalpp "$@" >/dev/null 2>&1 &
 disown

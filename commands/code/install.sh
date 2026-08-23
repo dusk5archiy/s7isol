@@ -3,7 +3,7 @@ Set -euo pipefail
 
 # ------------------------------------------------------------------------------
 
-case "$(. /etc/os-release && echo "$ID")" in
+case $(. /etc/os-release && echo "$ID") in
 ubuntu)
   sudo snap install --classic code
   ;;

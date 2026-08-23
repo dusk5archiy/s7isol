@@ -5,8 +5,8 @@ set -euo pipefail
 
 . "$S7ISOL/commands/git/env.sh"
 
-read -p "Name: " name_
-read -p "Email: " email_
+read -pr "Name: " name_
+read -pr "Email: " email_
 
 # ------------------------------------------------------------------------------
 

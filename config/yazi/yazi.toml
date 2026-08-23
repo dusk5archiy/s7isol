@@ -1,3 +1,10 @@
 [mgr]
 show_hidden = true
 linemode = "size"
+#
+# [opener]
+# s7isol_music_player = [{ run = 'pw-play "%s"', orphan = true, for = "unix" }]
+#
+# [[open.prepend_rules]]
+# mime = "audio/**"
+# use = ["s7isol_music_player"]

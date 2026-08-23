@@ -17,7 +17,7 @@ build:
 up:
 	set -euo pipefail && . docker/env.sh && docker compose up -d
 start-again:
-	set -euo pipefail && . docker/env.sh && docker compose up -d --remove-orphans --force-recreate --build
+	set -euo pipefail && . docker/env.sh && docker compose up -d --remove-orphans --force-recreate
 down:
 	set -euo pipefail && . docker/env.sh && docker compose down
 enter:
@@ -26,18 +26,14 @@ clean:
 	set -euo pipefail && . docker/env.sh && docker compose down -v --rmi all
 logs:
 	set -euo pipefail && . docker/env.sh && docker logs "$${CONFIG_PROJECT_NAME}-app-1" | less
+push:
+	set -euo pipefail && . docker/env.sh adevuser && docker compose push
 
 # ==============================================================================
 
+.PHONY: wezterm
 wezterm:
 	bash bin/wezterm.sh
-
-# ------------------------------------------------------------------------------
-
-deploy/build:
-	set -euo pipefail && . docker/env.sh adevuser && docker compose -f docker/compose.deploy.yaml build
-deploy/push:
-	set -euo pipefail && . docker/env.sh adevuser && docker compose -f docker/compose.deploy.yaml push
 
 # ------------------------------------------------------------------------------
 
@@ -50,3 +46,10 @@ demo:
 	. setup/venv/env.sh && python -B main.py demo
 ui:
 	. setup/venv/env.sh && python -B main.py ui
+
+# ------------------------------------------------------------------------------
+
+.PHONY: setup
+setup:
+	bash setup/main.sh
+	bash setup/venv/setup.sh

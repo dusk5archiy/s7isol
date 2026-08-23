@@ -1,13 +1,9 @@
+local dir = debug.getinfo(1, "S").source:sub(2):match("^(.*[/\\])") or "./"
+
 return {
-	{
-		"nvim-lualine/lualine.nvim",
-		opts = {
-			options = {
-				section_separators = { left = "", right = "" },
-				component_separators = { left = "", right = "" },
-			},
-		},
-	},
+	dofile(dir .. "lualine.lua"),
+	dofile(dir .. "snack.lua"),
+	dofile(dir .. "mason.lua"),
 	-- theme
 	{ "rebelot/kanagawa.nvim", name = "kanagawa", opts = {} },
 	{
@@ -15,7 +11,7 @@ return {
 		name = "catppuccin",
 		opts = {
 			flavour = "mocha",
-			transparent_background = true,
+			transparent_background = os.getenv("CONFIG_NVIM_TRANSPARENT") == "1",
 			float = {
 				transparent = true,
 			},
@@ -25,29 +21,6 @@ return {
 		"LazyVim/LazyVim",
 		opts = {
 			colorscheme = os.getenv("CONFIG_NVIM_THEME") or "kanagawa",
-		},
-	},
-	-- dashboard
-	{
-		"snacks.nvim",
-		opts = {
-			picker = {
-				sources = {
-					explorer = {
-						hidden = true,
-					},
-				},
-			},
-			dashboard = {
-				formats = {
-					footer = { "%s", align = "center" },
-					cache = false,
-					ttl = 0,
-				},
-				sections = {
-					{ section = "startup" },
-				},
-			},
 		},
 	},
 }

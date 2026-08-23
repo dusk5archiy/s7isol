@@ -19,7 +19,7 @@ if [ -n "${force_color_prompt:-}" ]; then
   fi
 fi
 
-if [[ "$(. /etc/os-release && echo "$ID")" != "msys2" ]]; then
+if [[ $(. /etc/os-release && echo "$ID") != "msys2" ]]; then
   if [[ "$HOME" == "/root" ]]; then
     _ps1_symbol="#"
   else
@@ -46,7 +46,7 @@ xterm* | rxvt*)
 *) ;;
 esac
 
-RELEASE_ID="$(. /etc/os-release && echo "$ID")"
+RELEASE_ID=$(. /etc/os-release && echo "$ID")
 case "$RELEASE_ID" in
 msys2)
   ICON="  "

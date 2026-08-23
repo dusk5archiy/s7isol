@@ -16,3 +16,5 @@ vim.opt.spell = false
 vim.opt.wrap = false
 vim.opt.foldenable = false
 vim.opt.clipboard = "unnamedplus"
+
+vim.opt.guifont = "JetBrainsMono Nerd Font:h9"

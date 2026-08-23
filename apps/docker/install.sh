@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if ! command -v docker &>/dev/null; then
-  case "$(. /etc/os-release && echo "$ID")" in
+  case $(. /etc/os-release && echo "$ID") in
   ubuntu)
     # Add Docker's official GPG key:
     sudo apt-get install -y --no-install-recommends ca-certificates curl
@@ -33,7 +33,7 @@ if ! command -v newgrp &>/dev/null; then
   sudo apt-get install util-linux-extra
 fi
 
-user="$(whoami)"
+user=$(whoami)
 echo "Adding $user to group docker..."
 sudo groupadd docker &>/dev/null
 sudo usermod -aG docker "$user"
