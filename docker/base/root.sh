@@ -95,6 +95,7 @@ awk -F: '$3 >= 1000 && $3 < 60000 {print $1}' /etc/passwd | xargs -r -n1 userdel
 useradd -m -s /bin/bash "$CONFIG_USER_NAME"
 echo "$CONFIG_USER_NAME:$CONFIG_USER_NAME" | chpasswd
 chown -R "$CONFIG_USER_NAME:$CONFIG_USER_NAME" "/home/$CONFIG_USER_NAME"
+chmod g+s "/home/$CONFIG_USER_NAME"
 echo "$CONFIG_USER_NAME ALL=(ALL) NOPASSWD:ALL" >"/etc/sudoers.d/$CONFIG_USER_NAME"
 
 groupadd -g 990 -o render

@@ -1,18 +1,18 @@
 name: ${CONFIG_PROJECT_NAME}
 services:
   app:
-    image: saoyui/s7container-base:latest
+    image: saoyui/s7container-base:latest # mold ###############################
     build:
-      context: .
-      dockerfile: Dockerfile
-      target: deploy
-      args:
-        CONFIG_USER_NAME: ${CONFIG_USER_NAME}
-        CONFIG_WORKSPACE: ${CONFIG_WORKSPACE}
-        CONFIG_XDG_RUNTIME_DIR: ${CONFIG_XDG_RUNTIME_DIR}
+      context: ${CONFIG_CONTEXT}
+      dockerfile: ${CONFIG_DOCKERFILE}
+      target: base # mold ######################################################
+      args: # mold #############################################################
+        CONFIG_USER_NAME: ${CONFIG_USER_NAME} # mold ###########################
+        CONFIG_XDG_RUNTIME_DIR: ${CONFIG_XDG_RUNTIME_DIR} # mold ###############
     user: ${CONFIG_USER_NAME}
     tty: true
     stdin_open: true
+    ipc: host
     environment:
       - ${CONFIG_ENV_XDG_RUNTIME_DIR:-$CONFIG_ENV_FALLBACK}
       - ${CONFIG_ENV_XDG_SESSION_TYPE:-$CONFIG_ENV_FALLBACK}
@@ -22,12 +22,14 @@ services:
       - ${CONFIG_ENV_ANTHROPIC_AUTH_TOKEN:-$CONFIG_ENV_FALLBACK}
       - ${CONFIG_ENV_ANTHROPIC_MODEL:-$CONFIG_ENV_FALLBACK}
     volumes:
-      - .:${CONFIG_WORKSPACE}
-      - ${CONFIG_MOUNT_S7ISOL:-$CONFIG_MOUNT_FALLBACK}
+      - ${CONFIG_MOUNT_WORKSPACE:-$CONFIG_MOUNT_FALLBACK}
+      - ${CONFIG_MOUNT_S7ISOL:-$CONFIG_MOUNT_FALLBACK} # mold ##################
       - ${CONFIG_MOUNT_X11:-$CONFIG_MOUNT_FALLBACK}
       - ${CONFIG_MOUNT_WAYLAND_SOCKET:-$CONFIG_MOUNT_FALLBACK}
       - ${CONFIG_MOUNT_PIPEWIRE_SOCKET:-$CONFIG_MOUNT_FALLBACK}
       - ${CONFIG_MOUNT_PULSE_SOCKET:-$CONFIG_MOUNT_FALLBACK}
+      - ${CONFIG_MOUNT_VSCODE_SERVER:-$CONFIG_MOUNT_FALLBACK}
+      - ${CONFIG_MOUNT_CLAUDE:-$CONFIG_MOUNT_FALLBACK}
     devices:
       - /dev/dri:/dev/dri
     working_dir: ${CONFIG_WORKSPACE}

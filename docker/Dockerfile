@@ -30,12 +30,7 @@ RUN \
 
 # ==============================================================================
 
-FROM base AS deploy
-
-ARG CONFIG_WORKSPACE
 ARG CONFIG_XDG_RUNTIME_DIR
-
-# ------------------------------------------------------------------------------
 
 # dev/init.sh
 RUN \
@@ -43,8 +38,6 @@ RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   bash script.sh
-
-# ------------------------------------------------------------------------------
 
 # commands/wezterm/install.sh
 RUN \
@@ -112,3 +105,23 @@ RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   bash "/home/$CONFIG_USER_NAME/s7isol/docker/dev/main.sh"
+
+# ==============================================================================
+
+# hadolint ignore=DL3007
+FROM base AS final
+
+# docker/setup.sh
+RUN \
+  --mount=type=bind,source=./docker/setup.sh,target=script.sh \
+  --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+  bash script.sh
+
+# docker/virenv/setup.sh
+RUN \
+  --mount=type=bind,source=./docker/virenv/setup.sh,target=script.sh \
+  --mount=type=bind,source=./docker/virenv/requirements.txt,target=requirements.txt \
+  --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+  bash script.sh

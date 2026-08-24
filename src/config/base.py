@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from src.utils.config import get_config_from_module
 
 
-class Config(BaseModel, frozen=True):
+class Config(BaseModel):
     message: str
 
 

@@ -1,3 +1,4 @@
 /**/build
 /.claude.env
 /.pre.env
+/docker/.mounts

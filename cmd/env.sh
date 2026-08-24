@@ -1,3 +1,3 @@
 if [[ -f "$HOME/venv/bin/activate" ]]; then
-  . setup/venv/env.sh
+  . docker/virenv/env.sh
 fi
