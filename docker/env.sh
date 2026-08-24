@@ -1,8 +1,10 @@
-export CONFIG_PROJECT_NAME=s7isol # change #####################################
+# change #######################################################################
+export CONFIG_PROJECT_NAME=s7isol
+# ##############################################################################
 
 # Arguments --------------------------------------------------------------------
 
-export CONFIG_CONTEXT="$PWD"
+export CONFIG_CONTEXT=$PWD
 export CONFIG_DOCKERFILE=$PWD/docker/Dockerfile
 export CONFIG_USER_NAME=skjuser
 CONFIG_UID=$(id -u)
@@ -56,13 +58,13 @@ fi
 
 FROM_PIPEWIRE_SOCKET=$HOST_XDG_RUNTIME_DIR/pipewire-0
 TO_PIPEWIRE_SOCKET=$CLIENT_XDG_RUNTIME_DIR/pipewire-0
-if [[ -S $FROM_PIPEWIRE_SOCKET ]]; then export CONFIG_MOUNT_PIPEWIRE_SOCKET="$FROM_PIPEWIRE_SOCKET:$TO_PIPEWIRE_SOCKET"; fi
+if [[ -S $FROM_PIPEWIRE_SOCKET ]]; then export CONFIG_MOUNT_PIPEWIRE_SOCKET=$FROM_PIPEWIRE_SOCKET:$TO_PIPEWIRE_SOCKET; fi
 
 # Pulse ------------------------------------------------------------------------
 #
 FROM_PULSE_SOCKET=$HOST_XDG_RUNTIME_DIR/pulse
 TO_PULSE_SOCKET=$CLIENT_XDG_RUNTIME_DIR/pulse
-if [[ -d $FROM_PULSE_SOCKET ]]; then export CONFIG_MOUNT_PULSE_SOCKET="$FROM_PULSE_SOCKET:$TO_PULSE_SOCKET"; fi
+if [[ -d $FROM_PULSE_SOCKET ]]; then export CONFIG_MOUNT_PULSE_SOCKET=$FROM_PULSE_SOCKET:$TO_PULSE_SOCKET; fi
 
 # AI ---------------------------------------------------------------------------
 

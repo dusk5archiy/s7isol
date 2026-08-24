@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+PATH=$HOME/bin:$HOME/.local/bin:$PATH
 
 sudo apt-get update
 

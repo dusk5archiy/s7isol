@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-PATH="$HOME/bin:$PATH"
+PATH=$HOME/bin:$PATH
 skj update
 
 skj python/install

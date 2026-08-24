@@ -3,10 +3,10 @@ set -euo pipefail
 
 # ------------------------------------------------------------------------------
 
-target="${1:-}"
+target=${1:-}
 shift # Remove $1 so "$@" holds only the remaining arguments
 base="<|S7ISOL|>"
-dirs=("scripts" "commands" "apps" "proj")
+dirs=(scripts commands programs apps proj)
 
 # ------------------------------------------------------------------------------
 
@@ -25,24 +25,24 @@ S7ISOL_PRE_ENV
 
 run_target() {
   for dir in "${dirs[@]}"; do
-    local file="$base/$dir/$target.sh"
-    local file_init="$base/$dir/$target/__init__.sh"
+    local file=$base/$dir/$target.sh
+    local file_init=$base/$dir/$target/__init__.sh
     local exec_file=""
 
-    if [[ -f "$file" ]]; then
-      exec_file="$file"
-    elif [[ -f "$file_init" ]]; then
-      exec_file="$file_init"
+    if [[ -f $file ]]; then
+      exec_file=$file
+    elif [[ -f $file_init ]]; then
+      exec_file=$file_init
     fi
 
-    if [[ -n "$exec_file" ]]; then
-      if [[ "$0" != "${BASH_SOURCE[0]}" ]]; then
+    if [[ -n $exec_file ]]; then
+      if [[ $0 != "${BASH_SOURCE[0]}" ]]; then
         # shellcheck disable=SC1090
         . "$exec_file" "$@"
       else
         bash "$exec_file" "$@"
       fi
-      return "$?"
+      return $?
     fi
   done
 
@@ -52,10 +52,10 @@ run_target() {
 # ------------------------------------------------------------------------------
 
 # 1. Handle empty target
-if [[ -z "$target" ]]; then
+if [[ -z $target ]]; then
   echo "$S7ISOL"
   s7_unset
-  if [[ "$0" != "${BASH_SOURCE[0]}" ]]; then
+  if [[ $0 != "${BASH_SOURCE[0]}" ]]; then
     return 0
   else
     exit 0
@@ -64,7 +64,7 @@ fi
 
 # 2. Execute target dispatch
 run_target "$@"
-status="$?"
+status=$?
 
 # 3. Clean up
 if declare -f s7_unset &>/dev/null; then
@@ -72,7 +72,7 @@ if declare -f s7_unset &>/dev/null; then
 fi
 
 # 4. Exit/Return based on invocation mode using the captured exit status
-if [[ "$0" != "${BASH_SOURCE[0]}" ]]; then
+if [[ $0 != "${BASH_SOURCE[0]}" ]]; then
   return "$status"
 else
   exit "$status"

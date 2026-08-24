@@ -1,5 +1,5 @@
 S7ISOL=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
-export SHELL="${SHELL:-"/bin/bash"}"
+export SHELL=${SHELL:-/bin/bash}
 
 function s7_unset() {
   unset "$(printenv | awk -F= '/^S7ISOL/ {print $1}')"

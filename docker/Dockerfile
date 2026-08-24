@@ -39,53 +39,53 @@ RUN \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   bash script.sh
 
-# commands/wezterm/install.sh
+# programs/wezterm/install.sh
 RUN \
-  --mount=type=bind,source=./commands/wezterm/install.sh,target=script.sh \
+  --mount=type=bind,source=./programs/wezterm/install.sh,target=script.sh \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   bash script.sh
 
-# commands/yazi/install.sh
+# programs/y/install.sh
 RUN \
-  --mount=type=bind,source=./commands/yazi/install.sh,target=script.sh \
+  --mount=type=bind,source=./programs/y/install.sh,target=script.sh \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   bash script.sh
 
-# commands/sound/install.sh
+# programs/sound/install.sh
 RUN \
-  --mount=type=bind,source=./commands/sound/install.sh,target=script.sh \
+  --mount=type=bind,source=./programs/sound/install.sh,target=script.sh \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   bash script.sh
 
 # ------------------------------------------------------------------------------
 
-# commands/vlc/install.sh
+# programs/vlc/install.sh
 RUN \
-  --mount=type=bind,source=./commands/vlc/install.sh,target=script.sh \
+  --mount=type=bind,source=./programs/vlc/install.sh,target=script.sh \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   bash script.sh
 
-# commands/eog/install.sh
+# programs/eog/install.sh
 RUN \
-  --mount=type=bind,source=./commands/eog/install.sh,target=script.sh \
+  --mount=type=bind,source=./programs/eog/install.sh,target=script.sh \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   bash script.sh
 
-# commands/thunar/install.sh
+# programs/thunar/install.sh
 RUN \
-  --mount=type=bind,source=./commands/thunar/install.sh,target=script.sh \
+  --mount=type=bind,source=./programs/thunar/install.sh,target=script.sh \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   bash script.sh
 
-# commands/nvim-qt/install.sh
+# programs/nvim-qt/install.sh
 RUN \
-  --mount=type=bind,source=./commands/nvim-qt/install.sh,target=script.sh \
+  --mount=type=bind,source=./programs/nvim-qt/install.sh,target=script.sh \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   bash script.sh
@@ -96,6 +96,16 @@ RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   bash script.sh
+
+# ------------------------------------------------------------------------------
+
+COPY ./config/nvim "/home/$CONFIG_USER_NAME/s7isol/config/nvim"
+
+RUN \
+  --mount=type=bind,source=./programs/nvim,target=nvim \
+  --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+  S7ISOL="/home/$CONFIG_USER_NAME/s7isol" bash nvim/install.sh
 
 # ------------------------------------------------------------------------------
 

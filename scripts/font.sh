@@ -1,15 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
-FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/JetBrainsMono.zip"
-FONT_DIR="$HOME/.fonts"
+FONT_URL=https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/JetBrainsMono.zip
+FONT_DIR=$HOME/.fonts
 TEMP_DIR=$(mktemp -d)
 
 echo "Creating font directory at $FONT_DIR..."
 mkdir -p "$FONT_DIR"
 
 echo "Downloading JetBrainsMono Nerd Font..."
-if [[ ! -f "$TEMP_DIR/JetBrainsMono.zip" ]]; then
+if [[ ! -f $TEMP_DIR/JetBrainsMono.zip ]]; then
   curl -fLo "$TEMP_DIR/JetBrainsMono.zip" "$FONT_URL"
 fi
 

@@ -1,4 +1,4 @@
 #!/bin/bash
 set -euo pipefail
 
-ls -lhA
+ls --color=auto -ahl "$@"

@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-CONFIG_MEGRAS_DIR="$HOME/.data.megras-config"
-DATA_MEGRAS_DIR="$HOME/.data.megras-data"
+CONFIG_MEGRAS_DIR=$HOME/.data.megras-config
+DATA_MEGRAS_DIR=$HOME/.data.megras-data
 rm -rf "$CONFIG_MEGRAS_DIR"
 rm -rf "$DATA_MEGRAS_DIR"
 mkdir -p "$CONFIG_MEGRAS_DIR"

@@ -24,7 +24,7 @@ COUNTRY_CODE=$(get_country_code 2>/dev/null || true)
 
 # Setting APT mirror -----------------------------------------------------------
 if [[ "$COUNTRY_CODE" =~ ^[a-z0-9]+$ ]]; then
-  REGIONAL_MIRROR="${COUNTRY_CODE}.archive.ubuntu.com"
+  REGIONAL_MIRROR=${COUNTRY_CODE}.archive.ubuntu.com
   echo "[-- Switching mirror to: ${REGIONAL_MIRROR} --]"
 
   [ -f /etc/apt/sources.list.d/ubuntu.sources ] && sed -i "s|archive.ubuntu.com|${REGIONAL_MIRROR}|g" /etc/apt/sources.list.d/ubuntu.sources
@@ -79,8 +79,8 @@ export DEBIAN_FRONTEND=noninteractive
 
 # ------------------------------------------------------------------------------
 TZ="Asia/Ho_Chi_Minh"
-ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime
-echo "$TZ" >/etc/timezone
+ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+echo $TZ >/etc/timezone
 
 # Essentials -------------------------------------------------------------------
 apt-get update
