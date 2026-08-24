@@ -70,13 +70,6 @@ if [[ -n ${ANTHROPIC_BASE_URL:-} ]]; then export CONFIG_ENV_ANTHROPIC_BASE_URL=A
 if [[ -n ${ANTHROPIC_AUTH_TOKEN:-} ]]; then export CONFIG_ENV_ANTHROPIC_AUTH_TOKEN=ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-}; fi
 if [[ -n ${ANTHROPIC_MODEL:-} ]]; then export CONFIG_ENV_ANTHROPIC_MODEL=ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-}; fi
 
-# VSCode -----------------------------------------------------------------------
-
-FROM_VSCODE_SERVER=$PWD/docker/.mounts/.vscode-server
-TO_VSCODE_SERVER=/home/$CONFIG_USER_NAME/.vscode-server
-if [[ ! -d $FROM_VSCODE_SERVER ]]; then mkdir -p "$FROM_VSCODE_SERVER"; fi
-export CONFIG_MOUNT_VSCODE_SERVER=$FROM_VSCODE_SERVER:$TO_VSCODE_SERVER
-
 # Claude -----------------------------------------------------------------------
 
 FROM_CLAUDE=$PWD/docker/.mounts/.claude
