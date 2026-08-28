@@ -3,8 +3,8 @@ set -euo pipefail
 
 # ------------------------------------------------------------------------------
 
-_dir=$(dirname "${BASH_SOURCE[0]}")
-. "$_dir/env.sh"
+Dir=$(dirname "${BASH_SOURCE[0]}")
+. "$Dir/env.sh"
 
 read -pr "Name: " name_
 read -pr "Email: " email_

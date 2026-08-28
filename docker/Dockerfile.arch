@@ -1,0 +1,89 @@
+# hadolint ignore=DL3007
+FROM archlinux:latest AS base
+
+ENV DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-c"]
+
+# Avoid naming CONFIG_USERNAME or CONFIG_PASSWORD
+ARG CONFIG_USER_NAME
+
+# ------------------------------------------------------------------------------
+
+WORKDIR /tmp
+
+# base/root.sh
+RUN \
+  --mount=source=./docker/base/root.sh,target=script.sh,type=bind \
+  bash script.sh
+
+# ------------------------------------------------------------------------------
+
+USER 1000
+
+# base/user.sh
+RUN \
+  --mount=source=./docker/base/user.sh,target=script.sh,type=bind \
+  bash script.sh
+
+# ==============================================================================
+
+ARG CONFIG_XDG_RUNTIME_DIR
+
+# dev/init.sh
+RUN \
+  --mount=source=./docker/dev/init.sh,target=script.sh,type=bind \
+  bash script.sh
+
+# programs/wezterm/install.sh
+RUN \
+  --mount=source=./programs/wezterm/install.sh,target=script.sh,type=bind \
+  bash script.sh
+
+# programs/y/install.sh
+RUN \
+  --mount=source=./programs/y/install.sh,target=script.sh,type=bind \
+  bash script.sh
+
+# programs/sound/install.sh
+RUN \
+  --mount=source=./programs/sound/install.sh,target=script.sh,type=bind \
+  bash script.sh
+
+# ------------------------------------------------------------------------------
+
+COPY ./config/nvim "/home/$CONFIG_USER_NAME/s7isol/config/nvim"
+
+RUN \
+  --mount=source=./programs/nvim,target=nvim,type=bind \
+  S7ISOL="/home/$CONFIG_USER_NAME/s7isol" bash nvim/install.sh
+
+RUN \
+  --mount=source=./programs/nvim-qt/install.sh,target=script.sh,type=bind \
+  bash script.sh
+
+RUN \
+  --mount=source=./programs/fonts/install.sh,target=script.sh,type=bind \
+  bash script.sh
+
+# ------------------------------------------------------------------------------
+
+COPY . "/home/$CONFIG_USER_NAME/s7isol"
+
+RUN \
+  bash "/home/$CONFIG_USER_NAME/s7isol/docker/dev/main.sh"
+
+# ==============================================================================
+
+# hadolint ignore=DL3007
+FROM base AS final
+
+# docker/setup.sh
+RUN \
+  --mount=source=./docker/setup.sh,target=script.sh,type=bind \
+  bash script.sh
+
+# docker/virenv/setup.sh
+RUN \
+  --mount=source=./docker/virenv/setup.sh,target=script.sh,type=bind \
+  --mount=source=./docker/virenv/requirements.txt,target=requirements.txt,type=bind \
+  bash script.sh

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-_dir=$(dirname "${BASH_SOURCE[0]}")
+Dir=$(dirname "${BASH_SOURCE[0]}")
 
-. "$_dir/env.sh"
-python "$_dir/lazyvim_dump.py"
+. "$Dir/env.sh"
+python "$Dir/lazyvim_dump.py"

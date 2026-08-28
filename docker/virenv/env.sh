@@ -1,3 +1,3 @@
-VIRTUAL_ENV=$HOME/venv
+VirtualEnv=$HOME/venv
 # shellcheck disable=SC1091
-if [[ -f $VIRTUAL_ENV/bin/activate ]]; then . "$VIRTUAL_ENV/bin/activate"; fi
+if [[ -f $VirtualEnv/bin/activate ]]; then . "$VirtualEnv/bin/activate"; fi

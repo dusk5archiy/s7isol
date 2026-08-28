@@ -14,7 +14,7 @@ ubuntu)
     sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
 Types: deb
 URIs: https://download.docker.com/linux/ubuntu
-Suites: $(. /etc/os-release && echo ${UBUNTU_CODENAME:-$VERSION_CODENAME})
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
 Components: stable
 Architectures: $(dpkg --print-architecture)
 Signed-By: /etc/apt/keyrings/docker.asc
@@ -22,19 +22,19 @@ EOF
 
     sudo apt-get update
     sudo apt-get install -y --no-install-recommends \
-      docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-    sudo systemctl start docker
-    sudo systemctl enable docker
+      docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin \
+      util-linux-extra
   fi
+  ;;
+arch)
+  sudo pacman -S --noconfirm --needed \
+    docker docker-compose docker-buildx \
+    nvidia-container-toolkit
+  ;;
+*)
+  echo "[-- unsupported platform --]" >&2
+  exit 1
   ;;
 esac
 
-if ! command -v newgrp &>/dev/null; then
-  sudo apt-get install util-linux-extra
-fi
-
-user=$(whoami)
-echo "Adding $user to group docker..."
-sudo groupadd docker &>/dev/null
-sudo usermod -aG docker "$user"
-newgrp docker
+sudo nvidia-ctk runtime configure --runtime=docker

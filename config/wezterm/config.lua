@@ -1,5 +1,5 @@
 local appearance = {
-	color_scheme = os.getenv("CONFIG_WEZTERM_THEME") or "Kanagawa (Gogh)",
+	color_scheme = os.getenv("CONFIG_WEZTERM_THEME") or "Catppuccin Mocha",
 	window_background_opacity = 1.0,
 	audible_bell = "Disabled",
 	visual_bell = {

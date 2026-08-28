@@ -4,6 +4,8 @@ return {
 	dofile(dir .. "lualine.lua"),
 	dofile(dir .. "snack.lua"),
 	dofile(dir .. "mason.lua"),
+	dofile(dir .. "mini.pairs.lua"),
+	dofile(dir .. "bufferline.lua"),
 	-- theme
 	{ "rebelot/kanagawa.nvim", name = "kanagawa", opts = {} },
 	{

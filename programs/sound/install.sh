@@ -9,6 +9,10 @@ ubuntu)
   sudo apt-get install -y --no-install-recommends \
     pipewire-bin yaru-theme-sound
   ;;
+arch)
+  sudo pacman -S --noconfirm --needed \
+    pipewire sound-theme-freedesktop
+  ;;
 *)
   echo "[-- unsupported platform --]" >&2
   exit 1

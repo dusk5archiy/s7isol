@@ -8,4 +8,12 @@ ubuntu)
   sudo apt-get update &&
     sudo apt-get -y --no-install-recommends install yazi
   ;;
+arch)
+  sudo pacman -S --noconfirm --needed \
+    yazi
+  ;;
+*)
+  echo "[-- unsupported platform --]" >&2
+  exit 1
+  ;;
 esac

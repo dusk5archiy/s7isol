@@ -1,8 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
+Os=$(. /etc/os-release && echo $ID)
+
 # Docker -----------------------------------------------------------------------
-rm -f /etc/apt/apt.conf.d/docker-clean
+if [[ $Os == ubuntu ]]; then
+  rm -f /etc/apt/apt.conf.d/docker-clean
+fi
 
 # Getting Country Code ---------------------------------------------------------
 get_country_code() {
@@ -11,7 +15,7 @@ get_country_code() {
 
   # Read response line by line until body
   while read -r line; do
-    if [[ "$line" == $'\r' || -z "$line" ]]; then
+    if [[ $line == $'\r' || -z $line ]]; then
       read -r body
       echo "$body" | tr '[:upper:]' '[:lower:]' | tr -d '\r\n'
       break
@@ -20,25 +24,29 @@ get_country_code() {
   exec 3>&-
 }
 
-COUNTRY_CODE=$(get_country_code 2>/dev/null || true)
+if [[ $Os == ubuntu ]]; then
+  # [ Ubuntu ] Setting APT mirror ----------------------------------------------
+  echo '[-- INFO --] Setting APT mirror...'
 
-# Setting APT mirror -----------------------------------------------------------
-if [[ "$COUNTRY_CODE" =~ ^[a-z0-9]+$ ]]; then
-  REGIONAL_MIRROR=${COUNTRY_CODE}.archive.ubuntu.com
-  echo "[-- Switching mirror to: ${REGIONAL_MIRROR} --]"
+  CountryCode=$(get_country_code 2>/dev/null || true)
+  if [[ $CountryCode =~ ^[a-z0-9]+$ ]]; then
+    RegionMirror=$CountryCode.archive.ubuntu.com
+    echo "[-- Switching mirror to: $RegionMirror --]"
 
-  [ -f /etc/apt/sources.list.d/ubuntu.sources ] && sed -i "s|archive.ubuntu.com|${REGIONAL_MIRROR}|g" /etc/apt/sources.list.d/ubuntu.sources
-  [ -f /etc/apt/sources.list ] && sed -i "s|archive.ubuntu.com|${REGIONAL_MIRROR}|g" /etc/apt/sources.list
-else
-  echo "[-- Fallback: using default archive mirror --]"
-fi
+    [ -f /etc/apt/sources.list.d/ubuntu.sources ] && sed -i "s|archive.ubuntu.com|$RegionMirror|g" /etc/apt/sources.list.d/ubuntu.sources
+    [ -f /etc/apt/sources.list ] && sed -i "s|archive.ubuntu.com|$RegionMirror|g" /etc/apt/sources.list
+  else
+    echo "[-- Fallback: using default archive mirror --]"
+  fi
+  # [ Ubuntu ] Disaable Source Repositories ------------------------------------
+  echo '[-- INFO --] Disable Source Repositories...'
 
-# Disaable Source Repositories -------------------------------------------------
-[ -f /etc/apt/sources.list ] && sed -i '/^deb-src/s/^/#/' /etc/apt/sources.list
-[ -f /etc/apt/sources.list.d/ubuntu.sources ] && sed -i 's/Types: deb deb-src/Types: deb/g' /etc/apt/sources.list.d/ubuntu.sources
+  [ -f /etc/apt/sources.list ] && sed -i '/^deb-src/s/^/#/' /etc/apt/sources.list
+  [ -f /etc/apt/sources.list.d/ubuntu.sources ] && sed -i 's/Types: deb deb-src/Types: deb/g' /etc/apt/sources.list.d/ubuntu.sources
 
-# Dpkg Extraction Optimizations ------------------------------------------------
-cat <<EOF >/etc/dpkg/dpkg.cfg.d/01_nodoc
+  # [ Ubuntu ] Dpkg Extraction Optimizations -----------------------------------
+  echo '[-- INFO --] Dpkg Extraction Optimizations...'
+  cat <<EOF >/etc/dpkg/dpkg.cfg.d/01_nodoc
 path-exclude /usr/share/doc/*
 path-exclude /usr/share/man/*
 path-exclude /usr/share/groff/*
@@ -49,8 +57,9 @@ path-exclude /usr/share/locale/*
 path-include /usr/share/locale/en*
 EOF
 
-# Native APT Performance Tuning ------------------------------------------------
-cat <<EOF >/etc/apt/apt.conf.d/99faster
+  # [ Ubuntu ] Native APT Performance Tuning -----------------------------------
+  echo '[-- INFO --] Native APT Performance Tuning...'
+  cat <<EOF >/etc/apt/apt.conf.d/99faster
 DPkg::Options {
   "--force-confdef";
   "--force-confold";
@@ -75,22 +84,39 @@ Acquire::Retries "3";
 Acquire::Queue-Mode "host";
 EOF
 
+fi # $Os == ubuntu -------------------------------------------------------------
+
 export DEBIAN_FRONTEND=noninteractive
 
 # ------------------------------------------------------------------------------
-TZ="Asia/Ho_Chi_Minh"
-ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
-echo $TZ >/etc/timezone
+if [[ $Os == ubuntu ]]; then
+  echo '[-- INFO --] Setting Timezone...'
+  Tz=Asia/Ho_Chi_Minh
+  ln -snf /usr/share/zoneinfo/$Tz /etc/localtime
+  echo $Tz >/etc/timezone
+fi
 
 # Essentials -------------------------------------------------------------------
-apt-get update
-apt-get install -y --no-install-recommends sudo git
+echo '[-- INFO --] Installing Essential Packages...'
+case $Os in
+ubuntu)
+  apt-get update
+  apt-get install -y --no-install-recommends sudo git
+  ;;
+arch)
+  pacman -Syu --noconfirm
+  pacman -S --noconfirm --needed \
+    sudo git
+  ;;
+esac
 
 # Git --------------------------------------------------------------------------
+echo '[-- INFO --] Git Configuration...'
 git config --system http.sslVerify false
 git config --system --add safe.directory "*"
 
 # User -------------------------------------------------------------------------
+echo '[-- INFO --] Setting up user...'
 awk -F: '$3 >= 1000 && $3 < 60000 {print $1}' /etc/passwd | xargs -r -n1 userdel -r 2>/dev/null || true
 useradd -m -s /bin/bash "$CONFIG_USER_NAME"
 echo "$CONFIG_USER_NAME:$CONFIG_USER_NAME" | chpasswd
@@ -98,6 +124,10 @@ chown -R "$CONFIG_USER_NAME:$CONFIG_USER_NAME" "/home/$CONFIG_USER_NAME"
 chmod g+s "/home/$CONFIG_USER_NAME"
 echo "$CONFIG_USER_NAME ALL=(ALL) NOPASSWD:ALL" >"/etc/sudoers.d/$CONFIG_USER_NAME"
 
-groupadd -g 990 -o render
-usermod -aG video "$CONFIG_USER_NAME"
-usermod -aG render "$CONFIG_USER_NAME"
+if ! getent group render >/dev/null 2>&1; then
+  groupadd -g 990 -o render
+  usermod -aG video "$CONFIG_USER_NAME"
+  usermod -aG render "$CONFIG_USER_NAME"
+fi
+
+echo "[-- DONE --] ${BASH_SOURCE[0]}"

@@ -1,10 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-if command -v wezterm &>/dev/null; then
-  exit 0
-fi
-
 case $(. /etc/os-release && echo $ID) in
 ubuntu)
   curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
@@ -14,6 +10,10 @@ ubuntu)
 
   sudo apt-get install -y --no-install-recommends \
     wezterm
+  ;;
+arch)
+  sudo pacman -S --noconfirm --needed \
+    wezterm libgit2
   ;;
 *)
   echo "[-- unsupported platform --]" >&2

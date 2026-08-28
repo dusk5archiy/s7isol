@@ -1,10 +1,8 @@
 #!/bin/bash
-Set -euo pipefail
+set -euo pipefail
 
-# ------------------------------------------------------------------------------
+Dir=$(dirname "${BASH_SOURCE[0]}")
 
-case $(. /etc/os-release && echo $ID) in
-ubuntu)
-  sudo snap install --classic code
-  ;;
-esac
+bash "$Dir/install-core.sh"
+bash "$Dir/extensions.sh"
+bash "$Dir/dump.sh"

@@ -6,4 +6,8 @@ ubuntu)
   sudo apt-get install -y --no-install-recommends \
     neovim-qt qtwayland5
   ;;
+arch)
+  sudo pacman -S --noconfirm --needed \
+    neovim-qt
+  ;;
 esac

@@ -1,7 +1,7 @@
 name: ${CONFIG_PROJECT_NAME}
 services:
   app:
-    image: saoyui/s7container-base:latest # mold ###############################
+    image: ${CONFIG_IMAGE} # mold ##############################################
     build:
       context: ${CONFIG_CONTEXT}
       dockerfile: ${CONFIG_DOCKERFILE}
@@ -29,8 +29,7 @@ services:
       - ${CONFIG_MOUNT_PIPEWIRE_SOCKET:-$CONFIG_MOUNT_FALLBACK}
       - ${CONFIG_MOUNT_PULSE_SOCKET:-$CONFIG_MOUNT_FALLBACK}
       - ${CONFIG_MOUNT_CLAUDE:-$CONFIG_MOUNT_FALLBACK}
-    devices:
-      - /dev/dri:/dev/dri
+      - ${CONFIG_MOUNT_VSCODE:-$CONFIG_MOUNT_FALLBACK}
     working_dir: ${CONFIG_WORKSPACE}
     deploy:
       resources:

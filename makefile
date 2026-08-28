@@ -44,8 +44,10 @@ init:
 demo:
 	. docker/virenv/env.sh && python -B main.py demo
 .PHONY: ui
-ui:
-	. docker/virenv/env.sh && python -B main.py ui
+wayland:
+	. docker/virenv/env.sh && QT_QPA_PLATFORM="wayland" python -B main.py ui
+x11:
+	. docker/virenv/env.sh && QT_QPA_PLATFORM="xcb" python -B main.py ui
 
 # CONTAINER --------------------------------------------------------------------
 

@@ -12,9 +12,23 @@ ubuntu)
     npm \
     unzip \
     wl-clipboard
-
-  sudo npm cache clean --force
-  sudo npm install -g tree-sitter-cli
-  sudo npm install -g neovim
+  ;;
+arch)
+  sudo pacman -S --noconfirm --needed \
+    python \
+    fd fzf ripgrep \
+    gcc make \
+    git lazygit \
+    neovim \
+    npm \
+    unzip \
+    wl-clipboard
+  ;;
+*)
+  echo "[-- unsupported platform --]" >&2
+  exit 1
   ;;
 esac
+
+sudo npm install -g tree-sitter-cli --allow-scripts=tree-sitter-cli
+sudo npm install -g neovim

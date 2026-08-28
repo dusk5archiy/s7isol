@@ -1,11 +1,49 @@
-# change #######################################################################
-export CONFIG_PROJECT_NAME=s7isol
+# mold #########################################################################
+DefaultOs=arch
+ConfigOs=${CONFIG_OS:-$DefaultOs}
+case $ConfigOs in
+ubuntu | arch)
+  ;;
+*)
+  echo "[-- unsupported platform --]" >&2
+  exit 1
+  ;;
+esac
+echo "Os: $ConfigOs"
 # ##############################################################################
 
-# Arguments --------------------------------------------------------------------
+BaseName=$(basename "$PWD" | tr '[:upper:]' '[:lower:]')
+CONFIG_PROJECT_NAME=$BaseName
 
-export CONFIG_CONTEXT=$PWD
+# mold #########################################################################
+case $ConfigOs in
+arch)
+  CONFIG_PROJECT_NAME=${BaseName}_arch
+  ;;
+esac
+# ##############################################################################
+
+export CONFIG_PROJECT_NAME
+echo "CONFIG_PROJECT_NAME: $CONFIG_PROJECT_NAME"
+
+# Arguments --------------------------------------------------------------------
 export CONFIG_DOCKERFILE=$PWD/docker/Dockerfile
+
+# mold #########################################################################
+case $ConfigOs in
+ubuntu)
+  export CONFIG_IMAGE=saoyui/s7container-base:latest # mold ######################
+  ;;
+arch)
+  export CONFIG_IMAGE=saoyui/s7container-arch:latest # mold ######################
+  export CONFIG_DOCKERFILE=$PWD/docker/Dockerfile.arch
+  ;;
+esac
+# ##############################################################################
+
+export BUILDX_NO_DEFAULT_ATTESTATIONS=1
+export CONFIG_MOUNT_FALLBACK=/dev/null:/dev/null
+export CONFIG_CONTEXT=$PWD
 export CONFIG_USER_NAME=skjuser
 CONFIG_UID=$(id -u)
 
@@ -16,7 +54,7 @@ CLIENT_XDG_RUNTIME_DIR=/home/$CONFIG_USER_NAME/sockets
 export CONFIG_XDG_RUNTIME_DIR=$CLIENT_XDG_RUNTIME_DIR
 export CONFIG_ENV_XDG_RUNTIME_DIR=XDG_RUNTIME_DIR=$CLIENT_XDG_RUNTIME_DIR
 
-# Workspae ---------------------------------------------------------------------
+# Workspace --------------------------------------------------------------------
 
 FROM_WORKSPACE=$CONFIG_CONTEXT
 TO_WORKSPACE=/home/$CONFIG_USER_NAME/workspace
@@ -30,7 +68,6 @@ export CONFIG_MOUNT_S7ISOL=$FROM_WORKSPACE:"/home/$CONFIG_USER_NAME/s7isol"
 # Fallbacks --------------------------------------------------------------------
 
 export CONFIG_ENV_FALLBACK=$CONFIG_ENV_XDG_RUNTIME_DIR
-export CONFIG_MOUNT_FALLBACK=/dev/null:/dev/null
 
 # XDG Session ------------------------------------------------------------------
 
@@ -78,3 +115,10 @@ FROM_CLAUDE=$PWD/docker/.mounts/.claude
 TO_CLAUDE=/home/$CONFIG_USER_NAME/.claude
 if [[ ! -d $FROM_CLAUDE ]]; then mkdir -p "$FROM_CLAUDE"; fi
 export CONFIG_MOUNT_CLAUDE=$FROM_CLAUDE:$TO_CLAUDE
+
+# VSCode -----------------------------------------------------------------------
+
+FROM_VSCODE=$PWD/docker/.mounts/.vscode-server
+TO_VSCODE=/home/$CONFIG_USER_NAME/.vscode-server
+if [[ ! -d $FROM_VSCODE ]]; then mkdir -p "$FROM_VSCODE"; fi
+export CONFIG_MOUNT_VSCODE=$FROM_VSCODE:$TO_VSCODE
