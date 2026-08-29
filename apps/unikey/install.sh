@@ -1,13 +1,11 @@
-#!/bin/bash
 set -euo pipefail
 
 case $(. /etc/os-release && echo $ID) in
-ubuntu)
-  curl -LsSf https://astral.sh/uv/install.sh | sh
-  ;;
 arch)
-  sudo pacman -S --noconfirm --needed \
-    uv
+  sudo pacman -S --no-confirm --needed \
+    fcitx5 fcitx5-unikey fcitx5-configtool fcitx5-gtk fcitx5-qt
+
+  fcitx5-configtool
   ;;
 *)
   echo "[-- unsupported platform --]" >&2

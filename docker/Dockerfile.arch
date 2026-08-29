@@ -51,11 +51,9 @@ RUN \
 
 # ------------------------------------------------------------------------------
 
-COPY ./config/nvim "/home/$CONFIG_USER_NAME/s7isol/config/nvim"
-
 RUN \
-  --mount=source=./programs/nvim,target=nvim,type=bind \
-  S7ISOL="/home/$CONFIG_USER_NAME/s7isol" bash nvim/install.sh
+  --mount=source=./programs/nvim/install-core.sh,target=nvim/install-core.sh,type=bind \
+  S7ISOL="/home/$CONFIG_USER_NAME/s7isol" bash nvim/install-core.sh
 
 RUN \
   --mount=source=./programs/nvim-qt/install.sh,target=script.sh,type=bind \
@@ -64,6 +62,18 @@ RUN \
 RUN \
   --mount=source=./programs/fonts/install.sh,target=script.sh,type=bind \
   bash script.sh
+
+
+COPY ./config/nvim "/home/$CONFIG_USER_NAME/s7isol/config/nvim"
+
+RUN \
+  --mount=source=./programs/nvim/install.sh,target=nvim/install.sh,type=bind \
+  --mount=source=./programs/nvim/env.sh,target=nvim/env.sh,type=bind \
+  --mount=source=./programs/nvim/lazy.sh,target=nvim/lazy.sh,type=bind \
+  --mount=source=./programs/nvim/init.sh,target=nvim/init.sh,type=bind \
+  --mount=source=./programs/nvim/dump.sh,target=nvim/dump.sh,type=bind \
+  --mount=source=./programs/nvim/lazyvim_dump.py,target=nvim/lazyvim_dump.py,type=bind \
+  S7ISOL="/home/$CONFIG_USER_NAME/s7isol" bash nvim/install.sh 2
 
 # ------------------------------------------------------------------------------
 
