@@ -26,6 +26,8 @@ clean:
 	set -euo pipefail && . docker/env.sh && docker compose --project-directory . -f docker/compose.yaml down -v --rmi all
 enter:
 	set -euo pipefail && . docker/env.sh && xhost +local: && docker exec -i "$${CONFIG_PROJECT_NAME}-app-1" /bin/bash -lc "bash cmd/wezterm.sh"
+bash:
+	set -euo pipefail && . docker/env.sh && docker exec -it "$${CONFIG_PROJECT_NAME}-app-1" /bin/bash -l
 logs:
 	set -euo pipefail && . docker/env.sh && docker logs "$${CONFIG_PROJECT_NAME}-app-1" | less
 
