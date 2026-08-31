@@ -1,6 +1,5 @@
 #!/bin/bash
 set -euo pipefail
-
 InterfaceName=$(
   for iface in /sys/class/net/*; do
     if [[ -d "$iface/wireless" ]] && readlink -f "$iface/device" | grep -q "/usb"; then
@@ -13,12 +12,10 @@ InterfaceName=$(
 Ssid=s7isol
 Password=genericpc
 Subnet=192.168.57.1/24
-
 if [[ -z $InterfaceName ]]; then
   echo "[-- Error --] No USB Wi-Fi interface found."
   exit 0
 fi
-
 case $(. /etc/os-release && echo $ID) in
 arch)
   sudo nmcli connection delete Hotspot 2>/dev/null || true
@@ -26,11 +23,12 @@ arch)
     ifname "$InterfaceName" \
     ssid "$Ssid" \
     password "$Password"
-
   sudo nmcli connection modify Hotspot \
     ipv4.addresses "$Subnet"
-
   sudo nmcli connection up Hotspot
+
+  sudo iptables -I FORWARD -i "$InterfaceName" -j ACCEPT
+  sudo iptables -I FORWARD -o "$InterfaceName" -j ACCEPT
   ;;
 *)
   echo "[-- error --] unsupported platform"
