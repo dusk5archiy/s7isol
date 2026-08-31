@@ -2,7 +2,10 @@
 set -euo pipefail
 case $(. /etc/os-release && echo $ID) in
 arch)
-  sudo pacman -S --needed --noconfirm dnsmasq arp-scan
+  yay -S --noconfirm rtl88x2bu-dkms-git
+  sudo modprobe -r rtw88_8822bu
+  sudo modprobe -r 88x2bu
+  sudo modprobe 88x2bu
   ;;
 *)
   echo "[-- Error --] Unsupported OS."

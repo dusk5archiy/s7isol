@@ -1,8 +1,7 @@
-local function generate_config(wezterm, config)
-	local utils = dofile(wezterm.config_dir .. "/utils.lua")
+local function get_theme_list(wezterm)
 	local theme_file = io.open(wezterm.config_dir .. "/data/themes.json", "r")
 	local theme_list = {
-		"Kanagawa (Gogh)",
+		"Catppuccin Mocha",
 	}
 	if theme_file then
 		local file_content = theme_file:read("*a")
@@ -10,7 +9,14 @@ local function generate_config(wezterm, config)
 		theme_list = wezterm.json_parse(file_content)
 	end
 
+	return theme_list
+end
+
+local function generate_config(wezterm, config)
+	local utils = dofile(wezterm.config_dir .. "/utils.lua")
 	local callback = function(window, _)
+		local theme_list = get_theme_list(wezterm)
+
 		local overrides = window:get_config_overrides() or {}
 		local current_theme = overrides.color_scheme or ""
 		local next_theme = utils.next_of(theme_list, current_theme)

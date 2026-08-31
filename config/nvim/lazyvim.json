@@ -6,6 +6,7 @@
     "lang.markdown",
     "lang.python",
     "lang.toml",
+    "lang.typescript",
     "lang.typst",
     "lang.yaml"
   ]

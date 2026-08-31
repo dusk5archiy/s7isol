@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PATH=$HOME/bin:$PATH
-skj update
+skj sync
 
 skj python/install
 skj bazel/install

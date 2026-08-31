@@ -11,7 +11,12 @@ FnInit
 unset -f FnInit
 
 function s7_unset() {
-  unset "$(printenv | awk -F= '/^S7ISOL/ {print $1}')"
+  local Vars
+  Vars=$(printenv | awk -F= '/^S7ISOL/ {print $1}')
+  if [[ -n $Vars ]]; then
+    # shellcheck disable=SC2086
+    unset $Vars
+  fi
   unset -f s7_unset
   set +euo pipefail
   return 0

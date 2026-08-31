@@ -2,6 +2,7 @@
 set -euo pipefail
 
 if [[ -f cmd/env.sh ]]; then
+  # shellcheck disable=SC1091
   . cmd/env.sh
 fi
 
@@ -9,5 +10,4 @@ Dir=$(dirname "${BASH_SOURCE[0]}")
 . "$Dir/env.sh"
 s7_unset
 
-export CONFIG_NVIM_TRANSPARENT=1
 nvim "$@"

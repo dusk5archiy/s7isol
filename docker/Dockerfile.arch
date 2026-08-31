@@ -27,45 +27,43 @@ RUN \
 
 # ==============================================================================
 
-ARG CONFIG_XDG_RUNTIME_DIR
-
-# dev/init.sh
-RUN \
-  --mount=source=./docker/dev/init.sh,target=script.sh,type=bind \
-  bash script.sh
-
-# programs/wezterm/install.sh
+# Wezterm
 RUN \
   --mount=source=./programs/wezterm/install.sh,target=script.sh,type=bind \
   bash script.sh
 
-# programs/y/install.sh
+# Yazi
 RUN \
   --mount=source=./programs/y/install.sh,target=script.sh,type=bind \
   bash script.sh
 
-# programs/sound/install.sh
+# Sound
 RUN \
   --mount=source=./programs/sound/install.sh,target=script.sh,type=bind \
   bash script.sh
 
 # ------------------------------------------------------------------------------
 
+# Neovim
 RUN \
   --mount=source=./programs/nvim/install-core.sh,target=nvim/install-core.sh,type=bind \
   S7ISOL="/home/$CONFIG_USER_NAME/s7isol" bash nvim/install-core.sh
 
+# Neovim Qt
 RUN \
   --mount=source=./programs/nvim-qt/install.sh,target=script.sh,type=bind \
   bash script.sh
 
+# Fonts
 RUN \
   --mount=source=./programs/fonts/install.sh,target=script.sh,type=bind \
   bash script.sh
 
+# ------------------------------------------------------------------------------
 
 COPY ./config/nvim "/home/$CONFIG_USER_NAME/s7isol/config/nvim"
 
+# LazyVim
 RUN \
   --mount=source=./programs/nvim/install.sh,target=nvim/install.sh,type=bind \
   --mount=source=./programs/nvim/env.sh,target=nvim/env.sh,type=bind \
@@ -75,12 +73,23 @@ RUN \
   --mount=source=./programs/nvim/lazyvim_dump.py,target=nvim/lazyvim_dump.py,type=bind \
   S7ISOL="/home/$CONFIG_USER_NAME/s7isol" bash nvim/install.sh 2
 
+# ==============================================================================
+
+ARG CONFIG_XDG_RUNTIME_DIR
+
+# Runtime
+RUN \
+  --mount=source=./docker/base/runtime.sh,target=script.sh,type=bind \
+  bash script.sh
+
 # ------------------------------------------------------------------------------
 
 COPY . "/home/$CONFIG_USER_NAME/s7isol"
 
+# s7isol
 RUN \
-  bash "/home/$CONFIG_USER_NAME/s7isol/docker/dev/main.sh"
+  --mount=source=./docker/base/s7isol.sh,target=script.sh,type=bind \
+  bash script.sh
 
 # ==============================================================================
 

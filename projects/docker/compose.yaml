@@ -1,14 +1,9 @@
 name: ${CONFIG_PROJECT_NAME}
 services:
   app:
-    image: ${CONFIG_IMAGE}
     build:
       context: ${CONFIG_CONTEXT}
       dockerfile: ${CONFIG_DOCKERFILE}
-      target: base
-      args:
-        CONFIG_USER_NAME: ${CONFIG_USER_NAME}
-        CONFIG_XDG_RUNTIME_DIR: ${CONFIG_XDG_RUNTIME_DIR}
     user: ${CONFIG_USER_NAME}
     tty: true
     stdin_open: true
@@ -23,7 +18,6 @@ services:
       - ${CONFIG_ENV_ANTHROPIC_MODEL:-$CONFIG_ENV_FALLBACK}
     volumes:
       - ${CONFIG_MOUNT_WORKSPACE:-$CONFIG_MOUNT_FALLBACK}
-      - ${CONFIG_MOUNT_S7ISOL:-$CONFIG_MOUNT_FALLBACK}
       - ${CONFIG_MOUNT_X11:-$CONFIG_MOUNT_FALLBACK}
       - ${CONFIG_MOUNT_WAYLAND_SOCKET:-$CONFIG_MOUNT_FALLBACK}
       - ${CONFIG_MOUNT_PIPEWIRE_SOCKET:-$CONFIG_MOUNT_FALLBACK}

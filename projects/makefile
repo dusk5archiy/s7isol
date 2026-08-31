@@ -14,8 +14,6 @@ code:
 
 build:
 	set -euo pipefail && . docker/env.sh && docker compose --project-directory . -f docker/compose.yaml build
-build-no-cache:
-	set -euo pipefail && . docker/env.sh && docker compose --project-directory . -f docker/compose.yaml build --no-cache
 up:
 	set -euo pipefail && . docker/env.sh && docker compose --project-directory . -f docker/compose.yaml up -d
 start-again:
@@ -31,11 +29,11 @@ logs:
 
 # ------------------------------------------------------------------------------
 
-# S7ISOL -----------------------------------------------------------------------
-
-.PHONY: push
-push:
-	set -euo pipefail && . docker/env.sh && docker compose --project-directory . -f docker/compose.yaml push
-.PHONY: init
-init:
-	[[ ! -f .pre.env ]] && cp example.pre.env .pre.env
+.PHONY: demo
+demo:
+	. virenv/main/env.sh && python -B python/main.py demo
+.PHONY: ui
+wayland:
+	. virenv/main/env.sh && QT_QPA_PLATFORM="wayland" python -B python/main.py ui
+x11:
+	. virenv/main/env.sh && QT_QPA_PLATFORM="xcb" python -B python/main.py ui

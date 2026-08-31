@@ -5,15 +5,13 @@ from pydantic import BaseModel
 
 
 def config_path_from_module(module_file: str) -> str:
-    module_path = Path(module_file).resolve()
-    parts = module_path.parts
-    if "src" in parts:
-        src_idx = parts.index("src")
-        config_parts = parts[:src_idx] + ("configs",) + parts[src_idx + 1 :]
-    else:
-        config_parts = parts
-    yaml_path = Path(*config_parts).with_suffix(".yaml")
-    return str(yaml_path)
+    parts = Path(module_file).resolve().parts
+
+    src_idx = parts.index("src")
+    sub_path = Path(*parts[src_idx + 1 :])
+    config_path = (Path.cwd() / "configs" / sub_path).with_suffix(".yaml")
+
+    return str(config_path)
 
 
 def from_yaml[T: BaseModel](filename: str, config_cls: type[T]) -> T:
