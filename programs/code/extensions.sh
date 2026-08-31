@@ -20,3 +20,5 @@ for ext in "${extensions[@]}"; do
   echo "Installing extension: $ext"
   bash "$Dir/__init__.sh" --install-extension "$ext" --force
 done
+
+echo "[-- done --] ${BASH_SOURCE[0]}"

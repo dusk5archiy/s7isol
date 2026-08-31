@@ -56,7 +56,7 @@ RUN \
 
 # Fonts
 RUN \
-  --mount=source=./programs/fonts/install.sh,target=script.sh,type=bind \
+  --mount=source=./programs/fonts/gui.sh,target=script.sh,type=bind \
   bash script.sh
 
 # ------------------------------------------------------------------------------

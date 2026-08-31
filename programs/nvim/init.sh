@@ -16,3 +16,5 @@ for module in "${modules[@]}"; do
 return dofile("$S7ISOL_NVIM_CONFIG_DIR/$module.lua")
 EOF
 done
+
+echo "[-- done --] ${BASH_SOURCE[0]}"

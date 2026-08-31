@@ -8,7 +8,7 @@ arch)
   fcitx5-configtool
   ;;
 *)
-  echo "[-- unsupported platform --]" >&2
+  echo "[-- error --] unsupported platform" >&2
   exit 1
   ;;
 esac

@@ -9,7 +9,7 @@ arch)
     xorg-xhost
   ;;
 *)
-  echo "[-- unsupported platform --]" >&2
+  echo "[-- error --] unsupported platform" >&2
   exit 1
   ;;
 esac

@@ -1,43 +1,14 @@
 name: ${CONFIG_PROJECT_NAME}
 services:
   app:
+    extends:
+      file: ${CONFIG_CONTEXT}/projects/docker/compose.yaml
+      service: app
     image: ${CONFIG_IMAGE}
     build:
-      context: ${CONFIG_CONTEXT}
-      dockerfile: ${CONFIG_DOCKERFILE}
       target: base
       args:
         CONFIG_USER_NAME: ${CONFIG_USER_NAME}
         CONFIG_XDG_RUNTIME_DIR: ${CONFIG_XDG_RUNTIME_DIR}
-    user: ${CONFIG_USER_NAME}
-    tty: true
-    stdin_open: true
-    ipc: host
-    environment:
-      - ${CONFIG_ENV_XDG_RUNTIME_DIR:-$CONFIG_ENV_FALLBACK}
-      - ${CONFIG_ENV_XDG_SESSION_TYPE:-$CONFIG_ENV_FALLBACK}
-      - ${CONFIG_ENV_WAYLAND_DISPLAY:-$CONFIG_ENV_FALLBACK}
-      - ${CONFIG_ENV_DISPLAY:-$CONFIG_ENV_FALLBACK}
-      - ${CONFIG_ENV_ANTHROPIC_BASE_URL:-$CONFIG_ENV_FALLBACK}
-      - ${CONFIG_ENV_ANTHROPIC_AUTH_TOKEN:-$CONFIG_ENV_FALLBACK}
-      - ${CONFIG_ENV_ANTHROPIC_MODEL:-$CONFIG_ENV_FALLBACK}
     volumes:
-      - ${CONFIG_MOUNT_WORKSPACE:-$CONFIG_MOUNT_FALLBACK}
       - ${CONFIG_MOUNT_S7ISOL:-$CONFIG_MOUNT_FALLBACK}
-      - ${CONFIG_MOUNT_X11:-$CONFIG_MOUNT_FALLBACK}
-      - ${CONFIG_MOUNT_WAYLAND_SOCKET:-$CONFIG_MOUNT_FALLBACK}
-      - ${CONFIG_MOUNT_PIPEWIRE_SOCKET:-$CONFIG_MOUNT_FALLBACK}
-      - ${CONFIG_MOUNT_PULSE_SOCKET:-$CONFIG_MOUNT_FALLBACK}
-      - ${CONFIG_MOUNT_CLAUDE:-$CONFIG_MOUNT_FALLBACK}
-      - ${CONFIG_MOUNT_VSCODE:-$CONFIG_MOUNT_FALLBACK}
-    working_dir: ${CONFIG_WORKSPACE}
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-
-volumes:
-  dummy_volume:

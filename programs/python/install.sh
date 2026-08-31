@@ -11,3 +11,5 @@ arch)
     python
   ;;
 esac
+
+echo "[-- done --] ${BASH_SOURCE[0]}"

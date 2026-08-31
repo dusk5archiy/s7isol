@@ -33,7 +33,7 @@ arch)
   sudo nmcli connection up Hotspot
   ;;
 *)
-  echo "[-- Error --] Unsupported OS."
+  echo "[-- error --] unsupported platform"
   exit 1
   ;;
 esac

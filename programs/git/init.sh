@@ -32,3 +32,5 @@ ssh-add "$S7ISOL_SSH_DIR/id_ed25519"
 # ------------------------------------------------------------------------------
 
 cat "$S7ISOL_SSH_DIR/id_ed25519.pub"
+
+echo "[-- done --] ${BASH_SOURCE[0]}"

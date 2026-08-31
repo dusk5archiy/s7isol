@@ -19,4 +19,4 @@ version = 2
 root = "$my_container_root"
 EOF
 
-echo "Configuration applied successfully!"
+echo "[-- done --] ${BASH_SOURCE[0]}"

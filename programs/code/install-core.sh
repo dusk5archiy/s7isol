@@ -11,7 +11,9 @@ arch)
   yay -S visual-studio-code-bin
   ;;
 *)
-  echo "[-- unsupported platform --]" >&2
+  echo "[-- error --] unsupported platform" >&2
   exit 1
   ;;
 esac
+
+echo "[-- done --] ${BASH_SOURCE[0]}"

@@ -10,3 +10,5 @@ ubuntu)
     libqt6opengl6
   ;;
 esac
+
+echo "[-- done --] ${BASH_SOURCE[0]}"

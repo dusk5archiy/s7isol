@@ -16,3 +16,5 @@ if [[ $Step == 0 || $Step == 2 ]]; then
 
   nvim --headless "+Lazy! sync" +qa
 fi
+
+echo "[-- done --] ${BASH_SOURCE[0]}"

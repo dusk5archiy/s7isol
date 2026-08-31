@@ -49,4 +49,4 @@ sed -i "s@<|EDITOR_COMMAND_HERE|>@$EDITOR_COMMAND@g" "$CONFIG_DIR/settings.xml"
 
 # ------------------------------------------------------------------------------
 
-echo "[-- S7ISOL --] Done."
+echo "[-- done --] ${BASH_SOURCE[0]}"

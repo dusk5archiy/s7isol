@@ -24,4 +24,4 @@ cp "$PrivateKey" "$PublicKey" "$Destination"
 
 ls -al "$Destination"
 
-echo "[-- Done --] ${BASH_SOURCE[0]}"
+echo "[-- done --] ${BASH_SOURCE[0]}"

@@ -25,10 +25,12 @@ arch)
     wl-clipboard
   ;;
 *)
-  echo "[-- unsupported platform --]" >&2
+  echo "[-- error --] unsupported platform" >&2
   exit 1
   ;;
 esac
 
 sudo npm install -g tree-sitter-cli --allow-scripts=tree-sitter-cli
 sudo npm install -g neovim
+
+echo "[-- done --] ${BASH_SOURCE[0]}"

@@ -10,3 +10,5 @@ arch)
     xournalpp
   ;;
 esac
+
+echo "[-- done --] ${BASH_SOURCE[0]}"

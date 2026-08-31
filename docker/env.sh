@@ -8,7 +8,7 @@ case $ConfigOs in
 ubuntu | arch)
   ;;
 *)
-  echo "[-- unsupported platform --]" >&2
+  echo "[-- error --] unsupported platform" >&2
   exit 1
   ;;
 esac
@@ -27,7 +27,7 @@ esac
 case $ConfigOs in
 ubuntu)
   CONFIG_IMAGE=saoyui/s7container-base:latest
-  CONFIG_DOCKERFILE=$PWD/docker/Dockerfile
+  CONFIG_DOCKERFILE=$PWD/docker/Dockerfile.ubuntu
   ;;
 arch)
   CONFIG_IMAGE=saoyui/s7container-arch:latest

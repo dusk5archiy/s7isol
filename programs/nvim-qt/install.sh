@@ -11,3 +11,5 @@ arch)
     neovim-qt
   ;;
 esac
+
+echo "[-- done --] ${BASH_SOURCE[0]}"

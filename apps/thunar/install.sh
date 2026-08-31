@@ -4,10 +4,10 @@ set -euo pipefail
 case $(. /etc/os-release && echo $ID) in
 ubuntu)
   sudo apt-get install -y --no-install-recommends \
-    eog
+    thunar tumbler
   ;;
 *)
-  echo "[-- unsupported platform --]" >&2
+  echo "[-- error --] unsupported platform" >&2
   exit 1
   ;;
 esac

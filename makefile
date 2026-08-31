@@ -2,6 +2,7 @@ SHELL:=/bin/bash
 MAKEFLAGS += --silent
 
 # [HOST] VS Code ---------------------------------------------------------------
+# Commands to run on the host.
 
 .PHONY: code
 
@@ -9,6 +10,7 @@ code:
 	set -euo pipefail && . docker/env.sh && code .
 
 # [HOST] Docker ----------------------------------------------------------------
+# Commands to run on the host.
 
 .PHONY: build up start-again down enter clean logs
 
@@ -24,14 +26,14 @@ down:
 	set -euo pipefail && . docker/env.sh && docker compose --project-directory . -f docker/compose.yaml down
 clean:
 	set -euo pipefail && . docker/env.sh && docker compose --project-directory . -f docker/compose.yaml down -v --rmi all
-enter:
+wezterm:
 	set -euo pipefail && . docker/env.sh && xhost +local: && docker exec -i "$${CONFIG_PROJECT_NAME}-app-1" /bin/bash -lc "bash cmd/wezterm.sh"
 bash:
 	set -euo pipefail && . docker/env.sh && docker exec -it "$${CONFIG_PROJECT_NAME}-app-1" /bin/bash -l
 logs:
 	set -euo pipefail && . docker/env.sh && docker logs "$${CONFIG_PROJECT_NAME}-app-1" | less
 
-# ------------------------------------------------------------------------------
+# ==============================================================================
 
 # S7ISOL -----------------------------------------------------------------------
 

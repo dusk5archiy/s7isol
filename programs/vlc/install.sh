@@ -7,7 +7,9 @@ ubuntu)
     vlc dbus-x11 libpulse0 xdg-utils
   ;;
 *)
-  echo "[-- unsupported platform --]" >&2
+  echo "[-- error --] unsupported platform" >&2
   exit 1
   ;;
 esac
+
+echo "[-- done --] ${BASH_SOURCE[0]}"
