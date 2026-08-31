@@ -47,7 +47,7 @@ RUN \
 # Neovim
 RUN \
   --mount=source=./programs/nvim/install-core.sh,target=nvim/install-core.sh,type=bind \
-  S7ISOL="/home/$CONFIG_USER_NAME/s7isol" bash nvim/install-core.sh
+  S7ISOL="$HOME/s7isol" bash nvim/install-core.sh
 
 # Neovim Qt
 RUN \
@@ -61,7 +61,7 @@ RUN \
 
 # ------------------------------------------------------------------------------
 
-COPY ./config/nvim "/home/$CONFIG_USER_NAME/s7isol/config/nvim"
+COPY ./config/nvim "/home/${CONFIG_USER_NAME}/s7isol/config/nvim"
 
 # LazyVim
 RUN \
@@ -71,7 +71,7 @@ RUN \
   --mount=source=./programs/nvim/init.sh,target=nvim/init.sh,type=bind \
   --mount=source=./programs/nvim/dump.sh,target=nvim/dump.sh,type=bind \
   --mount=source=./programs/nvim/lazyvim_dump.py,target=nvim/lazyvim_dump.py,type=bind \
-  S7ISOL="/home/$CONFIG_USER_NAME/s7isol" bash nvim/install.sh 2
+  S7ISOL="$HOME/s7isol" bash nvim/install.sh 2
 
 # ==============================================================================
 
@@ -82,27 +82,6 @@ RUN \
   --mount=source=./docker/base/runtime.sh,target=script.sh,type=bind \
   bash script.sh
 
-# ------------------------------------------------------------------------------
-
-COPY . "/home/$CONFIG_USER_NAME/s7isol"
-
-# s7isol
-RUN \
-  --mount=source=./docker/base/s7isol.sh,target=script.sh,type=bind \
-  bash script.sh
-
 # ==============================================================================
-
-# hadolint ignore=DL3007
-FROM base AS final
-
-# docker/setup.sh
-RUN \
-  --mount=source=./docker/setup.sh,target=script.sh,type=bind \
-  bash script.sh
-
-# docker/virenv/setup.sh
-RUN \
-  --mount=source=./docker/virenv/setup.sh,target=script.sh,type=bind \
-  --mount=source=./docker/virenv/requirements.txt,target=requirements.txt,type=bind \
-  bash script.sh
+COPY . "/home/${CONFIG_USER_NAME}/s7isol"
+RUN bash "$HOME/s7isol/install.sh" --profile
