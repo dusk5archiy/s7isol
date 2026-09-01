@@ -8,7 +8,7 @@ arch)
   sudo modprobe 88x2bu
   ;;
 *)
-  echo "[-- error --] unsupported platform"
+  echo "[-- error --] unsupported platform" >&2
   exit 1
   ;;
 esac

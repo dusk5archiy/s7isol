@@ -1,5 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
-PORT=${1:-}
-curl -I "http://localhost:$PORT"
+Port=${1:-}
+
+if [[ -z $Port ]]; then
+  echo "[-- error ] arg missing: Port"
+  exit 1
+fi
+
+curl -I "http://localhost:$Port"

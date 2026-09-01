@@ -9,8 +9,8 @@ InterfaceName=$(
   done
   true
 )
-Ssid=s7isol
-Password=genericpc
+Ssid=generics
+Password=generics
 Subnet=192.168.57.1/24
 if [[ -z $InterfaceName ]]; then
   echo "[-- Error --] No USB Wi-Fi interface found."
@@ -31,7 +31,7 @@ arch)
   sudo iptables -I FORWARD -o "$InterfaceName" -j ACCEPT
   ;;
 *)
-  echo "[-- error --] unsupported platform"
+  echo "[-- error --] unsupported platform" >&2
   exit 1
   ;;
 esac

@@ -46,31 +46,31 @@ xterm* | rxvt*)
 *) ;;
 esac
 
-RELEASE_ID=$(. /etc/os-release && echo $ID)
-case "$RELEASE_ID" in
+Os=$(. /etc/os-release && echo $ID)
+case "$Os" in
 msys2)
-  ICON="  "
+  Icon="  "
   ;;
 ubuntu)
-  ICON="  "
+  Icon="  "
   ;;
 arch)
-  ICON="  "
+  Icon="  "
   ;;
 *)
-  ICON="  "
+  Icon="  "
   ;;
 esac
-OS_PART="\[\033[01;33m\]${RELEASE_ID^^}\[\033[00m\]"
-ERR_PART="\$(exit_code=\$?; if [ ! \$exit_code -eq 0 ]; then echo \" \[\033[00;31m\](\$exit_code)\[\033[00m\]\"; else echo \" \[\033[00;36m\](\$exit_code)\[\033[00m\]\"; fi)"
-TIME_PART=" \$(date +%Y-%m-%d) \t"
-PREFIX="${ICON}${OS_PART}${ERR_PART}${TIME_PART}"
+OsPart="\[\033[01;33m\]${Os^^}\[\033[00m\]"
+ErrorPart="\$(exit_code=\$?; if [ ! \$exit_code -eq 0 ]; then echo \" \[\033[00;31m\](\$exit_code)\[\033[00m\]\"; else echo \" \[\033[00;36m\](\$exit_code)\[\033[00m\]\"; fi)"
+TimePart=" \$(date +%Y-%m-%d) \t"
+PREFIX="$Icon$OsPart$ErrorPart$TimePart"
 PS1="$PREFIX
 $PS1"
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  if test -r ~/.dircolors; then eval "$(dircolors -b ~/.dircolors)"; else eval "$(dircolors -b)"; fi
   alias ls='ls --color=auto'
   #alias dir='dir --color=auto'
   #alias vdir='vdir --color=auto'

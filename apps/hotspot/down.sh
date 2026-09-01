@@ -7,7 +7,7 @@ arch)
   sudo nmcli connection delete Hotspot 2>/dev/null || true
   ;;
 *)
-  echo "[-- error --] unsupported platform"
+  echo "[-- error --] unsupported platform" >&2
   exit 1
   ;;
 esac

@@ -1,4 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-reboot
+if command -v reboot &>/dev/null; then
+  reboot
+fi

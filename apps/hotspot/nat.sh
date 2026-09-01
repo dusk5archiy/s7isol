@@ -6,7 +6,7 @@ arch)
   sudo iptables -L FORWARD -n -v
   ;;
 *)
-  echo "[-- error --] unsupported platform"
+  echo "[-- error --] unsupported platform" >&2
   exit 1
   ;;
 esac
