@@ -3,15 +3,18 @@ set -euo pipefail
 
 # ------------------------------------------------------------------------------
 
-target=${1:-}
+Target=${1:-}
 shift # Remove $1 so "$@" holds only the remaining arguments
-base="<|S7ISOL|>"
-dirs=(scripts commands programs apps proj)
+Base="<|S7ISOL|>"
+Dirs=(scripts commands programs apps proj)
 
 # ------------------------------------------------------------------------------
 
 # shellcheck disable=SC1091
 . "<|S7ISOL|>/bin/init.sh"
+
+BaseName=$(basename "${BASH_SOURCE[0]}")
+export S7ISOL_TARGET="$BaseName $Target"
 
 # ------------------------------------------------------------------------------
 S7ISOL_PRE_ENV
@@ -24,23 +27,23 @@ S7ISOL_PRE_ENV
 # ------------------------------------------------------------------------------
 
 run_target() {
-  for dir in "${dirs[@]}"; do
-    local file=$base/$dir/$target.sh
-    local file_init=$base/$dir/$target/__init__.sh
-    local exec_file=""
+  for Dir in "${Dirs[@]}"; do
+    local File=$Base/$Dir/$Target.sh
+    local FileInit=$Base/$Dir/$Target/__init__.sh
+    local ExecFile=""
 
-    if [[ -f $file ]]; then
-      exec_file=$file
-    elif [[ -f $file_init ]]; then
-      exec_file=$file_init
+    if [[ -f $File ]]; then
+      ExecFile=$File
+    elif [[ -f $FileInit ]]; then
+      ExecFile=$FileInit
     fi
 
-    if [[ -n $exec_file ]]; then
+    if [[ -n $ExecFile ]]; then
       if [[ $0 != "${BASH_SOURCE[0]}" ]]; then
         # shellcheck disable=SC1090
-        . "$exec_file" "$@"
+        . "$ExecFile" "$@"
       else
-        bash "$exec_file" "$@"
+        bash "$ExecFile" "$@"
       fi
       return $?
     fi
@@ -52,7 +55,7 @@ run_target() {
 # ------------------------------------------------------------------------------
 
 # 1. Handle empty target
-if [[ -z $target ]]; then
+if [[ -z $Target ]]; then
   echo "$S7ISOL"
   s7_unset
   if [[ $0 != "${BASH_SOURCE[0]}" ]]; then
@@ -64,7 +67,7 @@ fi
 
 # 2. Execute target dispatch
 run_target "$@"
-status=$?
+Status=$?
 
 # 3. Clean up
 if declare -f s7_unset &>/dev/null; then
@@ -73,7 +76,7 @@ fi
 
 # 4. Exit/Return based on invocation mode using the captured exit status
 if [[ $0 != "${BASH_SOURCE[0]}" ]]; then
-  return "$status"
+  return "$Status"
 else
-  exit "$status"
+  exit "$Status"
 fi
