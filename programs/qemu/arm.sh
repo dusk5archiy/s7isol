@@ -4,11 +4,12 @@ set -euo pipefail
 # Defaults
 KernelFile=$HOME/rpi-kernel-build/output/Image
 RootDev=/dev/vda2
-Memory=2G
+Memory=4G
 CPUs=4
 UseUI=true
 
-show_help() {
+# Check for help flag or missing arguments
+if [[ $# -eq 0 || "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
   cat <<EOF
 Usage: $S7ISOL_TARGET <DiskOrImage> [OPTIONS]
 
@@ -32,11 +33,6 @@ Examples:
   # Boot from a raw disk image file with 4G RAM:
   $S7ISOL_TARGET raspios.img -m 4G
 EOF
-}
-
-# Check for help flag or missing arguments
-if [[ $# -eq 0 || "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
-  show_help
   exit 0
 fi
 
@@ -106,7 +102,8 @@ QemuArgs=(
 if [[ $UseUI == true ]]; then
   # GUI mode: Routes console to GTK window tab and attaches a display card
   QemuArgs+=(
-    -append "root=$RootDev rw rootfstype=ext4 rootwait console=tty0 systemd.mask=systemd-networkd-wait-online.service"
+    -append "root=$RootDev rw rootfstype=ext4 rootwait console=tty0"
+    # -append "systemd.mask=systemd-networkd-wait-online.service"
     -device "virtio-gpu-pci"
     -serial "vc"
     -display "gtk,zoom-to-fit=on"
@@ -117,7 +114,7 @@ if [[ $UseUI == true ]]; then
 else
   # Terminal mode: Routes console cleanly to host stdout without opening a GUI window
   QemuArgs+=(
-    -append "root=$RootDev rw rootfstype=ext4 rootwait console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 systemd.mask=systemd-networkd-wait-online.service"
+    -append "root=$RootDev rw rootfstype=ext4 rootwait console=ttyAMA0 earlycon=pl011,mmio32,0x09000000"
     -serial stdio
     -display none
   )

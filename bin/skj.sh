@@ -67,7 +67,7 @@ fi
 
 # 2. Execute target dispatch
 run_target "$@"
-Status=$?
+Status="$?"
 
 # 3. Clean up
 if declare -f s7_unset &>/dev/null; then

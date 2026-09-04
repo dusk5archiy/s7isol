@@ -22,7 +22,8 @@ local backend = {
 	enable_wayland = os.getenv("CONFIG_WEZTERM_DISPLAY") == "wayland",
 	force_reverse_video_cursor = true,
 	freetype_load_target = "Normal",
-	front_end = "Software",
+	-- Set to WebGpu for Windows in QEMU
+	front_end = "Software", -- Software | WebGpu | OpenGL
 }
 
 local env = {
