@@ -67,6 +67,25 @@ echo "==> Step 3.5: Force-enabling PCI Bus & VirtIO Drivers..."
 ./scripts/config --enable CONFIG_DEVTMPFS
 ./scripts/config --enable CONFIG_DEVTMPFS_MOUNT
 
+# Enable ZRAM & Compressed Swap Subsystems
+./scripts/config --enable CONFIG_ZRAM
+./scripts/config --set-str CONFIG_ZRAM_DEF_COMP "lz4"
+./scripts/config --enable CONFIG_CRYPTO_LZ4
+./scripts/config --enable CONFIG_SWAP
+
+# Core GPIO Framework
+./scripts/config --enable CONFIG_GPIOLIB
+./scripts/config --enable CONFIG_GPIO_CDEV
+
+# ConfigFS (Required for modern gpio-sim module)
+./scripts/config --enable CONFIG_CONFIGFS_FS
+
+# Enable Modern GPIO Simulator (Linux 5.19+) and Legacy Mockup
+./scripts/config --enable CONFIG_GPIO_SIM
+./scripts/config --enable CONFIG_GPIO_MOCKUP
+
+# DebugFS for inspecting /sys/kernel/debug/gpio
+./scripts/config --enable CONFIG_DEBUG_FS
 # Resolve configuration dependencies automatically
 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- make olddefconfig
 

@@ -1,0 +1,146 @@
+{
+  "app_config": {
+    "fonts_config": {
+      "fonts": [
+        "noto-fonts",
+        "noto-fonts-emoji",
+        "noto-fonts-cjk",
+        "ttf-liberation",
+        "ttf-dejavu"
+      ]
+    }
+  },
+  "archinstall_language": "English",
+  "auth_config": {},
+  "bootloader_config": {
+    "bootloader": "Grub",
+    "removable": false,
+    "uki": false
+  },
+  "custom_commands": [],
+  "disk_config": {
+    "btrfs_options": {
+      "snapshot_config": null
+    },
+    "config_type": "default_layout",
+    "device_modifications": [
+      {
+        "device": "/dev/sda",
+        "partitions": [
+          {
+            "btrfs": [],
+            "dev_path": null,
+            "flags": [
+              "boot"
+            ],
+            "fs_type": "fat32",
+            "mount_options": [],
+            "mountpoint": "/boot",
+            "obj_id": "ffe1fb3e-bd90-4eda-b25d-ec07404e02fe",
+            "size": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "GiB",
+              "value": 1
+            },
+            "start": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "MiB",
+              "value": 1
+            },
+            "status": "create",
+            "type": "primary"
+          },
+          {
+            "btrfs": [],
+            "dev_path": null,
+            "flags": [],
+            "fs_type": "ext4",
+            "mount_options": [],
+            "mountpoint": "/",
+            "obj_id": "a777fb85-173e-48ea-9818-bf0835941b01",
+            "size": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "B",
+              "value": 33284947968
+            },
+            "start": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "B",
+              "value": 1074790400
+            },
+            "status": "create",
+            "type": "primary"
+          }
+        ],
+        "wipe": true
+      }
+    ]
+  },
+  "hostname": "generic-arch",
+  "kernels": [
+    "linux"
+  ],
+  "locale_config": {
+    "console_font": "default8x16",
+    "kb_layout": "us",
+    "sys_enc": "UTF-8",
+    "sys_lang": "en_US.UTF-8"
+  },
+  "mirror_config": {
+    "custom_repositories": [],
+    "custom_servers": [],
+    "mirror_regions": {
+      "Vietnam": [
+        "http://mirror.bizflycloud.vn/archlinux/$repo/os/$arch",
+        "https://mirrors.nguyenhoang.cloud/archlinux/$repo/os/$arch",
+        "https://mirrors.huongnguyen.dev/arch/$repo/os/$arch",
+        "https://mirror.khoinet.dpdns.org/Arch/$repo/os/$arch"
+      ]
+    },
+    "optional_repositories": []
+  },
+  "network_config": {
+    "type": "iso"
+  },
+  "ntp": true,
+  "packages": [],
+  "pacman_config": {
+    "color": true,
+    "parallel_downloads": 5
+  },
+  "profile_config": {
+    "gfx_driver": "All open-source",
+    "greeter": "cosmic-greeter",
+    "profile": {
+      "custom_settings": {
+        "Hyprland": {
+          "seat_access": "polkit"
+        }
+      },
+      "details": [
+        "Hyprland"
+      ],
+      "main": "Desktop"
+    }
+  },
+  "script": null,
+  "services": [],
+  "swap": {
+    "algorithm": "zstd",
+    "enabled": true
+  },
+  "timezone": "UTC",
+  "version": "4.4"
+}
