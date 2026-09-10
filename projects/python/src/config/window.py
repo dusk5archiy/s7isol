@@ -1,9 +1,14 @@
+from pathlib import Path
+
 from lib.konfik import ShellSettings, YamlSettings, get_settings
 from pydantic import BaseModel
 
 
 class SettingsCls(BaseModel):
-    message: str
+    window_title: str
+    window_width: int
+    window_height: int
+    style_path: Path
 
 
 Settings = get_settings(

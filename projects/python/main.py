@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-import sys
-
-from src.programs import run
+from lib.branching.main import dunder_init_run
 
 if __name__ == "__main__":
-    run(sys.argv[1:])
+    import sys
+
+    import src.branch
+
+    dunder_init_run(module_names=[src.branch.__name__])(sys.argv[1:])

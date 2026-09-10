@@ -2,52 +2,41 @@
 set -euo pipefail
 
 # Cleanup temporary files on exit
-TpmDir=""
 VarsFile=""
+TpmDir=""
 cleanup() {
   [[ -n $TpmDir && -d $TpmDir ]] && rm -rf $TpmDir
   [[ -n $VarsFile && -f $VarsFile ]] && rm -f $VarsFile
 }
 trap cleanup EXIT
 
-if [[ $# -eq 0 || "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
-  cat <<EOF
-Usage: $S7ISOL_TARGET <file1> [file2 ...] [OPTIONS]
-
-Run a QEMU x86_64 virtual machine with auto-detected media files.
-
-Arguments:
-  <file...>         List of image files (.iso, .qcow2, .img, .raw, etc.)
-
-Options:
-  -h, --help        Show this help message and exit.
-  --windows         Enable Windows 11 optimizations (VirtIO, TPM 2.0, UEFI OVMF, q35).
-  --memory <size>   Set RAM size (default: 8G).
-  --cores <num>     Set CPU cores (default: 4).
-  --usb VENDOR:PROD Passthrough a USB device by Vendor:Product ID.
-EOF
-  exit 0
-fi
-
+# ------------------------------------------------------------------------------
 RawDrives=()
-QemuArgs=(
-  -accel kvm
-  -vga none
-  -device virtio-vga
-  -display "gtk,zoom-to-fit=on"
-)
-
 Memory=4G
 Cpu=host
 CpuCores=4
 
+# ------------------------------------------------------------------------------
+# Check for any CD mounts
+HasCdrom=false
+
 UseMouse=true
 UseAudio=true
-HasCdrom=false
-UseWindows=false
+
+# OVMF
 UseOvmf=false
-VirtioIso=/var/lib/libvirt/images/virtio-win.iso
+
+# Window & Virtio
+UseWindows=false
 UseVirtio=false
+VirtioIso=/var/lib/libvirt/images/virtio-win.iso
+
+QemuArgs=(
+  -accel kvm
+  -display "gtk,zoom-to-fit=on"
+)
+
+# ------------------------------------------------------------------------------
 
 while [[ $# -gt 0 ]]; do
   Arg=$1
@@ -92,17 +81,18 @@ while [[ $# -gt 0 ]]; do
 done
 
 # ------------------------------------------------------------------------------
-
-if [[ $UseWindows == true ]]; then
-  # 1. TPM 2.0 Setup
+# TPM 2.0 Setup
+EnableTmp() {
   TpmDir="/tmp/mytpm_$$"
   mkdir -p "$TpmDir"
   swtpm socket --tpmstate dir="$TpmDir" \
     --ctrl type=unixio,path="$TpmDir/swtpm-sock" \
     --tpm2 \
     --daemon
+}
 
-  # Hypervisor enlightenments, q35 machine
+# Hypervisor enlightenments, q35 machine
+EnableQ35() {
   Cpu="host,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time"
   QemuArgs+=(
     -machine q35
@@ -110,21 +100,67 @@ if [[ $UseWindows == true ]]; then
     -tpmdev "emulator,id=tpm0,chardev=chrtpm"
     -device "tpm-tis,tpmdev=tpm0"
   )
+}
 
-  # 2. VirtIO Network Card
+# Core Functions ===============================================================
+# Virtio -----------------------------------------------------------------------
+EnableVirtioNetwork() {
   QemuArgs+=(
     -netdev "user,id=net0"
     -device "virtio-net-pci,netdev=net0"
   )
-fi
+}
 
-if [[ $UseVirtio == true ]]; then
+AddVirtioIso() {
   sudo chmod 644 /var/lib/libvirt/images/virtio-win.iso
   sudo chmod 755 /var/lib/libvirt/images
   QemuArgs+=(-drive "file=$VirtioIso,media=cdrom,readonly=on")
-fi
+}
 
-# ------------------------------------------------------------------------------
+# OVMF -------------------------------------------------------------------------
+# OVMF stands for Open Virtual Machine Firmware
+# UEFI BIOS for virtual machines
+EnableOvmf() {
+  VarsFile="/tmp/ovmf_vars_$$.fd"
+  cp /usr/share/edk2/x64/OVMF_VARS.4m.fd "$VarsFile"
+  QemuArgs+=(
+    -drive "if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.4m.fd"
+    -drive "if=pflash,format=raw,file=$VarsFile"
+  )
+}
+
+# Others -----------------------------------------------------------------------
+EnableMouse() {
+  QemuArgs+=(
+    -usb
+    -device usb-tablet
+    -device usb-kbd
+    -device usb-mouse
+  )
+}
+
+EnableAudio() {
+  QemuArgs+=(
+    -device ich9-intel-hda
+    -audiodev "pipewire,id=snd0"
+    -device "hda-duplex,audiodev=snd0"
+  )
+}
+
+# Orchestrators ================================================================
+EnableWindows() {
+  EnableTmp
+  EnableQ35
+}
+
+# Gates ========================================================================
+if [[ $UseWindows == true ]]; then EnableWindows; fi
+if [[ $UseVirtio == true ]]; then EnableVirtioNetwork && AddVirtioIso; fi
+if [[ $UseOvmf == true ]]; then EnableOvmf; fi
+if [[ $UseMouse == true ]]; then EnableMouse; fi
+if [[ $UseAudio == true ]]; then EnableAudio; fi
+
+# Disk Mounts ==================================================================
 # Process drives AFTER controller initialization so bus=ahci0.x exists in QemuArgs sequence
 DriveIdx=0
 for DriveFile in "${RawDrives[@]}"; do
@@ -142,7 +178,11 @@ for DriveFile in "${RawDrives[@]}"; do
     if [[ "$DriveFile" =~ ^/dev/nvme[0-9]+n[0-9]+$ ]]; then
       DeviceArg=(-device "nvme,drive=$DriveId,serial=nvme${DriveIdx}")
     else
-      DeviceArg=(-device "ide-hd,drive=$DriveId")
+      if [[ $UseVirtio == true ]]; then
+        DeviceArg=(-device "virtio-blk-pci,drive=$DriveId")
+      else
+        DeviceArg=(-device "ide-hd,drive=$DriveId")
+      fi
     fi
 
     QemuArgs+=(
@@ -155,47 +195,12 @@ for DriveFile in "${RawDrives[@]}"; do
   fi
 done
 
-# ------------------------------------------------------------------------------
-
-if [[ $UseOvmf == true ]]; then
-  VarsFile="/tmp/ovmf_vars_$$.fd"
-  cp /usr/share/edk2/x64/OVMF_VARS.4m.fd "$VarsFile"
-  QemuArgs+=(
-    -drive "if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.4m.fd"
-    -drive "if=pflash,format=raw,file=$VarsFile"
-  )
-fi
-
-# ------------------------------------------------------------------------------
-
+# ==============================================================================
 QemuArgs+=(
   -cpu "$Cpu"
   -m "$Memory"
-  -smp "$CpuCores"
+  -smp "$CpuCores,sockets=1,cores=$CpuCores,threads=1"
 )
-
-# ------------------------------------------------------------------------------
-
-if [[ $UseMouse == true ]]; then
-  QemuArgs+=(
-    -usb
-    -device usb-tablet
-    -device usb-kbd
-    -device usb-mouse
-  )
-fi
-
-# ------------------------------------------------------------------------------
-
-if [[ $UseAudio == true ]]; then
-  QemuArgs+=(
-    -device ich9-intel-hda
-    -audiodev "pipewire,id=snd0"
-    -device "hda-duplex,audiodev=snd0"
-  )
-fi
-
-# ------------------------------------------------------------------------------
 
 if [[ "$HasCdrom" == true ]]; then
   QemuArgs+=(-boot "order=dc")

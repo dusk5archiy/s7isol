@@ -1,0 +1,4 @@
+window_title: Demo Window Title
+window_width: 300
+window_height: 200
+style_path: src/styles/app.css

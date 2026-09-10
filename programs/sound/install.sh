@@ -11,7 +11,7 @@ ubuntu)
   ;;
 arch)
   sudo pacman -S --noconfirm --needed \
-    pipewire sound-theme-freedesktop
+    pipewire pipewire-audio pipewire-pulse sound-theme-freedesktop
   ;;
 *)
   echo "[-- error --] unsupported platform" >&2

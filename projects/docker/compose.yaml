@@ -5,6 +5,7 @@ services:
       context: ${CONFIG_CONTEXT}
       dockerfile: ${CONFIG_DOCKERFILE}
     user: ${CONFIG_USER_NAME}
+    hostname: s7pc
     tty: true
     stdin_open: true
     ipc: host

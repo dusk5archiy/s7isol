@@ -106,14 +106,9 @@ ubuntu)
 arch)
   pacman -Syu --noconfirm
   pacman -S --noconfirm --needed \
-    sudo git
+    sudo
   ;;
 esac
-
-# Git --------------------------------------------------------------------------
-echo '[-- INFO --] Git Configuration...'
-git config --system http.sslVerify false
-git config --system --add safe.directory "*"
 
 # User -------------------------------------------------------------------------
 echo '[-- INFO --] Setting up user...'

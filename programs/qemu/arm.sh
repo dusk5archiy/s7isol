@@ -2,42 +2,15 @@
 set -euo pipefail
 
 # Defaults
-KernelFile="$HOME/rpi-kernel-build/output/Image"
-RootDev="/dev/vda2"
-Memory=2G
-CPUs="4"
+KernelFile=$HOME/rpi-kernel-build/output/Image
+RootDev=/dev/vda2
+Memory=4G
+CPUs=4
 UseUI=true
 
-# Check for help flag or missing arguments
-if [[ $# -eq 0 || "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
-  cat <<EOF
-Usage: $(basename "$0") <DiskOrImage> [OPTIONS]
+# ------------------------------------------------------------------------------
 
-Boots an ARM64 OS (e.g., Raspberry Pi OS) inside a QEMU ARM 'virt' machine,
-passing a physical block device or raw image file as a VirtIO drive.
-
-Arguments:
-  Disk                Path to block device (/dev/sdX, /dev/nvme0n1) or raw image file.
-
-Options:
-  -k, --kernel    Kernel image path (default: $KernelFile)
-  -r, --root      Root partition device in guest (default: $RootDev)
-  -m, --memory    RAM allocation (default: $Memory)
-  -c, --cpus      CPU core count (default: $CPUs)
-  --no-ui         Run headless without GUI window
-  -h, --help      Show this help message and exit.
-
-Examples:
-  # Boot directly from an SD card block device:
-  $(basename "$0") /dev/sdb
-
-  # Boot from a raw disk image file with 4G RAM:
-  $(basename "$0") raspios.img -m 4G
-EOF
-  exit 0
-fi
-
-Disk="$1"
+Disk=$1
 shift
 
 # Parse optional arguments

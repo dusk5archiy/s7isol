@@ -1,2 +1,3 @@
+# shellcheck source=/dev/null
 Dir=$(dirname "${BASH_SOURCE[0]}")
-. "$Dir/../virenv/main/env.sh"
+if File=$Dir/../virenv/s7isol/env.sh && [[ -f $File ]]; then . "$File"; fi

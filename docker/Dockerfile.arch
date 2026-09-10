@@ -10,59 +10,36 @@ ARG CONFIG_USER_NAME
 # ------------------------------------------------------------------------------
 
 WORKDIR /tmp
-
-# base/root.sh
-RUN \
-  --mount=source=./docker/base/root.sh,target=script.sh,type=bind \
-  bash script.sh
+RUN --mount=source=./docker/base/create-user.sh,target=script.sh,type=bind bash script.sh
+USER 1000
+RUN --mount=source=./docker/base/setup.arch.sh,target=script.sh,type=bind bash script.sh
 
 # ------------------------------------------------------------------------------
 
-USER 1000
-
-# base/user.sh
-RUN \
-  --mount=source=./docker/base/user.sh,target=script.sh,type=bind \
-  bash script.sh
+ARG CONFIG_XDG_RUNTIME_DIR
+RUN --mount=source=./docker/base/runtime.sh,target=script.sh,type=bind bash script.sh
 
 # ==============================================================================
 
-# Wezterm
-RUN \
-  --mount=source=./programs/wezterm/install.sh,target=script.sh,type=bind \
-  bash script.sh
+# hadolint ignore=DL3007
+FROM base AS main
 
-# Yazi
-RUN \
-  --mount=source=./programs/y/install.sh,target=script.sh,type=bind \
-  bash script.sh
-
-# Sound
-RUN \
-  --mount=source=./programs/sound/install.sh,target=script.sh,type=bind \
-  bash script.sh
+RUN --mount=source=./programs/wezterm/install.sh,target=script.sh,type=bind bash script.sh
+RUN --mount=source=./programs/y/install.sh,target=script.sh,type=bind bash script.sh
+RUN --mount=source=./programs/sound/install.sh,target=script.sh,type=bind bash script.sh
 
 # ------------------------------------------------------------------------------
 
-# Neovim
 RUN \
   --mount=source=./programs/nvim/install-core.sh,target=nvim/install-core.sh,type=bind \
-  S7ISOL="$HOME/s7isol" bash nvim/install-core.sh
+  S7ISOL=/mnt/s7isol bash nvim/install-core.sh
 
-# Neovim Qt
-RUN \
-  --mount=source=./programs/nvim-qt/install.sh,target=script.sh,type=bind \
-  bash script.sh
-
-# Fonts
-RUN \
-  --mount=source=./programs/fonts/gui.sh,target=script.sh,type=bind \
-  bash script.sh
+RUN --mount=source=./programs/nvim-qt/install.sh,target=script.sh,type=bind bash script.sh
+RUN --mount=source=./programs/fonts/gui.sh,target=script.sh,type=bind bash script.sh
 
 # ------------------------------------------------------------------------------
 
-COPY ./config/nvim "/home/${CONFIG_USER_NAME}/s7isol/config/nvim"
-
+COPY ./config/nvim /mnt/s7isol/config/nvim
 # LazyVim
 RUN \
   --mount=source=./programs/nvim/install.sh,target=nvim/install.sh,type=bind \
@@ -71,9 +48,9 @@ RUN \
   --mount=source=./programs/nvim/init.sh,target=nvim/init.sh,type=bind \
   --mount=source=./programs/nvim/dump.sh,target=nvim/dump.sh,type=bind \
   --mount=source=./programs/nvim/lazyvim_dump.py,target=nvim/lazyvim_dump.py,type=bind \
-  S7ISOL="$HOME/s7isol" bash nvim/install.sh 2
+  S7ISOL=/mnt/s7isol bash nvim/install.sh 2
 
-# ==============================================================================
+# ------------------------------------------------------------------------------
 
 ARG CONFIG_XDG_RUNTIME_DIR
 
@@ -82,6 +59,12 @@ RUN \
   --mount=source=./docker/base/runtime.sh,target=script.sh,type=bind \
   bash script.sh
 
+# ------------------------------------------------------------------------------
+COPY . /mnt/s7isol
+RUN bash /mnt/s7isol/install.sh --profile
+
 # ==============================================================================
-COPY . "/home/${CONFIG_USER_NAME}/s7isol"
-RUN bash "$HOME/s7isol/install.sh" --profile
+
+FROM base AS light
+COPY . /mnt/s7isol
+RUN bash /mnt/s7isol/install.sh --profile

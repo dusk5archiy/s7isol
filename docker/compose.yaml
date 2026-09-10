@@ -6,7 +6,7 @@ services:
       service: app
     image: ${CONFIG_IMAGE}
     build:
-      target: base
+      target: ${CONFIG_TARGET}
       args:
         CONFIG_USER_NAME: ${CONFIG_USER_NAME}
         CONFIG_XDG_RUNTIME_DIR: ${CONFIG_XDG_RUNTIME_DIR}

@@ -28,8 +28,7 @@ xorriso -as mkisofs \
   -boot-load-size 8 \
   -eltorito-alt-boot \
   -e "efi/microsoft/boot/efisys.bin" \
-  -no-emul-boot \
-  -isohybrid-gpt-basdat \
+  -no-emul-boot \ -isohybrid-gpt-basdat \
   -m "*install.wim*" \
   -m "*install.esd*" \
   -m "*install*.swm" \

@@ -7,6 +7,7 @@ ubuntu)
   sudo apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
+    git \
     gpg \
     less \
     wget \
@@ -16,9 +17,20 @@ ubuntu)
     vim
   ;;
 arch)
-  sudo pacman -Syu
+  sudo pacman -Syu --no-confirm
   sudo pacman -S --noconfirm --needed \
-    ca-certificates curl gnupg less \
-    wget unzip vim which
+    ca-certificates \
+    curl \
+    git \
+    gnupg \
+    less \
+    sudo \
+    unzip \
+    vim \
+    wget \
+    which
   ;;
 esac
+
+sudo git config --system http.sslVerify false
+sudo git config --system --add safe.directory "*"

@@ -1,6 +1,6 @@
 local appearance = {
 	color_scheme = os.getenv("CONFIG_WEZTERM_THEME") or "Catppuccin Mocha",
-	window_background_opacity = 1.0,
+	window_background_opacity = 0.9,
 	audible_bell = "Disabled",
 	visual_bell = {
 		fade_in_duration_ms = 75,

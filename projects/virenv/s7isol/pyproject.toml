@@ -1,17 +1,19 @@
 [project]
 name = "projects"
+requires-python = "==3.14.*"
 version = "0"
 dependencies = [
   # Configs --------------------------------------------------------------------
   "pydantic",
   "pyyaml",
+  "dotenv",
+
+  # Logging --------------------------------------------------------------------
+  "loguru",
+  # "tqdm",
 
   # Ui -------------------------------------------------------------------------
   "pyside6",
-
-  # Logging --------------------------------------------------------------------
-  # "loguru",
-  # "tqdm",
 
   # Networking -----------------------------------------------------------------
   # "fastapi",
@@ -29,6 +31,16 @@ dependencies = [
   # "matplotlib",
   # "scikit-learn",
   # "torch",
+
+  # GPU ------------------------------------------------------------------------
+  # "nvidia-cublas",
+  # "nvidia-cuda-runtime",
+  # "nvidia-cudnn-cu13",
+  # "nvidia-cufft",
+  # "nvidia-curand",
+  # "nvidia-cusolver",
+  # "nvidia-cusparse",
+  # "nvidia-cuda-nvcc",
 ]
 
 [tool.uv]

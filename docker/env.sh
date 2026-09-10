@@ -5,7 +5,7 @@
 DefaultOs=arch
 ConfigOs=${CONFIG_OS:-$DefaultOs}
 case $ConfigOs in
-ubuntu | arch)
+arch | light) # ubuntu
   ;;
 *)
   echo "[-- error --] unsupported platform" >&2
@@ -17,26 +17,27 @@ echo "Os: $ConfigOs"
 # ------------------------------------------------------------------------------
 
 BaseName=$(basename "$PWD" | tr '[:upper:]' '[:lower:]')
-CONFIG_PROJECT_NAME=$BaseName
-case $ConfigOs in
-arch)
-  CONFIG_PROJECT_NAME=${BaseName}_arch
-  ;;
-esac
+CONFIG_PROJECT_NAME=${BaseName}_$ConfigOs
+CONFIG_IMAGE=saoyui/s7container-$ConfigOs:latest
+CONFIG_DOCKERFILE=$PWD/docker/Dockerfile.$ConfigOs
 
 case $ConfigOs in
 ubuntu)
   CONFIG_IMAGE=saoyui/s7container-base:latest
-  CONFIG_DOCKERFILE=$PWD/docker/Dockerfile.ubuntu
   ;;
 arch)
-  CONFIG_IMAGE=saoyui/s7container-arch:latest
+  CONFIG_TARGET=main
+  ;;
+light)
   CONFIG_DOCKERFILE=$PWD/docker/Dockerfile.arch
+  CONFIG_TARGET=light
   ;;
 esac
 
-export CONFIG_PROJECT_NAME CONFIG_IMAGE CONFIG_DOCKERFILE
+export CONFIG_PROJECT_NAME CONFIG_IMAGE CONFIG_DOCKERFILE CONFIG_TARGET
 
 # ------------------------------------------------------------------------------
 
-export CONFIG_MOUNT_S7ISOL=$FROM_WORKSPACE:"/home/$CONFIG_USER_NAME/s7isol"
+FromS7isol=$PWD
+ToS7isol=/mnt/s7isol
+export CONFIG_MOUNT_S7ISOL=$FromS7isol:$ToS7isol
