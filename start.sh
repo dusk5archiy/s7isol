@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 . /etc/environment
 
 Dir=$(dirname "${BASH_SOURCE[0]}")

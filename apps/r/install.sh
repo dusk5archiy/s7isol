@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 case $(. /etc/os-release && echo $ID) in
 ubuntu)
   wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc

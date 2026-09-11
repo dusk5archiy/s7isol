@@ -39,6 +39,3 @@ def dunder_init_run(module_names: list[str]):
         assert component_exists
 
     return run
-
-
-__all__ = ["dunder_init_run"]

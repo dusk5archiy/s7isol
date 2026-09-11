@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 Disk=${1:-}
 
 if [[ -z $Disk || ! -b $Disk ]]; then

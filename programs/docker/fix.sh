@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+
+
 
 echo "=================================================="
 echo "Starting Clean Docker & Containerd Restart..."

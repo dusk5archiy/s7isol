@@ -1,8 +1,6 @@
 #!/bin/bash
-set -euo pipefail
 
 # ------------------------------------------------------------------------------
-
 Target=${1:-}
 shift # Remove $1 so "$@" holds only the remaining arguments
 Base="<|S7ISOL|>"
@@ -68,7 +66,7 @@ fi
 
 # 2. Execute target dispatch
 run_target "$@"
-Status=$?
+Status=${?:-0}
 
 # 3. Clean up
 if declare -f s7_unset &>/dev/null; then
@@ -77,7 +75,7 @@ fi
 
 # 4. Exit/Return based on invocation mode using the captured exit status
 if [[ $0 != "${BASH_SOURCE[0]}" ]]; then
-  return $Status
+  return "$Status"
 else
-  exit $Status
+  exit "$Status"
 fi

@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 Port=${1:-}
 
 if [[ -z $Port ]]; then

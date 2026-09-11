@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 mkdir -p "$HOME/build"
 cd "$HOME/build"
 

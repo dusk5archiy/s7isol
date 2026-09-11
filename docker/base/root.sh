@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+
+
 
 Os=$(. /etc/os-release && echo $ID)
 

@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 if command -v bazel &>/dev/null; then
   exit 0
 fi

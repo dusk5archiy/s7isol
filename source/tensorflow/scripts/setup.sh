@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 PATH=$HOME/bin:$PATH
 skj sync
 

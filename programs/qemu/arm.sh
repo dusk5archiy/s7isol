@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+
+
 
 # Defaults
 KernelFile=$HOME/rpi-kernel-build/output/Image

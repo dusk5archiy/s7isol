@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+
+
 
 User=$(whoami)
 sudo groupadd docker || true

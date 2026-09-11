@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 get_country_code_1() {
   exec 3<>/dev/tcp/ipapi.co/80
   echo -e "GET /country/ HTTP/1.1\r\nHost: ipapi.co\r\nUser-Agent: bash\r\nConnection: close\r\n\r\n" >&3

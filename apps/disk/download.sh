@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 Disk=${1:-}
 if [[ -z $Disk ]]; then
   echo "[-- error --] Please provide a disk device (/dev/sdX)."

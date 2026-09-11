@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 case $(. /etc/os-release && echo $ID) in
 ubuntu)
   curl -LsSf https://astral.sh/uv/install.sh | sh

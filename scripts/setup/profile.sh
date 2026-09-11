@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 if [[ $0 != "${BASH_SOURCE[0]}" ]]; then
   echo "[-- bash --]"
   return 1

@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 cleanup() {
   kill $PID 2>/dev/null
   exit

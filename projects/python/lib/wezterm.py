@@ -75,6 +75,3 @@ class WeztermSpawner:
         assert config.log_dir is not None
         safe = re.sub(r"[^A-Za-z0-9._-]+", "_", title).strip("_") or f"pane_{index}"
         return config.log_dir / f"{safe}.log"
-
-
-__all__ = ["ProgramTab", "WeztermSpawner"]

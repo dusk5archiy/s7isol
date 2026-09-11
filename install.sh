@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 ArgSetupProfile=
 
 for Arg; do

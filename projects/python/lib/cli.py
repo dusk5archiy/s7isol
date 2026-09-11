@@ -13,6 +13,3 @@ class BaseCli(BaseModel):
     def parse(cls, argv: list[str]):
         args, argv = cls.parser().parse_known_args(argv)
         return cls.model_validate(vars(args)), argv
-
-
-__all__ = ["BaseCli"]

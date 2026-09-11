@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+
+
 
 my_docker_root=/mnt/docker/.my_docker_root
 sudo mkdir -p /etc/docker "$my_docker_root"

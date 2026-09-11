@@ -1,5 +1,3 @@
-#!/bin/bash
-set -euo pipefail
 InterfaceName=$(
   for iface in /sys/class/net/*; do
     if [[ -d "$iface/wireless" ]] && readlink -f "$iface/device" | grep -q "/usb"; then

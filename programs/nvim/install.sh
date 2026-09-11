@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+
+
 
 Step=${1:-0}
 

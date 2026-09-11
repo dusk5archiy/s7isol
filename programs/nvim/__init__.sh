@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+
+
 
 if [[ -f cmd/env.sh ]]; then
   # shellcheck disable=SC1091

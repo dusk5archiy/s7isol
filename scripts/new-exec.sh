@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 # ------------------------------------------------------------------------------
 
 S7isolExecutable=$HOME/bin/skj

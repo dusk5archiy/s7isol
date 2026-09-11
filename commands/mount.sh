@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 Device=${1:-}
 MountPoint=${2:-}
 

@@ -1,6 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
 Download=/tmp/Miniconda3-latest-Linux-x86_64.sh
 
 if [[ ! -f $Download ]]; then

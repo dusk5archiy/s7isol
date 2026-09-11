@@ -1,12 +1,11 @@
-#!/bin/bash
-set -euo pipefail
 
-# Cleanup temporary files on exit
+
+
 VarsFile=""
 TpmDir=""
 cleanup() {
-  [[ -n $TpmDir && -d $TpmDir ]] && rm -rf $TpmDir
-  [[ -n $VarsFile && -f $VarsFile ]] && rm -f $VarsFile
+  [[ -n $TpmDir && -d $TpmDir ]] && rm -rf "$TpmDir"
+  [[ -n $VarsFile && -f $VarsFile ]] && rm -f "$VarsFile"
 }
 trap cleanup EXIT
 
@@ -30,6 +29,12 @@ UseOvmf=false
 UseWindows=false
 UseVirtio=false
 VirtioIso=/var/lib/libvirt/images/virtio-win.iso
+UseAhci=false
+UseScsi=false
+
+# Dummy VirtIO disk tracking
+UseDummy=false
+DummyDisk=""
 
 QemuArgs=(
   -accel kvm
@@ -50,6 +55,16 @@ while [[ $# -gt 0 ]]; do
   --windows) UseWindows=true && UseOvmf=true && UseVirtio=true ;;
   --virtio) UseVirtio=true ;;
   --ovmf) UseOvmf=true ;;
+  --ahci) UseAhci=true ;;
+  --dummy)
+    shift
+    UseDummy=true
+    DummyDisk=$1
+    if [[ ! -e "$DummyDisk" ]]; then
+      echo "[-- error --] specified dummy disk does not exist: $DummyDisk" >&2
+      exit 1
+    fi
+    ;;
   --usb)
     shift
     IFS=':' read -r Vendor Product <<<"$1"
@@ -85,17 +100,16 @@ done
 EnableTmp() {
   TpmDir="/tmp/mytpm_$$"
   mkdir -p "$TpmDir"
-  swtpm socket --tpmstate dir="$TpmDir" \
-    --ctrl type=unixio,path="$TpmDir/swtpm-sock" \
-    --tpm2 \
-    --daemon
+  swtpm socket --tpmstate dir="$TpmDir" --ctrl type=unixio,path="$TpmDir/swtpm-sock" --tpm2 --daemon
 }
 
 # Hypervisor enlightenments, q35 machine
 EnableQ35() {
   Cpu="host,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time"
   QemuArgs+=(
-    -machine q35
+    -machine "q35,smm=on"
+    -global "driver=cfi.pflash01,property=secure,value=on"
+    -global "ICH9-LPC.disable_s3=1"
     -chardev "socket,id=chrtpm,path=$TpmDir/swtpm-sock"
     -tpmdev "emulator,id=tpm0,chardev=chrtpm"
     -device "tpm-tis,tpmdev=tpm0"
@@ -105,6 +119,9 @@ EnableQ35() {
 # Core Functions ===============================================================
 # Virtio -----------------------------------------------------------------------
 EnableVirtioNetwork() {
+  QemuArgs+=(
+    -device virtio-serial-pci
+  )
   QemuArgs+=(
     -netdev "user,id=net0"
     -device "virtio-net-pci,netdev=net0"
@@ -122,13 +139,13 @@ AddVirtioIso() {
 # UEFI BIOS for virtual machines
 EnableOvmf() {
   VarsFile="/tmp/ovmf_vars_$$.fd"
+
   cp /usr/share/edk2/x64/OVMF_VARS.4m.fd "$VarsFile"
   QemuArgs+=(
-    -drive "if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.4m.fd"
+    -drive "if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.secboot.4m.fd"
     -drive "if=pflash,format=raw,file=$VarsFile"
   )
 }
-
 # Others -----------------------------------------------------------------------
 EnableMouse() {
   QemuArgs+=(
@@ -147,6 +164,14 @@ EnableAudio() {
   )
 }
 
+EnableAhci() {
+  QemuArgs+=(-device "ahci,id=ahci")
+}
+
+EnableScsi() {
+  QemuArgs+=(-device "virtio-scsi-pci,id=scsi")
+}
+
 # Orchestrators ================================================================
 EnableWindows() {
   EnableTmp
@@ -159,10 +184,16 @@ if [[ $UseVirtio == true ]]; then EnableVirtioNetwork && AddVirtioIso; fi
 if [[ $UseOvmf == true ]]; then EnableOvmf; fi
 if [[ $UseMouse == true ]]; then EnableMouse; fi
 if [[ $UseAudio == true ]]; then EnableAudio; fi
+if [[ $UseAhci == true ]]; then EnableAhci; fi
+if [[ $UseScsi == true ]]; then EnableScsi; fi
 
 # Disk Mounts ==================================================================
 # Process drives AFTER controller initialization so bus=ahci0.x exists in QemuArgs sequence
+
 DriveIdx=0
+AhciIdx=0
+ScsiIdx=0
+
 for DriveFile in "${RawDrives[@]}"; do
   # Set raw format for block devices
   if [[ -b "$DriveFile" || "$DriveFile" == /dev/* ]]; then
@@ -174,17 +205,21 @@ for DriveFile in "${RawDrives[@]}"; do
 
   if [[ "$UseWindows" == true ]]; then
     DriveId="drive-win${DriveIdx}"
+    DeviceArg=()
 
     if [[ "$DriveFile" =~ ^/dev/nvme[0-9]+n[0-9]+$ ]]; then
-      DeviceArg=(-device "nvme,drive=$DriveId,serial=nvme${DriveIdx}")
+      DeviceArg+=(-device "nvme,drive=$DriveId,serial=nvme${DriveIdx}")
     else
-      if [[ $UseVirtio == true ]]; then
-        DeviceArg=(-device "virtio-blk-pci,drive=$DriveId")
+      if [[ $UseAhci == true ]]; then
+        QemuArgs+=(-device "ide-hd,drive=$DriveId,bus=ahci.$AhciIdx") && ((++AhciIdx))
+      elif [[ $UseVirtio == true ]]; then
+        DeviceArg+=(-device "virtio-blk-pci,drive=$DriveId")
+      elif [[ $UseScsi == true ]]; then
+        QemuArgs+=(-device "scsi-hd,drive=$DriveId,bus=scsi.$ScsiIdx") && ((++ScsiIdx))
       else
-        DeviceArg=(-device "ide-hd,drive=$DriveId")
+        QemuArgs+=(-device "ide-hd,drive=$DriveId")
       fi
     fi
-
     QemuArgs+=(
       -drive "file=$DriveFile,format=$FileExtension,if=none,id=$DriveId"
       "${DeviceArg[@]}"
@@ -194,6 +229,19 @@ for DriveFile in "${RawDrives[@]}"; do
     QemuArgs+=(-drive "file=$DriveFile,format=$FileExtension")
   fi
 done
+
+# Attach Dummy VirtIO Disk if specified
+if [[ $UseDummy == true ]]; then
+  DummyExtension="${DummyDisk##*.}"
+  [[ "$DummyExtension" == "img" ]] && DummyExtension="raw"
+  if [[ -b "$DummyDisk" || "$DummyDisk" == /dev/* ]]; then
+    DummyExtension="raw"
+  fi
+  QemuArgs+=(
+    -drive "file=$DummyDisk,format=$DummyExtension,if=none,id=drive-dummy"
+    -device "virtio-blk-pci,drive=drive-dummy"
+  )
+fi
 
 # ==============================================================================
 QemuArgs+=(
