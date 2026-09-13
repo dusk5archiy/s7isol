@@ -10,7 +10,7 @@ Main() {
     esac
   done
 
-  local Dir && Dir=$(dirname "${BASH_SOURCE[0]}")
+  local Dir && Dir=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
 
   # ------------------------------------------------------------------------------
   . "$Dir/bin/init.sh"

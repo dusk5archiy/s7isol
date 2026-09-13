@@ -9,9 +9,9 @@ Main() {
     ;;
   esac
 
-  local Dir && Dir=$(dirname "${BASH_SOURCE[0]}")
+  local Dir && Dir=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
   bash "$Dir/setup/user-setup.sh"
-  bash "$Dir/install.sh --profile"
+  bash "$Dir/install.sh" --profile
 
   echo "[-- success --] Run:"
   echo "(Exit WSL) exit"
