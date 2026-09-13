@@ -1,11 +1,12 @@
 import json
 import os
+from pathlib import Path
 
-S7ISOL = os.environ["S7ISOL"]
-NVIM_CONFIG_DIR = os.environ["NVIM_CONFIG_DIR"]
+S7ISOL = Path(__file__).resolve().parent.parent.parent
+NVIM_CONFIG_DIR = Path(os.environ["NVIM_CONFIG_DIR"])
 
-S7ISOL_FILE = f"{S7ISOL}/config/nvim/lazyvim.json"
-TARGET_FILE = f"{NVIM_CONFIG_DIR}/lazyvim.json"
+S7ISOL_FILE = S7ISOL / "config/nvim/lazyvim.json"
+TARGET_FILE = NVIM_CONFIG_DIR / "lazyvim.json"
 
 with open(S7ISOL_FILE) as f:
     s7isol_dict = json.load(f)
