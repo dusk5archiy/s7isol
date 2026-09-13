@@ -15,8 +15,8 @@ Main() {
   local Username Password
 
   echo "[-- prompt --] Create a New User"
-  read -pr "Username: " Username
-  read -pr -s "Password: " Password
+  read -rp "Username: " Username
+  read -rp -s "Password: " Password
   echo ""
 
   local Dir && Dir=$(dirname "${BASH_SOURCE[0]}")
