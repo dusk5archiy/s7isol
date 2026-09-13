@@ -19,13 +19,12 @@ Main() {
   read -rsp "Password: " Password
   echo ""
 
-  local Dir && Dir=$(dirname "${BASH_SOURCE[0]}")
+  local Dir && Dir=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
   bash "$Dir/setup/root-create-user.sh" \
     --username "$Username" \
     --password "$Password" \
     --wsl
 
-  echo "Dir: $Dir"
   su - "$Username" -c "bash $Dir/user.sh"
 }
 
