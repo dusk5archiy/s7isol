@@ -1,6 +1,3 @@
-
-
-
 Step=${1:-0}
 
 Dir=$(dirname "${BASH_SOURCE[0]}")

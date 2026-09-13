@@ -8,37 +8,15 @@ SHELL ["/bin/bash", "-c"]
 ARG CONFIG_USER_NAME
 
 # ------------------------------------------------------------------------------
-WORKDIR /tmp
-RUN --mount=source=./docker/base/create-user.sh,target=script.sh,type=bind bash script.sh
+COPY . /mnt/s7isol
+WORKDIR /mnt/s7isol
+RUN bash setup/root-create-user.sh \
+  --username ${CONFIG_USER_NAME} \
+  --password ${CONFIG_USER_NAME} \
+  --home
 USER 1000
-RUN --mount=source=./docker/base/setup.arch.sh,target=script.sh,type=bind bash script.sh
+RUN bash user.sh
 
 # ==============================================================================
 ARG CONFIG_XDG_RUNTIME_DIR
-RUN --mount=source=./docker/base/runtime.sh,target=script.sh,type=bind bash script.sh
-
-# ------------------------------------------------------------------------------
-RUN --mount=source=./programs/wezterm/install.sh,target=script.sh,type=bind bash script.sh
-RUN --mount=source=./programs/y/install.sh,target=script.sh,type=bind bash script.sh
-RUN --mount=source=./programs/sound/install.sh,target=script.sh,type=bind bash script.sh
-
-# ------------------------------------------------------------------------------
-RUN --mount=source=./programs/nvim/install-core.sh,target=nvim/install-core.sh,type=bind \
-  S7ISOL=/mnt/s7isol bash nvim/install-core.sh
-
-RUN --mount=source=./programs/nvim-qt/install.sh,target=script.sh,type=bind bash script.sh
-RUN --mount=source=./programs/fonts/gui.sh,target=script.sh,type=bind bash script.sh
-
-# ------------------------------------------------------------------------------
-COPY ./config/nvim /mnt/s7isol/config/nvim
-RUN --mount=source=./programs/nvim/install.sh,target=nvim/install.sh,type=bind \
-  --mount=source=./programs/nvim/env.sh,target=nvim/env.sh,type=bind \
-  --mount=source=./programs/nvim/lazy.sh,target=nvim/lazy.sh,type=bind \
-  --mount=source=./programs/nvim/init.sh,target=nvim/init.sh,type=bind \
-  --mount=source=./programs/nvim/dump.sh,target=nvim/dump.sh,type=bind \
-  --mount=source=./programs/nvim/lazyvim_dump.py,target=nvim/lazyvim_dump.py,type=bind \
-  S7ISOL=/mnt/s7isol bash nvim/install.sh 2
-
-# ------------------------------------------------------------------------------
-COPY . /mnt/s7isol
-RUN bash /mnt/s7isol/install.sh --profile
+RUN mkdir -p "${CONFIG_XDG_RUNTIME_DIR}"

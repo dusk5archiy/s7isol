@@ -1,8 +1,8 @@
 Main() {
   local ModeWsl=0
   local ModeHome=0
-  local Username=generic
-  local Password=generic
+  local Username=""
+  local Password=""
 
   while [[ $# -gt 0 ]]; do
     local Arg=$1
@@ -16,6 +16,14 @@ Main() {
   done
 
   # Create User ----------------------------------------------------------------
+  if [[ -z $Username ]]; then
+    read -rp "Username: " Username
+  fi
+  if [[ -z $Password ]]; then
+    read -rsp "Password: " Password
+  fi
+  echo ""
+
   useradd -m -s /bin/bash "$Username"
   echo "$Username:$Password" | chpasswd
   echo "$Username ALL=(ALL) NOPASSWD:ALL" >"/etc/sudoers.d/$Username"

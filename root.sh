@@ -12,19 +12,13 @@ Main() {
   pacman -Syu --noconfirm
   pacman -S --noconfirm --needed sudo
 
-  local Username Password
-
   echo "[-- prompt --] Create a New User"
-  read -rp "Username: " Username
-  read -rsp "Password: " Password
-  echo ""
+  if [[ -z $Username ]]; then
+    read -rp "Username: " Username
+  fi
 
   local Dir && Dir=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
-  bash "$Dir/setup/root-create-user.sh" \
-    --username "$Username" \
-    --password "$Password" \
-    --wsl
-
+  bash "$Dir/setup/root-create-user.sh" --username "$Username" --wsl
   su - "$Username" -c "bash $Dir/user.sh"
 }
 

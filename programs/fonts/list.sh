@@ -1,6 +1,3 @@
-
-
-
 case $(. /etc/os-release && echo $ID) in
 arch)
   ls /usr/share/kbd/consolefonts/

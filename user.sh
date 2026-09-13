@@ -12,6 +12,7 @@ Main() {
   local Dir && Dir=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
   bash "$Dir/setup/user-setup.sh"
   bash "$Dir/install.sh" --profile
+  bash "$Dir/setup/user-programs.sh"
 
   echo "[-- success --] Run:"
   echo "(Exit WSL) exit"

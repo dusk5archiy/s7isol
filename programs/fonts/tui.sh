@@ -1,6 +1,3 @@
-
-
-
 case $(. /etc/os-release && echo $ID) in
 arch)
   if [[ -f "/etc/vconsole.conf" ]]; then
