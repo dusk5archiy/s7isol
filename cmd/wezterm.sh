@@ -1,1 +1,1 @@
-"$HOME/bin/skj" wezterm
+skj wezterm

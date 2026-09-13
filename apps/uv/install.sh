@@ -11,3 +11,5 @@ arch)
   exit 1
   ;;
 esac
+
+echo "[-- done --] ${BASH_SOURCE[0]}"

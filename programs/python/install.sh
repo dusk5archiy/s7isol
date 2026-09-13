@@ -1,6 +1,3 @@
-
-
-
 case $(. /etc/os-release && echo $ID) in
 ubuntu)
   sudo apt-get install -y --no-install-recommends \
@@ -9,6 +6,10 @@ ubuntu)
 arch)
   sudo pacman -S --noconfirm --needed \
     python
+  ;;
+*)
+  echo "[-- error --] unsupported platform" >&2
+  exit 1
   ;;
 esac
 

@@ -5,8 +5,7 @@ Main() {
   bash "$Dir/programs/y/install.sh"
   bash "$Dir/programs/sound/install.sh"
   bash "$Dir/programs/nvim-qt/install.sh"
-  bash "$Dir/programs/fonts/gui.sh"
-
+  bash "$Dir/programs/fonts/install-gui.sh"
   bash "$Dir/programs/nvim/install.sh"
 }
 

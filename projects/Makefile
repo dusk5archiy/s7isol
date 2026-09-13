@@ -13,16 +13,13 @@ code:
 
 .PHONY: setup
 setup:
+	bash virenv/setup.sh
 	bash virenv/s7isol/env.sh --setup
 
 # ------------------------------------------------------------------------------
 
-.PHONY: ui
-ui:
-	. virenv/s7isol/env.sh && python -B python/main.py ui
-
-.PHONY: wez
-wez:
+.PHONY: wezterm
+wezterm:
 	. virenv/s7isol/env.sh && python -B python/main.py wezterm
 
 .PHONY: demo
