@@ -25,6 +25,7 @@ Main() {
     --password "$Password" \
     --wsl
 
+  echo "Dir: $Dir"
   su - "$Username" -c "bash $Dir/user.sh"
 }
 
