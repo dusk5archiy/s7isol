@@ -22,3 +22,5 @@ Main() {
   sudo git config --system http.sslVerify false
   sudo git config --system --add safe.directory "*"
 }
+
+Main "$@"
