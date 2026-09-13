@@ -1,6 +1,3 @@
-
-
-
 # Defaults
 KernelFile=$HOME/rpi-kernel-build/output/Image
 RootDev=/dev/vda2

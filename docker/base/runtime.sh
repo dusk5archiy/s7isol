@@ -1,4 +1,1 @@
-
-
-
 mkdir -p "$CONFIG_XDG_RUNTIME_DIR"

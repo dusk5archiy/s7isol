@@ -1,17 +1,18 @@
+Main() {
+  local DiskFile=$1
+  local Size=$2
+  local FileExtension="${DiskFile##*.}"
 
+  case $DiskFile in
+  *.qcow2 | *.vhdx)
+    qemu-img create -f "$FileExtension" "$DiskFile" "$Size"
+    ;;
+  *)
+    qemu-img create "$DiskFile" "$Size"
+    ;;
+  esac
+}
 
+Main "$@"
 
-DiskFile=$1
-Size=$2
-
-case $DiskFile in
-*.qcow2)
-  qemu-img create -f qcow2 "$DiskFile" "$Size"
-  ;;
-*.vhdx)
-  qemu-img create -f vhdx "$DiskFile" "$Size"
-  ;;
-*)
-  qemu-img create "$DiskFile" "$Size"
-  ;;
-esac
+echo "[-- done --] ${BASH_SOURCE[*]}"

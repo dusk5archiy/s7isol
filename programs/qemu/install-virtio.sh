@@ -1,5 +1,3 @@
-
-
 case $(. /etc/os-release && echo $ID) in
 arch)
   sudo pacman -S swtpm virtio-win

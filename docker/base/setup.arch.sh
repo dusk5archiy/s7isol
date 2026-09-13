@@ -1,6 +1,3 @@
-
-
-
 Os=$(. /etc/os-release && echo $ID)
 
 if [[ $Os != arch ]]; then
@@ -16,3 +13,5 @@ sudo pacman -S --noconfirm --needed \
 
 sudo git config --system http.sslVerify false
 sudo git config --system --add safe.directory "*"
+
+# ------------------------------------------------------------------------------

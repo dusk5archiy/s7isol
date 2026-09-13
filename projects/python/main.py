@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from lib.branching.main import dunder_init_run
+from lib.branching import dunder_init_run
 
 if __name__ == "__main__":
     import sys

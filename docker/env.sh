@@ -5,7 +5,7 @@
 DefaultOs=arch
 ConfigOs=${CONFIG_OS:-$DefaultOs}
 case $ConfigOs in
-arch | light) # ubuntu
+arch) # ubuntu
   ;;
 *)
   echo "[-- error --] unsupported platform" >&2
@@ -27,10 +27,6 @@ ubuntu)
   ;;
 arch)
   CONFIG_TARGET=main
-  ;;
-light)
-  CONFIG_DOCKERFILE=$PWD/docker/Dockerfile.arch
-  CONFIG_TARGET=light
   ;;
 esac
 

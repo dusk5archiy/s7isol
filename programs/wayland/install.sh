@@ -1,6 +1,3 @@
-
-
-
 case $(. /etc/os-release && echo $ID) in
 ubuntu)
   # adwaita-icon-theme: helps Wezterm recognize mouse cursors

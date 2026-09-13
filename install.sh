@@ -1,22 +1,30 @@
-ArgSetupProfile=
+Main() {
+  local ModeSetupProfile=0
+  local ModeAddExec=1
 
-for Arg; do
-  case $Arg in
-  --profile)
-    ArgSetupProfile=1
-    ;;
-  esac
-done
+  for Arg; do
+    case $Arg in
+    --profile)
+      ModeSetupProfile=1
+      ;;
+    esac
+  done
 
-Dir=$(dirname "${BASH_SOURCE[0]}")
+  local Dir && Dir=$(dirname "${BASH_SOURCE[0]}")
 
-# ------------------------------------------------------------------------------
-. "$Dir/bin/init.sh"
-bash "$Dir/scripts/new-exec.sh"
+  # ------------------------------------------------------------------------------
+  . "$Dir/bin/init.sh"
 
-s7_unset
-# ------------------------------------------------------------------------------
+  if [[ $ModeAddExec == 1 ]]; then
+    bash "$Dir/scripts/new-exec.sh"
+  fi
 
-if [[ -n $ArgSetupProfile ]]; then
-  "$HOME/bin/skj" setup/profile
-fi
+  s7_unset
+  # ------------------------------------------------------------------------------
+
+  if [[ $ModeSetupProfile == 1 ]]; then
+    "$HOME/bin/skj" setup/profile
+  fi
+}
+
+Main "$@"
