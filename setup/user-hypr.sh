@@ -4,6 +4,7 @@ Main() {
   arch)
     sudo pacman -S --noconfirm --needed \
       hyprpolkitagent \
+      hyprlauncher \
       wl-clipboard
     # hyprpolkitagent -- Authentication agent
     # wl-clipboard -- Clipboard
