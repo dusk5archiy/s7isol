@@ -39,7 +39,6 @@ DummyDisk=""
 QemuArgs=(
   -accel kvm
   -display "gtk,zoom-to-fit=on"
-  # -display gtk
 )
 
 # ------------------------------------------------------------------------------

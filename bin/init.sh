@@ -1,8 +1,7 @@
 export SHELL=${SHELL:-/bin/bash}
 
 function FnInit() {
-  local Dir
-  Dir=$(dirname "${BASH_SOURCE[0]}")
+  local Dir && Dir=$(dirname "${BASH_SOURCE[0]}")
   S7ISOL=$(realpath "$Dir/..")
   export S7ISOL
 }
@@ -18,7 +17,6 @@ function s7_unset() {
     unset $Vars
   fi
   unset -f s7_unset
-  set +euo pipefail
   return 0
 }
 

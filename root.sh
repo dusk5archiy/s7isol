@@ -19,7 +19,7 @@ Main() {
 
   local Dir && Dir=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
   bash "$Dir/setup/root-create-user.sh" --username "$Username" --wsl
-  su - "$Username" -c "bash $Dir/user.sh"
+  su - "$Username" -c "bash $Dir/user.sh --wsl"
 }
 
 Main "$@"

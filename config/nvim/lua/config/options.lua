@@ -5,6 +5,8 @@
 if vim.fn.has("win32") == 1 then
 	vim.o.shellslash = false
 end
+
+vim.g.root_spec = { "cwd" }
 vim.opt.colorcolumn = "80"
 vim.opt.columns = 80
 vim.opt.conceallevel = 0

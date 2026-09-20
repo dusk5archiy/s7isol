@@ -5,7 +5,13 @@ Main() {
   local Target=${1:-}
   shift
   local Base="<|S7ISOL|>"
-  local ScriptDirs=(scripts commands programs apps proj)
+  local ScriptDirs=(
+    apps
+    commands
+    programs
+    scripts
+    tools
+  )
 
   # ------------------------------------------------------------------------------
 
@@ -19,13 +25,16 @@ Main() {
   S7ISOL_PRE_ENV
 
   # ------------------------------------------------------------------------------
-
-  # shellcheck disable=SC1091
-  . "<|S7ISOL|>/bin/post.env.sh"
+  export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+  export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+  export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+  export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
+  export TMP=${TMP:-$HOME/tmp}
+  export TEMP=$TMP
 
   # ------------------------------------------------------------------------------
 
-  run_target() {
+  RunTarget() {
     for ScriptDir in "${ScriptDirs[@]}"; do
       local File=$Base/${ScriptDir}/${Target}.sh
       local FileInit=${Base}/${ScriptDir}/${Target}/__init__.sh
@@ -71,8 +80,8 @@ Main() {
   fi
 
   # 2. Execute target dispatch
-  run_target "$@"
-  Status=${?:-0}
+  RunTarget "$@"
+  local Status=${?:-0}
 
   # 3. Clean up
   if declare -f s7_unset &>/dev/null; then

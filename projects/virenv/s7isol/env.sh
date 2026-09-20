@@ -1,5 +1,3 @@
-# shellcheck source=/dev/null
-
 Main() {
   local SetupMode=0
 
@@ -17,14 +15,19 @@ Main() {
   # ----------------------------------------------------------------------------
   local Dir && Dir=$(dirname "${BASH_SOURCE[0]}")
   local BaseName && BaseName=$(basename "$Dir")
-  local PseudoProjectFolder=$HOME/virenv/${BaseName}
+  local PseudoProjectFolder=$HOME/virenv/${BaseName} # HOME | PWD
   local EnvFolder=$PseudoProjectFolder/.venv
+  local ActivateFile=$EnvFolder/bin/activate
 
   if [[ $SetupMode == 0 ]]; then
     # Env Mode -----------------------------------------------------------------
-    if [[ -f $EnvFolder/bin/activate ]]; then
+    if [[ -f $ActivateFile ]]; then
+      # shellcheck source=/dev/null
       . "$EnvFolder/bin/activate"
       echo "[-- success --] virenv activated"
+    else
+      echo "[-- error --] $ActivateFile not found"
+      return 1
     fi
   else
     # Setup Mode ---------------------------------------------------------------
@@ -35,7 +38,9 @@ Main() {
 
     mkdir -p "$PseudoProjectFolder"
 
-    cp "$Dir/pyproject.toml" "$PseudoProjectFolder/pyproject.toml"
+    if local PyProjectTomlFile=$PseudoProjectFolder/pyproject.toml && [[ ! -f $PyProjectTomlFile ]]; then
+      cp "$Dir/pyproject.toml" "$PyProjectTomlFile"
+    fi
 
     uv venv --allow-existing "$UV_PROJECT_ENVIRONMENT"
     uv sync --project "$PseudoProjectFolder"
