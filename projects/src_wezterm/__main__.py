@@ -1,19 +1,24 @@
+from pathlib import Path
+
+from lib.cli import BaseCli
+from lib.pydanplus import load_list
 from lib.wezterm import ProgramTab, WeztermSpawner
 from src_wezterm.config import Settings
 
 
 def run(argv: list[str]):
-    program_tabs: list[ProgramTab] = [
-        ProgramTab(
-            title="wayland",
-            command="bash cmd/main.sh -m src_ui --use-wayland 1",
-        ),
-        ProgramTab(
-            title="x11",
-            command="bash cmd/main.sh -m src_ui --use-wayland 0",
-        ),
-    ]
+    class Cli(BaseCli):
+        file: Path
 
+        @classmethod
+        def create_parser(cls):
+            parser = super().create_parser()
+            parser.add_argument("file", type=str)
+            return parser
+
+    cli, _ = Cli.parse(argv)
+
+    program_tabs: list[ProgramTab] = load_list(ProgramTab, cli.file)
     spawner = WeztermSpawner(
         config=WeztermSpawner.Config(
             log_dir=Settings.log_dir,

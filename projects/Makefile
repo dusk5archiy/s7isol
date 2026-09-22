@@ -22,7 +22,7 @@ setup:
 
 .PHONY: wezterm
 wezterm:
-	. virenv/s7isol/env.sh && python -B -m src_wezterm
+	. virenv/s7isol/env.sh && python -B -m src_wezterm settings/programs.yaml
 
 .PHONY: main
 main:

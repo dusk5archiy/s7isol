@@ -31,8 +31,7 @@ Main() {
     fi
   else
     # Setup Mode ---------------------------------------------------------------
-
-    PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+    PATH="$HOME/.local/bin:$PATH"
 
     export UV_PROJECT_ENVIRONMENT=$EnvFolder
 

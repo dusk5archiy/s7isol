@@ -7,14 +7,6 @@ from pydantic import BaseModel
 
 
 # ------------------------------------------------------------------------------
-def export_yaml(model: BaseModel, file: Path):
-    import yaml
-
-    with open(file, "w") as f:
-        yaml.dump(model.model_dump(), f, sort_keys=False)
-
-
-# ------------------------------------------------------------------------------
 def translate_path(file: str, dot_extension: str) -> Path:
     project_folder = Path.cwd()
     parts = Path(file).relative_to(project_folder).parts

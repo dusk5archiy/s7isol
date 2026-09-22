@@ -3,4 +3,4 @@
 bash "$S7ISOL/scripts/new-exec.sh"
 
 s7_unset
-"$HOME/bin/skj" wezterm
+skj wezterm

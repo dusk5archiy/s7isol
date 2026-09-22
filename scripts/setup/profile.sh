@@ -4,8 +4,7 @@ if [[ $0 != "${BASH_SOURCE[0]}" ]]; then
 fi
 
 # ------------------------------------------------------------------------------
-
-. "$S7ISOL/bin/post.env.sh"
+. "$S7ISOL/env/home.sh"
 
 mkdir -p "$HOME" \
   "$XDG_CONFIG_HOME" \
@@ -14,7 +13,6 @@ mkdir -p "$HOME" \
   "$XDG_STATE_HOME" \
   "$TMP"
 
-mkdir -p "$HOME/bin"
 mkdir -p "$HOME/.local/bin"
 
 # ------------------------------------------------------------------------------

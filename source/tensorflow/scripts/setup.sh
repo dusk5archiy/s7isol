@@ -1,4 +1,3 @@
-PATH=$HOME/bin:$PATH
 skj sync
 
 skj python/install

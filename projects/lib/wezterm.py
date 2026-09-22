@@ -1,21 +1,20 @@
 import json
 import re
 import subprocess
-from dataclasses import dataclass, field
 from pathlib import Path
 
+from pydantic import BaseModel
 
-@dataclass
-class ProgramTab:
+
+class ProgramTab(BaseModel):
     title: str
     command: str
 
 
 class WeztermSpawner:
-    @dataclass
-    class Config:
+    class Config(BaseModel):
         log_dir: Path | None = None
-        program_tabs: list[ProgramTab] = field(default_factory=list)
+        program_tabs: list[ProgramTab]
 
     def __init__(self, config: Config) -> None:
         self.config = config

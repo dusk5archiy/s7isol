@@ -17,4 +17,4 @@ s7_unset
 # ------------------------------------------------------------------------------
 
 bash "$Dir/install.sh" --profile
-"$HOME/bin/skj" wezterm
+skj wezterm

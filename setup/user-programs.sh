@@ -1,6 +1,5 @@
 Main() {
   local Dir && Dir=$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")
-  export PATH="$HOME/bin:$PATH"
   bash "$Dir/programs/wezterm/install.sh"
   bash "$Dir/programs/y/install.sh"
   bash "$Dir/programs/sound/install.sh"

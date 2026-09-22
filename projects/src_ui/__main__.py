@@ -12,10 +12,8 @@ def run(argv: list[str]):
             return "wayland" if self.use_wayland else "xcb"
 
         @classmethod
-        def parser(cls):
-            import argparse
-
-            parser = argparse.ArgumentParser()
+        def create_parser(cls):
+            parser = super().create_parser()
             parser.add_argument("--use-wayland", type=str, required=True)
             return parser
 

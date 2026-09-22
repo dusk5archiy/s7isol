@@ -23,7 +23,7 @@ Main() {
 
   # ----------------------------------------------------------------------------
   if [[ $ModeSetupProfile == 1 ]]; then
-    "$HOME/bin/skj" setup/profile
+    skj setup/profile
   fi
 }
 
