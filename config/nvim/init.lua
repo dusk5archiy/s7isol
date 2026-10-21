@@ -4,3 +4,6 @@ if vim.g.vscode then
 end
 
 require("config.lazy")
+
+local dir = debug.getinfo(1, "S").source:sub(2):match("^(.*[/\\])") or "./"
+dofile(dir .. "local/clangd.lua")

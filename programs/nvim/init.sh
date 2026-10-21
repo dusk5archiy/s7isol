@@ -1,6 +1,3 @@
-
-
-
 Dir=$(dirname "${BASH_SOURCE[0]}")
 . "$Dir/env.sh"
 
