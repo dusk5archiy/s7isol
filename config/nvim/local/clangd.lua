@@ -7,7 +7,7 @@ require("lspconfig").clangd.setup({
 		"clangd",
 		string.format("--query-driver=%s,%s", get_program_path("gcc"), get_program_path("g++")),
 		"--fallback-style=GNU",
-		"--compile-commands-dir=.build",
+		"--compile-commands-dir=build",
 		"--clang-tidy",
 		"--background-index",
 	},
