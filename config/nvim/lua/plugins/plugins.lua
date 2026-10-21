@@ -10,6 +10,7 @@ return {
 		},
 	},
 	dofile(dir .. "lualine.lua"),
+	dofile(dir .. "clangd.lua"),
 	dofile(dir .. "snack.lua"),
 	dofile(dir .. "mason.lua"),
 	dofile(dir .. "mini.pairs.lua"),
