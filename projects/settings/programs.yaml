@@ -1,4 +1,0 @@
-- title: wayland
-  command: bash cmd/main.sh -m src_ui --use-wayland 1
-- title: x11
-  command: bash cmd/main.sh -m src_ui --use-wayland 0

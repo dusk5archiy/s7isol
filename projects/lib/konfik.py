@@ -1,12 +1,59 @@
+import json
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
 from pathlib import Path
 from typing import override
 
-from pydantic import BaseModel
+import yaml
+from pydantic import BaseModel, TypeAdapter
 
 
-# ------------------------------------------------------------------------------
+def load_content(file: Path) -> object:
+    suffix = file.suffix.lower()
+    with file.open("r", encoding="utf-8") as f:
+        if suffix == ".json":
+            data = json.load(f)
+        elif suffix in (".yaml", ".yml"):
+            data = yaml.safe_load(f)
+        elif suffix in (".env"):
+            from dotenv import dotenv_values
+
+            data = dotenv_values(file)
+        else:
+            raise ValueError(f"[-- error --] unsupported file extension: '{suffix}'")
+
+    return data
+
+
+def write_content(data: object, file: Path) -> None:
+    suffix = file.suffix.lower()
+    with file.open("w", encoding="utf-8") as f:
+        if suffix == ".json":
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        elif suffix in (".yaml", ".yml"):
+            yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
+        else:
+            raise ValueError(f"[-- error --] unsupported file extension: '{suffix}'")
+
+
+def load_object[T: BaseModel](cls: type[T], file: Path) -> T:
+    raw_data = load_content(file)
+    adapter = TypeAdapter(cls)
+    return adapter.validate_python(raw_data)
+
+
+def load_list[T: BaseModel](cls: type[T], file: Path) -> list[T]:
+    raw_data = load_content(file)
+    if not isinstance(raw_data, list):
+        raise TypeError(
+            f"[-- error --] expected file content to be a list, got '{type(raw_data).__name__}'"
+        )
+
+    adapter = TypeAdapter(list[cls])
+    return adapter.validate_python(raw_data)
+
+
+# ==============================================================================
 def translate_path(file: str, dot_extension: str) -> Path:
     project_folder = Path.cwd()
     parts = Path(file).relative_to(project_folder).parts
@@ -46,11 +93,8 @@ class YamlSettings(BaseSettings):
         if not self.path.exists():
             return {}
 
-        import yaml
-
-        with open(self.path, encoding="utf-8") as f:
-            data = yaml.safe_load(f)
-            assert isinstance(data, dict)
+        data = load_content(self.path)
+        assert isinstance(data, dict)
 
         return data
 
@@ -74,11 +118,8 @@ class JsonSettings(BaseSettings):
         if not self.path.exists():
             return {}
 
-        import json
-
-        with open(self.path, encoding="utf-8") as f:
-            data = json.load(f)
-            assert isinstance(data, dict)
+        data = load_content(self.path)
+        assert isinstance(data, dict)
 
         return data
 
@@ -86,7 +127,7 @@ class JsonSettings(BaseSettings):
 class DotenvSettings(BaseSettings):
     def __init__(self, path: str | Path, prefix: str = ""):
         self.path: Path = Path(path)
-        self.prefix = prefix
+        self.prefix = prefix.upper()
 
     @classmethod
     def from_dunder_file(cls, dunder_file: str):
@@ -103,20 +144,19 @@ class DotenvSettings(BaseSettings):
         if not self.path.exists():
             return {}
 
-        from dotenv import dotenv_values
-
-        data = dotenv_values(self.path)
+        data = load_content(self.path)
+        assert isinstance(data, dict)
         data = {
-            k.removeprefix(self.prefix): v
+            k.upper().removeprefix(self.prefix).lower(): v
             for k, v in data.items()
-            if k.startswith(self.prefix)
+            if k.upper().startswith(self.prefix)
         }
         return data
 
 
 class ShellSettings(BaseSettings):
     def __init__(self, prefix: str = ""):
-        self.prefix = prefix
+        self.prefix = prefix.upper()
 
     @property
     @override
@@ -129,9 +169,9 @@ class ShellSettings(BaseSettings):
 
         data = dict(os.environ)
         data = {
-            k.removeprefix(self.prefix): v
+            k.upper().removeprefix(self.prefix).lower(): v
             for k, v in data.items()
-            if k.startswith(self.prefix)
+            if k.upper().startswith(self.prefix)
         }
         return data
 

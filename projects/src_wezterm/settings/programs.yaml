@@ -1,0 +1,4 @@
+- title: wayland
+  command: make src_ui.wayland
+- title: x11
+  command: make src_ui

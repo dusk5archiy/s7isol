@@ -1,23 +1,18 @@
-from lib.cli import BaseCli
+from lib.konfik import ShellSettings, get_settings
+from pydantic import BaseModel
 from src_ui.config import Settings
 from src_ui.gui_window import GuiWindow
 
 
 def run(argv: list[str]):
-    class Cli(BaseCli):
-        use_wayland: bool
+    class Cli(BaseModel):
+        wayland: bool = False
 
         @property
         def window_platform(self):
-            return "wayland" if self.use_wayland else "xcb"
+            return "wayland" if self.wayland else "xcb"
 
-        @classmethod
-        def create_parser(cls):
-            parser = super().create_parser()
-            parser.add_argument("--use-wayland", type=str, required=True)
-            return parser
-
-    cli, _ = Cli.parse(argv)
+    cli = get_settings(Cli, [ShellSettings()])
     window = GuiWindow(
         config=GuiWindow.Config(
             style_path=Settings.style_path,
