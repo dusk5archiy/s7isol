@@ -1,6 +1,5 @@
 {
   "extras": [
-    "editor.snacks_explorer",
     "lang.clangd",
     "lang.docker",
     "lang.json",

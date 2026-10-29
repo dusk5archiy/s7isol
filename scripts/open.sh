@@ -2,6 +2,7 @@ Main() {
   local Os && Os=$(. /etc/os-release && echo $ID)
   case $Os in
   arch)
+    s7_unset
     xdg-open "$@"
     ;;
   *)

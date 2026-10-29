@@ -3,7 +3,7 @@ Dir=$(dirname "${BASH_SOURCE[0]}")
 
 modules=(
   init
-  lua/config/autocmd
+  lua/config/autocmds
   lua/config/keymaps
   lua/config/options
   lua/plugins/plugins
