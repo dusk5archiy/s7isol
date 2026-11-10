@@ -28,7 +28,7 @@ assign letter=V
 - `E`: Windows Installer ISO
 
 ```cmd
-dism /apply-image /imagefile:"E:\sources\install.wim"" /index:1 /applydir:V:\
+dism /apply-image /imagefile:"E:\sources\install.wim" /index:1 /applydir:V:\
 bcdboot V:\Windows /s S: /f uefi
 ```
 

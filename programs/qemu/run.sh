@@ -32,6 +32,9 @@ UseVirtioIso=false
 VirtioIso=/var/lib/libvirt/images/virtio-win.iso
 UseAhci=true
 
+UseFshare=false
+FshareSock="/tmp/virtiofsd.sock"
+
 # Dummy VirtIO disk tracking
 UseDummy=false
 DummyDisk=""
@@ -48,7 +51,7 @@ while [[ $# -gt 0 ]]; do
 
   case $Arg in
   --memory) shift && Memory=$1 ;;
-  --cores) shift && CpuCores=$1 ;;
+  --cpu) shift && CpuCores=$1 ;;
   --windows) UseWindows=true && UseOvmf=true && UseTpm=true && UseSafeBoot=true ;;
   --no-conn) UseConn=false ;;
   --no-mouse) UseMouse=false ;;
@@ -56,7 +59,8 @@ while [[ $# -gt 0 ]]; do
   --no-tpm) UseTpm=false ;;
   --no-safe-boot) UseSafeBoot=false ;;
   --virtio-iso) UseVirtioIso=true ;;
-  --virtio) UseVirtio=true && UseAhci=false && UseVirtioIso=true ;;
+  --virtio) UseVirtio=true && UseVirtioIso=true ;;
+  --fshare) UseFshare=true && UseVirtioIso=true ;;
   --ovmf) UseOvmf=true ;;
   --dummy)
     shift
@@ -135,7 +139,8 @@ EnableQ35() {
 
   Cpu="host,hv-passthrough,level=30,+vmx"
   QemuArgs+=(
-    -machine "q35,smm=on"
+    -machine "q35,smm=on,memory-backend=mem"
+    -object "memory-backend-memfd,id=mem,size=$Memory,share=on"
     -global "ICH9-LPC.disable_s3=1"
     # -smbios "type=0,vendor=${MachineVendor}"
     # -smbios "type=1,manufacturer=${MachineVendor},product=${MachineProduct},version=${MachineVersion}"
@@ -178,8 +183,8 @@ EnableOvmf() {
 # Others -----------------------------------------------------------------------
 EnableMouse() {
   QemuArgs+=(
-    -usb
-    -device usb-kbd
+    -device "qemu-xhci,id=xhci"
+    -device "usb-kbd,bus=xhci.0"
   )
   if [[ $UseVirtio == true ]]; then
     QemuArgs+=(
@@ -187,11 +192,9 @@ EnableMouse() {
     )
   else
     QemuArgs+=(
-      # -device usb-mouse
-      -device usb-tablet
+      -device "usb-tablet,bus=xhci.0"
     )
   fi
-
 }
 
 EnableAudio() {
@@ -215,6 +218,43 @@ EnableConn() {
   )
 }
 
+EnableFshare() {
+  local DirFile="/tmp/virtiofsd.dir"
+  local FshareScript="$(dirname "${BASH_SOURCE[0]}")/fshare-on.sh"
+
+  # If virtiofsd is not running, try to auto-start using last shared directory
+  if ! pgrep -f "virtiofsd" &>/dev/null; then
+    if [[ -f "$DirFile" && -f "$FshareScript" ]]; then
+      local LastDir
+      LastDir=$(cat "$DirFile" 2>/dev/null || true)
+      if [[ -n "$LastDir" && -d "$LastDir" ]]; then
+        echo "[-- info --] restarting virtiofsd for: $LastDir"
+        bash "$FshareScript" "$LastDir"
+      fi
+    fi
+  fi
+
+  # Verify virtiofsd is actively running and socket exists
+  if ! pgrep -f "virtiofsd" &>/dev/null || [[ ! -S "$FshareSock" ]]; then
+    rm -f "$FshareSock" "${FshareSock}.pid" 2>/dev/null || true
+    echo "[-- error --] VirtioFS daemon (virtiofsd) is not running" >&2
+    echo "[-- hint --] Please run 'skj qemu/fshare-on <dir>' before starting QEMU" >&2
+    exit 1
+  fi
+
+  if [[ "$UseWindows" != true ]]; then
+    QemuArgs+=(
+      -machine "q35,memory-backend=mem"
+      -object "memory-backend-memfd,id=mem,size=$Memory,share=on"
+    )
+  fi
+
+  QemuArgs+=(
+    -chardev "socket,id=charfs0,path=$FshareSock"
+    -device "vhost-user-fs-pci,queue-size=1024,chardev=charfs0,tag=fshare"
+  )
+}
+
 # Orchestrators ================================================================
 EnableWindows() {
   EnableQ35
@@ -231,6 +271,7 @@ if [[ $UseAudio == true ]]; then EnableAudio; fi
 if [[ $UseAhci == true ]]; then EnableAhci; fi
 if [[ $UseConn == true ]]; then EnableConn; fi
 if [[ $UseVirtioIso == true ]]; then EnableVirtioIso; fi
+if [[ $UseFshare == true ]]; then EnableFshare; fi
 
 # Disk Mounts ==================================================================
 DriveIdx=0
@@ -248,8 +289,10 @@ for DriveFile in "${RawDrives[@]}"; do
   if [[ "$UseWindows" == true ]]; then
     DriveId="drive-win${DriveIdx}"
     If=none
+    CacheMode="writeback"
+    [[ -b "$DriveFile" ]] && CacheMode="none"
     QemuArgs+=(
-      -drive "file=$DriveFile,format=$FileExtension,if=$If,id=$DriveId,cache=none,aio=threads"
+      -drive "file=$DriveFile,format=$FileExtension,if=$If,id=$DriveId,cache=$CacheMode,aio=threads"
     )
 
     if [[ "$DriveFile" =~ ^/dev/nvme[0-9]+n[0-9]+$ ]]; then
@@ -308,4 +351,10 @@ fi
 
 echo "QemuArgs: ${QemuArgs[*]}"
 
-sudo XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" qemu-system-x86_64 "${QemuArgs[@]}"
+# Fix Wayland GTK keyboard grab issues by routing through XWayland if needed
+GdkBackend="${GDK_BACKEND:-}"
+if [[ -z "$GdkBackend" && "${XDG_SESSION_TYPE:-}" == "wayland" ]]; then
+  GdkBackend="x11"
+fi
+
+sudo GDK_BACKEND="$GdkBackend" XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" qemu-system-x86_64 "${QemuArgs[@]}"
