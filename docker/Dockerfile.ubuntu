@@ -99,7 +99,7 @@ RUN \
 
 # ------------------------------------------------------------------------------
 
-COPY ./config/nvim "/home/$CONFIG_USER_NAME/s7isol/config/nvim"
+COPY ./nvim "/home/$CONFIG_USER_NAME/s7isol/nvim"
 
 RUN \
   --mount=type=bind,source=./programs/nvim,target=nvim \

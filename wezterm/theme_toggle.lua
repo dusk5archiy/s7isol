@@ -12,7 +12,8 @@ local function get_theme_list(wezterm)
 	return theme_list
 end
 
-local function generate_config(wezterm, config)
+local function step(payload)
+	local wezterm = payload.wezterm
 	local utils = dofile(wezterm.config_dir .. "/utils.lua")
 	local callback = function(window, _)
 		local theme_list = get_theme_list(wezterm)
@@ -32,10 +33,10 @@ local function generate_config(wezterm, config)
 		},
 	}
 
-	config.keys = utils.merge_all(config.keys or {}, overrides)
-	return config
+	payload.config.keys = utils.merge_all(payload.config.keys or {}, overrides)
+	return payload
 end
 
 return {
-	generate_config = generate_config,
+	step = step,
 }

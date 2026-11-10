@@ -1,4 +1,5 @@
-local function generate_config(wezterm, config)
+local function step(payload)
+	local wezterm = payload.wezterm
 	local utils = dofile(wezterm.config_dir .. "/utils.lua")
 	local overrides = {
 		{ key = "F11", action = wezterm.action.ToggleFullScreen },
@@ -9,10 +10,10 @@ local function generate_config(wezterm, config)
 		{ key = "UpArrow", mods = "SHIFT", action = wezterm.action.ScrollByLine(-1) },
 		{ key = "DownArrow", mods = "SHIFT", action = wezterm.action.ScrollByLine(1) },
 	}
-	config.keys = utils.merge_all(config.keys or {}, overrides)
-	return config
+	payload.config.keys = utils.merge_all(payload.config.keys or {}, overrides)
+	return payload
 end
 
 return {
-	generate_config = generate_config,
+	step = step,
 }

@@ -5,7 +5,7 @@ from pathlib import Path
 S7ISOL = Path(__file__).resolve().parent.parent.parent
 NVIM_CONFIG_DIR = Path(os.environ["NVIM_CONFIG_DIR"])
 
-S7ISOL_FILE = S7ISOL / "config/nvim/lazyvim.json"
+S7ISOL_FILE = S7ISOL / "nvim/lazyvim.json"
 TARGET_FILE = NVIM_CONFIG_DIR / "lazyvim.json"
 
 with open(S7ISOL_FILE) as f:

@@ -45,12 +45,13 @@ local other = {
 	window_close_confirmation = "NeverPrompt",
 }
 
-local function generate_config(wezterm, config)
+local function step(payload)
+	local wezterm = payload.wezterm
 	local utils = dofile(wezterm.config_dir .. "/utils.lua")
-	config = utils.merge_all(config, appearance, text, backend, env, window_layout, other)
-	return config
+	payload.config = utils.merge_all(payload.config, appearance, text, backend, env, window_layout, other)
+	return payload
 end
 
 return {
-	generate_config = generate_config,
+	step = step,
 }

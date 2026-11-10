@@ -1,4 +1,5 @@
-local function run(wezterm)
+local function step(payload)
+	local wezterm = payload.wezterm
 	local function callback()
 		wezterm.background_child_process({
 			"pw-play",
@@ -7,8 +8,9 @@ local function run(wezterm)
 	end
 
 	wezterm.on("bell", callback)
+	return payload
 end
 
 return {
-	run = run,
+	step = step,
 }

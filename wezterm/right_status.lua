@@ -1,8 +1,10 @@
+-- date ------------------------------------------------------------------------
 local function show_date(wezterm)
 	-- %Y-%m-%d %H:%M:%S
 	return wezterm.strftime("%H:%M:%S")
 end
 
+-- battery ---------------------------------------------------------------------
 local function show_battery(wezterm)
 	local bat = ""
 	for _, b in ipairs(wezterm.battery_info()) do
@@ -11,11 +13,14 @@ local function show_battery(wezterm)
 	return bat
 end
 
+-- theme -----------------------------------------------------------------------
 local function show_theme(window)
 	return window:effective_config().color_scheme
 end
 
-local function run(wezterm)
+-- -----------------------------------------------------------------------------
+local function step(payload)
+	local wezterm = payload.wezterm
 	local function callback(window, _)
 		local text_list = {
 			show_theme(window),
@@ -29,8 +34,9 @@ local function run(wezterm)
 	end
 
 	wezterm.on("update-right-status", callback)
+	return payload
 end
 
 return {
-	run = run,
+	step = step,
 }

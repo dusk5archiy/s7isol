@@ -1,12 +1,28 @@
 local function merge_all(...)
+	local is_list = false
+
+	for i = 1, select("#", ...) do
+		local t = select(i, ...)
+		if type(t) == "table" and #t > 0 then
+			is_list = true
+			break
+		end
+	end
+
 	local result = {}
 
 	for i = 1, select("#", ...) do
 		local current_table = select(i, ...)
 
 		if type(current_table) == "table" then
-			for k, v in pairs(current_table) do
-				result[k] = v
+			if is_list then
+				for _, v in ipairs(current_table) do
+					table.insert(result, v)
+				end
+			else
+				for k, v in pairs(current_table) do
+					result[k] = v
+				end
 			end
 		end
 	end
