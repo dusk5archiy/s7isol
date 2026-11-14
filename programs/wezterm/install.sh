@@ -5,12 +5,10 @@ ubuntu)
   sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
   sudo apt-get update
 
-  sudo apt-get install -y --no-install-recommends \
-    wezterm
+  sudo apt-get install -y --no-install-recommends wezterm
   ;;
 arch)
-  sudo pacman -S --noconfirm --needed \
-    wezterm libgit2
+  sudo pacman -S --noconfirm --needed wezterm libgit2
   ;;
 *)
   echo "[-- error --] unsupported platform" >&2

@@ -30,8 +30,7 @@ xorriso -as mkisofs \
   -e "efi/microsoft/boot/efisys.bin" \
   -no-emul-boot \ -isohybrid-gpt-basdat \
   -m "*install.wim*" \
-  -m "*install.esd*" \
-  -m "*install*.swm" \
+  -m "*install.esd*" \ -m "*install*.swm" \
   -output "$OutputIso" \
   "$WinimgMountMedia"
 

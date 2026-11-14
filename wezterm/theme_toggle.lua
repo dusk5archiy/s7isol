@@ -12,6 +12,7 @@ local function get_theme_list(wezterm)
 	return theme_list
 end
 
+-- -----------------------------------------------------------------------------
 local function step(payload)
 	local wezterm = payload.wezterm
 	local utils = dofile(wezterm.config_dir .. "/utils.lua")

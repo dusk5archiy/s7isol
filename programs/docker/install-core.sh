@@ -1,6 +1,3 @@
-
-
-
 case $(. /etc/os-release && echo $ID) in
 ubuntu)
   if ! command -v docker &>/dev/null; then
@@ -38,3 +35,4 @@ arch)
 esac
 
 sudo nvidia-ctk runtime configure --runtime=docker
+echo "[-- done --] ${BASH_SOURCE[0]}"

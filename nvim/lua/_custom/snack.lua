@@ -24,12 +24,12 @@ return {
 		-- end ---------------------------------------------------------------------
 	},
 	keys = {
-		{
-			"<leader>e",
-			function()
-				Snacks.explorer({ cwd = vim.fn.getcwd() })
-			end,
-			desc = "Explorer Snacks (cwd)",
-		},
+		-- {
+		-- 	"<leader>e",
+		-- 	function()
+		-- 		Snacks.explorer({ cwd = vim.fn.getcwd() })
+		-- 	end,
+		-- 	desc = "Explorer Snacks (cwd)",
+		-- },
 	},
 }

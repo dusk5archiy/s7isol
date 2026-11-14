@@ -1,13 +1,14 @@
-
-
-
-if [[ -f cmd/env.sh ]]; then
+Main() {
   # shellcheck disable=SC1091
-  . cmd/env.sh
-fi
+  if [[ -f cmd/env.sh ]]; then
+    . cmd/env.sh
+  fi
 
-Dir=$(dirname "${BASH_SOURCE[0]}")
-. "$Dir/env.sh"
-s7_unset
+  local Dir && Dir=$(dirname "${BASH_SOURCE[0]}")
+  . "$Dir/env.sh"
+  s7_unset
 
-nvim "$@"
+  nvim "$@"
+}
+
+Main

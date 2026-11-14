@@ -7,6 +7,7 @@ local function main(wezterm)
 	payload = dofile(dir .. "/config.lua").step(payload)
 	payload = dofile(dir .. "/keyboard.lua").step(payload)
 	payload = dofile(dir .. "/theme_toggle.lua").step(payload)
+	payload = dofile(dir .. "/opacity_toggle.lua").step(payload)
 	return payload.config
 end
 

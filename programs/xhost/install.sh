@@ -2,8 +2,7 @@ case $(. /etc/os-release && echo $ID) in
 ubuntu)
   ;;
 arch)
-  sudo pacman -S --noconfirm --needed \
-    xorg-xhost
+  sudo pacman -S --noconfirm --needed xorg-xhost
   ;;
 *)
   echo "[-- error --] unsupported platform" >&2

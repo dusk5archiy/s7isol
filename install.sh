@@ -1,11 +1,11 @@
 Main() {
-  local ModeSetupProfile=0
-  local ModeAddExec=1
+  local OptionSetupProfile=0
+  local OptionInjectExec=1
 
   for Arg; do
     case $Arg in
     --profile)
-      ModeSetupProfile=1
+      OptionSetupProfile=1
       ;;
     esac
   done
@@ -15,16 +15,17 @@ Main() {
   # ----------------------------------------------------------------------------
   . "$Dir/bin/init.sh"
 
-  if [[ $ModeAddExec == 1 ]]; then
-    bash "$Dir/scripts/new-exec.sh"
+  if [[ $OptionInjectExec == 1 ]]; then
+    bash "$Dir/scripts/inject-exec.sh"
   fi
 
   s7_unset
 
   # ----------------------------------------------------------------------------
-  if [[ $ModeSetupProfile == 1 ]]; then
+  if [[ $OptionSetupProfile == 1 ]]; then
     skj setup/profile
   fi
 }
 
 Main "$@"
+echo "[-- done --] ${BASH_SOURCE[0]}"

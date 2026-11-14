@@ -1,6 +1,3 @@
-
-
-
 case $(. /etc/os-release && echo $ID) in
 ubuntu)
   curl -fsSL https://yazi-rs.github.io/builds/yazi-keyring.gpg | sudo tee /usr/share/keyrings/yazi-keyring.gpg >/dev/null
@@ -9,8 +6,7 @@ ubuntu)
     sudo apt-get -y --no-install-recommends install yazi
   ;;
 arch)
-  sudo pacman -S --noconfirm --needed \
-    yazi
+  sudo pacman -S --noconfirm --needed yazi
   ;;
 *)
   echo "[-- error --] unsupported platform" >&2

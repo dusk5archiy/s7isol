@@ -3,8 +3,7 @@ ubuntu)
   curl -LsSf https://astral.sh/uv/install.sh | sh
   ;;
 arch)
-  sudo pacman -S --noconfirm --needed \
-    uv
+  sudo pacman -S --noconfirm --needed uv
   ;;
 *)
   echo "[-- error --] unsupported platform" >&2

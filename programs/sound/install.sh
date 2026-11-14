@@ -1,6 +1,3 @@
-
-
-
 case $(. /etc/os-release && echo $ID) in
 ubuntu)
   # pipewire-bin: contains pw-play to play sounds
